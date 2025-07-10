@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { PenTool, Code, Gem, Megaphone, Server, Smartphone } from "lucide-react";
+import { PenTool, Code, Smartphone, Server } from "lucide-react";
 
 const services = [
   {
@@ -26,28 +26,26 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="container mx-auto px-4 py-16">
-      <section className="text-center mb-16">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+    <div className="container mx-auto px-4 py-16 md:py-24">
+      <section className="text-center mb-16 md:mb-24">
+        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">Our Services</h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We offer a complete suite of digital services to bring your ideas to life and help your business thrive in the digital world.
         </p>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {services.map((service, index) => (
-          <Card key={index} className="flex flex-col">
-            <CardHeader className="flex items-start gap-4">
-              <div className="bg-primary/10 rounded-lg p-3">
+          <Card key={index} className="flex flex-col bg-card border-none shadow-lg">
+            <CardHeader className="flex flex-row items-start gap-6 p-8">
+              <div className="bg-primary/10 rounded-lg p-4 w-fit">
                 {service.icon}
               </div>
               <div>
-                <CardTitle className="font-headline text-2xl">{service.title}</CardTitle>
+                <CardTitle className="font-headline text-2xl mb-2">{service.title}</CardTitle>
+                 <CardDescription className="text-base">{service.description}</CardDescription>
               </div>
             </CardHeader>
-            <CardContent className="flex-grow">
-              <CardDescription>{service.description}</CardDescription>
-            </CardContent>
           </Card>
         ))}
       </section>

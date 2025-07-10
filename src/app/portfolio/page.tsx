@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const portfolioItems = [
   { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "corporate office" },
@@ -24,10 +23,10 @@ export default function PortfolioPage() {
     : portfolioItems.filter(item => item.category === selectedCategory);
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <section className="text-center mb-12">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+    <div className="container mx-auto px-4 py-16 md:py-24">
+      <section className="text-center mb-16 md:mb-24">
+        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">Our Portfolio</h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We're proud of the work we've done. Explore our projects to see how we've helped businesses like yours succeed.
         </p>
       </section>
@@ -38,16 +37,17 @@ export default function PortfolioPage() {
             key={category} 
             variant={selectedCategory === category ? "default" : "outline"}
             onClick={() => setSelectedCategory(category)}
+            className="px-6 py-2"
           >
             {category}
           </Button>
         ))}
       </div>
 
-      <section className="[column-count:1] sm:[column-count:2] lg:[column-count:3] xl:[column-count:4] gap-8 space-y-8">
+      <section className="[column-count:1] sm:[column-count:2] lg:[column-count:3] gap-8 space-y-8">
         {filteredItems.map((item) => (
           <a href="#" key={item.id} className="group block [break-inside:avoid]">
-            <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card">
+            <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card border-none">
               <Image
                 src={item.imageUrl}
                 alt={item.title}
@@ -57,7 +57,7 @@ export default function PortfolioPage() {
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               />
             </div>
-             <div className="mt-4 text-center">
+             <div className="mt-4">
               <h3 className="font-headline text-2xl font-bold">{item.title}</h3>
               <p className="text-primary font-semibold tracking-wider uppercase text-sm mt-1">{item.category}</p>
             </div>

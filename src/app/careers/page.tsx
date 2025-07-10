@@ -25,10 +25,10 @@ const jobOpenings = [
 
 export default function CareersPage() {
   return (
-    <div className="container mx-auto px-4 py-16">
-      <section className="text-center mb-16">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4">Join Our Team</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+    <div className="container mx-auto px-4 py-16 md:py-24">
+      <section className="text-center mb-16 md:mb-24">
+        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">Join Our Team</h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We're always looking for talented individuals who are passionate about creating amazing digital experiences. Explore our open positions below.
         </p>
       </section>
@@ -36,7 +36,7 @@ export default function CareersPage() {
       <section className="max-w-4xl mx-auto">
         <div className="space-y-8">
           {jobOpenings.map((job, index) => (
-            <Card key={index}>
+            <Card key={index} className="bg-card border-none shadow-lg">
               <CardHeader>
                 <CardTitle className="font-headline text-2xl">{job.title}</CardTitle>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
