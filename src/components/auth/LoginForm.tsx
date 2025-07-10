@@ -18,7 +18,7 @@ export function LoginForm() {
     const password = event.currentTarget.password.value;
     
     // In a real app, you would call Firebase Auth here.
-    if (email === "admin@pixelglint.com" && password === "password") {
+    if (email === "admin@codetostack.com" && password === "password") {
       toast({
         title: "Login Successful",
         description: "Redirecting to admin dashboard...",
@@ -39,7 +39,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="admin@pixelglint.com" defaultValue="admin@pixelglint.com" required />
+        <Input id="email" type="email" placeholder="admin@codetostack.com" defaultValue="admin@codetostack.com" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>

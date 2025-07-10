@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PixelGlint Studios",
+  title: "CodeToStack Studios",
   description: "Innovation by Design. We build stunning web and mobile experiences.",
 };
 

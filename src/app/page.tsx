@@ -10,22 +10,22 @@ const services = [
   {
     icon: <Lightbulb className="w-8 h-8 text-primary" />,
     title: "Understanding Your Company's DNA",
-    description: "Be it unique logo designs or complete brand identity, we assist in taking your business to new digital heights. PixelGlint provides your business with a unique brand persona, reinvents logos, mockups and so much more.",
+    description: "Be it unique logo designs or complete brand identity, we assist in taking your business to new digital heights. CodeToStack provides your business with a unique brand persona, reinvents logos, mockups and so much more.",
   },
   {
     icon: <Code className="w-8 h-8 text-primary" />,
     title: "Web Development",
-    description: "Here at PixelGlint, we take your ideas and empower your business through various digital strategies. We help our clients establish their online presence by developing unique and functional websites.",
+    description: "Here at CodeToStack, we take your ideas and empower your business through various digital strategies. We help our clients establish their online presence by developing unique and functional websites.",
   },
   {
     icon: <PenTool className="w-8 h-8 text-primary" />,
     title: "UI/UX Development",
-    description: "PixelGlint aims at providing complete digital solutions to its clients. Our development and design team work closely to bring the best of both worlds to the table. We have highly trained professionals who work to provide the best.",
+    description: "CodeToStack aims at providing complete digital solutions to its clients. Our development and design team work closely to bring the best of both worlds to the table. We have highly trained professionals who work to provide the best.",
   },
   {
     icon: <Smartphone className="w-8 h-8 text-primary" />,
     title: "Mobile App Development",
-    description: "PixelGlint has a strong mobile app development team that works on scalable mobile apps. We have experts who take every challenge with a new perspective and propose unique solutions.",
+    description: "CodeToStack has a strong mobile app development team that works on scalable mobile apps. We have experts who take every challenge with a new perspective and propose unique solutions.",
   }
 ];
 
@@ -99,7 +99,7 @@ export default function Home() {
       <section className="w-full bg-card py-20 md:py-32 text-center">
         <div className="container mx-auto px-4">
           <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4">
-            PixelGlint Studios
+            CodeToStack Studios
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Innovation by Design. We build stunning web and mobile experiences that captivate your audience and grow your business.
