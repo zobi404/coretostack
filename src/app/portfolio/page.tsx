@@ -1,6 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const portfolioItems = [
   { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "corporate office" },
@@ -13,10 +18,15 @@ const portfolioItems = [
   { id: 8, title: "FinSavvy App Design", category: "UI/UX Design", imageUrl: "https://placehold.co/600x400.png", hint: "finance app" },
 ];
 
-// In a real app, this would come from a state management solution
 const categories = ["All", "Web Development", "UI/UX Design", "Branding", "Mobile App"];
 
 export default function PortfolioPage() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const filteredItems = selectedCategory === "All"
+    ? portfolioItems
+    : portfolioItems.filter(item => item.category === selectedCategory);
+
   return (
     <div className="container mx-auto px-4 py-16">
       <section className="text-center mb-12">
@@ -26,15 +36,20 @@ export default function PortfolioPage() {
         </p>
       </section>
 
-      {/* Filter could be implemented with state management */}
-      {/* <div className="flex justify-center flex-wrap gap-2 mb-12">
+      <div className="flex justify-center flex-wrap gap-2 mb-12">
         {categories.map(category => (
-          <Button key={category} variant="outline">{category}</Button>
+          <Button 
+            key={category} 
+            variant={selectedCategory === category ? "default" : "outline"}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </Button>
         ))}
-      </div> */}
+      </div>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {portfolioItems.map((item) => (
+        {filteredItems.map((item) => (
           <Card key={item.id} className="overflow-hidden group transition-shadow hover:shadow-xl">
             <div className="overflow-hidden">
               <Image
