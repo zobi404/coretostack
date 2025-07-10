@@ -8,72 +8,73 @@ body {
 
 @layer base {
   :root {
-    --background: 120 70% 5%; /* #041008 */
-    --foreground: 200 100% 98%; /* #f3fffc */
-    --card: 120 70% 8%; /* Slightly lighter than background */
-    --card-foreground: 200 100% 98%; /* #f3fffc */
-    --popover: 120 70% 5%;
-    --popover-foreground: 200 100% 98%;
+    --background: 0 0% 0%; /* #000000 */
+    --foreground: 0 0% 98%; /* #fafafa - Was #f3fffc */
+    --card: 0 0% 4%; /* Slightly lighter than background, was #041008 */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 98%;
     --primary: 175 100% 44%; /* #00e0d0 */
-    --primary-foreground: 120 70% 5%;
+    --primary-foreground: 0 0% 4%;
     --secondary: 175 100% 44%; /* #00e0d0 */
-    --secondary-foreground: 120 70% 5%; /* #041008 */
-    --muted: 120 70% 12%;
-    --muted-foreground: 200 100% 85%;
+    --secondary-foreground: 0 0% 4%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 64%;
     --accent: 44 90% 70%; /* #f6cc6f */
-    --accent-foreground: 120 70% 5%;
+    --accent-foreground: 0 0% 4%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 175 20% 20%;
-    --input: 175 20% 15%;
+    --border: 175 20% 15%;
+    --input: 175 20% 12%;
     --ring: 175 100% 44%;
     --chart-1: 175 100% 44%;
     --chart-2: 12 100% 73%; /* #ff9078 */
     --chart-3: 44 90% 70%;
     --chart-4: 175 80% 60%;
-    --chart-5: 200 100% 98%;
+    --chart-5: 0 0% 98%;
     --radius: 0.5rem;
-    --sidebar-background: 120 70% 8%;
-    --sidebar-foreground: 200 100% 98%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 175 100% 44%;
-    --sidebar-primary-foreground: 120 70% 5%;
-    --sidebar-accent: 120 70% 12%;
-    --sidebar-accent-foreground: 200 100% 98%;
-    --sidebar-border: 175 20% 20%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 175 20% 15%;
     --sidebar-ring: 175 100% 44%;
   }
   .dark {
-    --background: 120 70% 5%; /* #041008 */
-    --foreground: 200 100% 98%; /* #f3fffc */
-    --card: 120 70% 8%; /* Slightly lighter than background */
-    --card-foreground: 200 100% 98%; /* #f3fffc */
-    --popover: 120 70% 5%;
-    --popover-foreground: 200 100% 98%;
+    --background: 0 0% 0%; /* #000000 */
+    --foreground: 0 0% 98%; /* #fafafa - Was #f3fffc */
+    --card: 0 0% 4%; /* Slightly lighter than background, was #041008 */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 98%;
     --primary: 175 100% 44%; /* #00e0d0 */
-    --primary-foreground: 120 70% 5%;
+    --primary-foreground: 0 0% 4%;
     --secondary: 175 100% 44%; /* #00e0d0 */
-    --secondary-foreground: 120 70% 5%; /* #041008 */
-    --muted: 120 70% 12%;
-    --muted-foreground: 200 100% 85%;
+    --secondary-foreground: 0 0% 4%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 64%;
     --accent: 44 90% 70%; /* #f6cc6f */
-    --accent-foreground: 120 70% 5%;
+    --accent-foreground: 0 0% 4%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 175 20% 20%;
-    --input: 175 20% 15%;
+    --border: 175 20% 15%;
+    --input: 175 20% 12%;
     --ring: 175 100% 44%;
     --chart-1: 175 100% 44%;
-    --chart-2: 12 100% 73%;
+    --chart-2: 12 100% 73%; /* #ff9078 */
     --chart-3: 44 90% 70%;
     --chart-4: 175 80% 60%;
-    --chart-5: 200 100% 98%;
-    --sidebar-background: 120 70% 8%;
-    --sidebar-foreground: 200 100% 98%;
+    --chart-5: 0 0% 98%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 175 100% 44%;
-    --sidebar-primary-foreground: 120 70% 5%;
-    --sidebar-accent: 120 70% 12%;
-    --sidebar-accent-foreground: 200 100% 98%;
-    --sidebar-border: 175 20% 20%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 175 20% 15%;
     --sidebar-ring: 175 100% 44%;
   }
 }
