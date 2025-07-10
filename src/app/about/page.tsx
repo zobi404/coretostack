@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award, Users, Target } from "lucide-react";
+import DynamicStat from "@/components/about/DynamicStat";
 
 const teamMembers = [
   {
@@ -24,10 +25,10 @@ const teamMembers = [
 ];
 
 const stats = [
-    { label: "Active Clients", value: "10+" },
-    { label: "Projects Done", value: "30+" },
-    { label: "Team Members", value: "30+" },
-    { label: "Glorious Years", value: "10+" },
+    { label: "Active Clients", value: 10, suffix: "+" },
+    { label: "Projects Done", value: 30, suffix: "+" },
+    { label: "Team Members", value: 30, suffix: "+" },
+    { label: "Glorious Years", value: 10, suffix: "+" },
 ]
 
 export default function AboutPage() {
@@ -117,13 +118,7 @@ export default function AboutPage() {
           </div>
           <div className="relative grid grid-cols-2 md:grid-cols-4 gap-8 p-12 text-center">
             {stats.map((stat) => (
-              <div key={stat.label}>
-                <p className="text-sm uppercase tracking-widest flex items-center justify-center gap-2">
-                  <span className="h-1.5 w-1.5 bg-primary-foreground/80 rounded-full"></span>
-                  {stat.label}
-                </p>
-                <p className="text-5xl font-bold mt-2">{stat.value}</p>
-              </div>
+              <DynamicStat key={stat.label} stat={stat} />
             ))}
           </div>
         </div>
