@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-const words = ["glory", "imagine"];
+const words = ["Stack", "Glory", "Imagine"];
 
 export default function TypedHeading() {
   const [index, setIndex] = useState(0);

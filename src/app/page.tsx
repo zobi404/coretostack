@@ -67,7 +67,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <TypedHeading />
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-300">
-            where solid foundations meet smart execution
+            Where solid foundations, meet smart execution!
           </p>
           <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-600">
             <Button asChild size="lg">
