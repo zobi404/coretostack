@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 
 const portfolioItems = [
   { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "corporate office" },
-  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/600x400.png", hint: "mobile app" },
-  { id: 4, title: "DataDash Analytics", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "data dashboard" },
+  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/600x600.png", hint: "mobile app" },
+  { id: 4, title: "DataDash Analytics", category: "Web Development", imageUrl: "https://placehold.co/600x800.png", hint: "data dashboard" },
   { id: 5, title: "HealthTrack Mobile App", category: "Mobile App", imageUrl: "https://placehold.co/600x400.png", hint: "fitness tracker" },
-  { id: 7, title: "FutureTech Conference", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "tech conference" },
-  { id: 8, title: "FinSavvy App Design", category: "UI/UX Design", imageUrl: "https://placehold.co/600x400.png", hint: "finance app" },
+  { id: 7, title: "FutureTech Conference", category: "Web Development", imageUrl: "https://placehold.co/600x500.png", hint: "tech conference" },
+  { id: 8, title: "FinSavvy App Design", category: "UI/UX Design", imageUrl: "https://placehold.co/600x700.png", hint: "finance app" },
 ];
 
 const categories = ["All", "Web Development", "UI/UX Design", "Mobile App"];
@@ -44,21 +44,21 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+      <section className="[column-count:1] sm:[column-count:2] lg:[column-count:3] xl:[column-count:4] gap-8 space-y-8">
         {filteredItems.map((item) => (
-          <a href="#" key={item.id} className="group block">
+          <a href="#" key={item.id} className="group block [break-inside:avoid]">
             <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card">
               <Image
                 src={item.imageUrl}
                 alt={item.title}
                 width={600}
-                height={400}
+                height={parseInt(item.imageUrl.split('x')[1], 10)}
                 data-ai-hint={item.hint}
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               />
             </div>
-            <div className="mt-6 text-center">
-              <h3 className="font-headline text-3xl font-bold">{item.title}</h3>
+             <div className="mt-4 text-center">
+              <h3 className="font-headline text-2xl font-bold">{item.title}</h3>
               <p className="text-primary font-semibold tracking-wider uppercase text-sm mt-1">{item.category}</p>
             </div>
           </a>
