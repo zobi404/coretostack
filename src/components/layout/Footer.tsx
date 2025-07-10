@@ -5,6 +5,8 @@ import { Twitter, Linkedin, Github, Facebook } from 'lucide-react';
 
 const companyLinks = [
     { href: "/about", label: "About Us" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/blog", label: "Blog" },
     { href: "/careers", label: "Careers" },
     { href: "/contact", label: "Contact Us" },
 ];

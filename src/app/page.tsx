@@ -123,7 +123,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-24 items-center">
             <div className="relative animate-slide-in-from-left">
               <Image
-                src="https://placehold.co/600x700.png"
+                src="/business.jpg"
                 width={600}
                 height={700}
                 alt="Digital Presence"
