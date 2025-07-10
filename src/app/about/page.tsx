@@ -46,7 +46,7 @@ export default function AboutPage() {
                   className="object-cover w-full h-full"
                 />
             </div>
-            <div className="absolute -bottom-8 left-0 bg-gradient-to-br from-red-500 to-primary text-primary-foreground p-6 rounded-3xl transform -rotate-12 shadow-xl">
+            <div className="absolute -bottom-8 left-0 bg-primary text-primary-foreground p-6 rounded-3xl transform -rotate-12 shadow-xl">
                 <h3 className="text-4xl font-bold">25+</h3>
                 <p className="font-semibold uppercase tracking-wider text-sm">Professional Advisors</p>
             </div>
