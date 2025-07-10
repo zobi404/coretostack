@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +32,7 @@ export default function PortfolioPage() {
         </p>
       </section>
 
-      <div className="flex justify-center flex-wrap gap-2 mb-12">
+      <div className="flex justify-center flex-wrap gap-2 mb-16">
         {categories.map(category => (
           <Button 
             key={category} 
@@ -46,10 +44,10 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
         {filteredItems.map((item) => (
-          <Card key={item.id} className="overflow-hidden group transition-shadow hover:shadow-xl">
-            <div className="overflow-hidden">
+          <a href="#" key={item.id} className="group block">
+            <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card">
               <Image
                 src={item.imageUrl}
                 alt={item.title}
@@ -59,11 +57,11 @@ export default function PortfolioPage() {
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               />
             </div>
-            <CardContent className="p-6">
-              <Badge variant="secondary" className="mb-2">{item.category}</Badge>
-              <h3 className="font-headline text-2xl font-semibold">{item.title}</h3>
-            </CardContent>
-          </Card>
+            <div className="mt-6 text-center">
+              <h3 className="font-headline text-3xl font-bold">{item.title}</h3>
+              <p className="text-primary font-semibold tracking-wider uppercase text-sm mt-1">{item.category}</p>
+            </div>
+          </a>
         ))}
       </section>
     </div>
