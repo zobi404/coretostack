@@ -129,7 +129,7 @@ export default function Home() {
             <div className="flex justify-between items-center w-full max-w-4xl mx-auto mb-16">
               {processSteps.map((step, index) => (
                 <div key={step.step} className="flex items-center z-10">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 text-white font-bold text-2xl shadow-lg">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-400 text-white font-bold text-2xl shadow-lg">
                     {step.step}
                   </div>
                   {index < processSteps.length - 1 && (
