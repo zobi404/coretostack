@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import CommentSection from '@/components/blog/CommentSection';
 import { mockPosts, mockComments } from '@/lib/mock-data';
+
+const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { ssr: false });
 
 // This function would fetch data from a CMS in a real app
 async function getPost(slug: string) {

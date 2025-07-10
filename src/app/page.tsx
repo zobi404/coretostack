@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight, Code, PenTool, Smartphone, MessageSquare, Monitor } from "lucide-react";
-import { LogoCarousel } from "@/components/ui/logo-carousel";
 import TypedHeading from "@/components/home/TypedHeading";
+
+const LogoCarousel = dynamic(() => import('@/components/ui/logo-carousel').then(m => m.LogoCarousel));
 
 const services = [
   {
