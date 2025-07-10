@@ -4,7 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Twitter, Linkedin, Github, Facebook } from 'lucide-react';
 
 const companyLinks = [
+    { href: "/about", label: "About Us" },
     { href: "/careers", label: "Careers" },
+    { href: "/contact", label: "Contact Us" },
+];
+
+const serviceLinks = [
+    { href: "/services", label: "Web Development" },
+    { href: "/services", label: "UI/UX Design" },
+    { href: "/services", label: "Mobile App Development" },
 ];
 
 export default function Footer() {
@@ -22,8 +30,19 @@ export default function Footer() {
             <h3 className="font-headline font-semibold text-xl">Company</h3>
             <nav className="mt-4 flex flex-col space-y-3">
               {companyLinks.map(link => (
-                <Link key={link.label} href={link.href} className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors flex items-center gap-2">
+                <Link key={link.href} href={link.href} className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors flex items-center gap-2">
                    <span className="w-1.5 h-1.5 rounded-full border border-primary-foreground/80 block"></span>
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+           <div>
+            <h3 className="font-headline font-semibold text-xl">Services</h3>
+            <nav className="mt-4 flex flex-col space-y-3">
+               {serviceLinks.map(link => (
+                <Link key={`${link.href}-${link.label}`} href={link.href} className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full border border-primary-foreground/80 block"></span>
                   {link.label}
                 </Link>
               ))}
