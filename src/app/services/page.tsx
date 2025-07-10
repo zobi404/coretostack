@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { PenTool, Code, Smartphone, Server } from "lucide-react";
+import { PenTool, Code, Smartphone, Server, MessageSquare, Monitor } from "lucide-react";
 
 const services = [
   {
@@ -21,6 +21,16 @@ const services = [
     icon: <Server className="w-10 h-10 text-primary" />,
     title: "Cloud & DevOps",
     description: "We provide cloud infrastructure setup and management, along with CI/CD pipelines to streamline your development and deployment processes for maximum efficiency.",
+  },
+  {
+    icon: <MessageSquare className="w-10 h-10 text-primary" />,
+    title: "Chatbot Development",
+    description: "We build intelligent and conversational chatbots powered by AI to automate customer support, lead generation, and user engagement.",
+  },
+  {
+    icon: <Monitor className="w-10 h-10 text-primary" />,
+    title: "Desktop App Development",
+    description: "We create powerful, cross-platform desktop applications with a focus on performance and user experience, for Windows, macOS, and Linux.",
   },
 ];
 

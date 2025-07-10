@@ -13,6 +13,8 @@ const serviceLinks = [
     { href: "/services", label: "Web Development" },
     { href: "/services", label: "UI/UX Design" },
     { href: "/services", label: "Mobile App Development" },
+    { href: "/services", label: "Chatbot Development" },
+    { href: "/services", label: "Desktop App Development" },
 ];
 
 export default function Footer() {

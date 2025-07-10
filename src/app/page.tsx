@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ArrowRight, Code, PenTool, Smartphone } from "lucide-react";
+import { ArrowRight, Code, PenTool, Smartphone, MessageSquare, Monitor } from "lucide-react";
 import { LogoCarousel } from "@/components/ui/logo-carousel";
 import TypedHeading from "@/components/home/TypedHeading";
 
@@ -21,6 +21,16 @@ const services = [
     icon: <Smartphone className="w-8 h-8 text-primary" />,
     title: "Mobile App Development",
     description: "Our strong mobile app development team builds scalable and engaging mobile applications.",
+  },
+  {
+    icon: <MessageSquare className="w-8 h-8 text-primary" />,
+    title: "Chatbot Development",
+    description: "We build intelligent and conversational chatbots to automate customer support and engagement.",
+  },
+  {
+    icon: <Monitor className="w-8 h-8 text-primary" />,
+    title: "Desktop App Development",
+    description: "We create powerful and cross-platform desktop applications to meet your business needs.",
   }
 ];
 
@@ -89,7 +99,7 @@ export default function Home() {
               From concept to launch, we provide end-to-end solutions.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <Card key={index} className="bg-background shadow-lg hover:shadow-primary/10 transition-shadow duration-300 animate-fade-in-up p-4 text-center border-none" style={{ animationDelay: `${index * 150}ms` }}>
                 <CardHeader className="items-center">
