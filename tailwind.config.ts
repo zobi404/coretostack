@@ -104,6 +104,10 @@ export default {
           from: { opacity: '0', transform: 'translateX(20px)' },
           to: { opacity: '1', transform: 'translateX(0)' },
         },
+        'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -112,6 +116,7 @@ export default {
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
         'slide-in-from-left': 'slide-in-from-left 0.5s ease-out forwards',
         'slide-in-from-right': 'slide-in-from-right 0.5s ease-out forwards',
+        'infinite-scroll': 'infinite-scroll 25s linear infinite',
       },
       animationDelay: {
         '100': '100ms',
