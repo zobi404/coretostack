@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Gem } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,11 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    setIsSheetOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,7 +46,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="md:hidden">
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">
                 <Menu className="h-6 w-6" />
@@ -49,12 +55,13 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 p-6">
-                <Logo />
+                <div onClick={handleLinkClick}><Logo /></div>
                 <nav className="flex flex-col gap-4">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
+                      onClick={handleLinkClick}
                        className={cn(
                         "text-lg font-medium transition-colors hover:text-primary",
                         pathname === link.href ? "text-primary" : "text-muted-foreground"
