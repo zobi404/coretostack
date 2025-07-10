@@ -44,7 +44,7 @@ export default function Footer() {
             <nav className="mt-4 flex flex-col space-y-2">
               <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Web Development</Link>
               <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">UI/UX Design</Link>
-              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Branding</Link>
+              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mobile App Development</Link>
             </nav>
           </div>
            <div>

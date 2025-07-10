@@ -10,15 +10,13 @@ import { cn } from "@/lib/utils";
 const portfolioItems = [
   { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "corporate office" },
   { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/600x400.png", hint: "mobile app" },
-  { id: 3, title: "EcoGoods Branding", category: "Branding", imageUrl: "https://placehold.co/600x400.png", hint: "nature minimalist" },
   { id: 4, title: "DataDash Analytics", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "data dashboard" },
   { id: 5, title: "HealthTrack Mobile App", category: "Mobile App", imageUrl: "https://placehold.co/600x400.png", hint: "fitness tracker" },
-  { id: 6, title: "Artisan Coffee Co.", category: "Branding", imageUrl: "https://placehold.co/600x400.png", hint: "coffee shop" },
   { id: 7, title: "FutureTech Conference", category: "Web Development", imageUrl: "https://placehold.co/600x400.png", hint: "tech conference" },
   { id: 8, title: "FinSavvy App Design", category: "UI/UX Design", imageUrl: "https://placehold.co/600x400.png", hint: "finance app" },
 ];
 
-const categories = ["All", "Web Development", "UI/UX Design", "Branding", "Mobile App"];
+const categories = ["All", "Web Development", "UI/UX Design", "Mobile App"];
 
 export default function PortfolioPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");

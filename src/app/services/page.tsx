@@ -18,16 +18,6 @@ const services = [
     description: "We create native and cross-platform mobile apps for iOS and Android that are fast, engaging, and provide a rich user experience.",
   },
   {
-    icon: <Gem className="w-10 h-10 text-primary" />,
-    title: "Brand Identity & Strategy",
-    description: "We help you define your brand's voice and visual identity. This includes logo design, style guides, and a comprehensive brand strategy that resonates with your target audience.",
-  },
-  {
-    icon: <Megaphone className="w-10 h-10 text-primary" />,
-    title: "Digital Marketing",
-    description: "Our data-driven marketing strategies help you reach your customers and grow your business. We specialize in SEO, content marketing, and social media campaigns.",
-  },
-  {
     icon: <Server className="w-10 h-10 text-primary" />,
     title: "Cloud & DevOps",
     description: "We provide cloud infrastructure setup and management, along with CI/CD pipelines to streamline your development and deployment processes for maximum efficiency.",

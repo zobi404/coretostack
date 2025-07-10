@@ -9,11 +9,6 @@ import { LogoCarousel } from "@/components/ui/logo-carousel";
 
 const services = [
   {
-    icon: <Lightbulb className="w-8 h-8 text-primary" />,
-    title: "Understanding Your Company's DNA",
-    description: "Be it unique logo designs or complete brand identity, we assist in taking your business to new digital heights. CodeToStack provides your business with a unique brand persona, reinvents logos, mockups and so much more.",
-  },
-  {
     icon: <Code className="w-8 h-8 text-primary" />,
     title: "Web Development",
     description: "Here at CodeToStack, we take your ideas and empower your business through various digital strategies. We help our clients establish their online presence by developing unique and functional websites.",
@@ -44,13 +39,6 @@ const portfolioItems = [
     category: "Mobile Design",
     imageUrl: "https://placehold.co/600x400.png",
     hint: "modern cityscape",
-  },
-  {
-    id: 3,
-    title: "Project Gamma",
-    category: "Branding",
-    imageUrl: "https://placehold.co/600x400.png",
-    hint: "minimalist design",
   },
 ];
 
@@ -170,7 +158,7 @@ export default function Home() {
               From concept to launch, we provide end-to-end solutions.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <Card key={index} className="bg-background shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
                 <CardHeader className="flex flex-row items-start gap-4 space-y-0 text-left">
@@ -246,7 +234,7 @@ export default function Home() {
               We are proud of our work. Here are some of our recent projects.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {portfolioItems.map((item, index) => (
               <Link href="/portfolio" key={item.id}>
                 <Card className="group overflow-hidden bg-background animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
