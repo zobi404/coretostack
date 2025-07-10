@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight, Code, PenTool, Gem, Smartphone, Briefcase, Lightbulb } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 const services = [
   {
@@ -50,6 +51,21 @@ const portfolioItems = [
     imageUrl: "https://placehold.co/600x400.png",
     hint: "minimalist design",
   },
+];
+
+const skills = [
+  { name: "App Development", value: 90 },
+  { name: "Web Development", value: 90 },
+  { name: "UI/UX Development", value: 90 },
+];
+
+const technologies = [
+  { name: "Next.js", logo: "/nextjs-logo.svg" },
+  { name: "React", logo: "/react-logo.svg" },
+  { name: "JavaScript", logo: "/js-logo.svg" },
+  { name: "Tailwind CSS", logo: "/tailwind-logo.svg" },
+  { name: "Firebase", logo: "/firebase-logo.svg" },
+  { name: "Genkit", logo: "/genkit-logo.svg" },
 ];
 
 export default function Home() {
@@ -101,9 +117,59 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* Skills Section */}
+      <section className="w-full py-16 md:py-24 bg-card">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="space-y-6">
+                {skills.map((skill) => (
+                  <div key={skill.name}>
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="font-semibold">{skill.name}</p>
+                      <p className="text-primary font-semibold">{skill.value}%</p>
+                    </div>
+                    <Progress value={skill.value} className="h-2 [&>div]:bg-gradient-to-r [&>div]:from-cyan-400 [&>div]:to-blue-500" />
+                  </div>
+                ))}
+              </div>
+              <Button size="lg" className="mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600 rounded-full px-8 py-3 font-bold">
+                Hire Our Developers <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+            <div className="relative">
+              <Image
+                src="https://placehold.co/600x500.png"
+                width={600}
+                height={500}
+                alt="Digital Presence"
+                data-ai-hint="team collaboration"
+                className="rounded-lg object-cover"
+              />
+              <div className="absolute -bottom-8 -left-8 bg-gradient-to-br from-red-500 to-orange-400 rounded-3xl p-8 text-white shadow-xl transform -rotate-12">
+                <h3 className="font-headline text-2xl font-bold text-center">Boost your<br />Digital Presence</h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-24">
+            <p className="text-sm font-semibold tracking-widest text-muted-foreground mb-2">• TECHNOLOGIES •</p>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold">Technologies We Work On</h2>
+            <div className="mt-8 flex justify-center items-center flex-wrap gap-x-8 gap-y-6">
+              {technologies.map(tech => (
+                <div key={tech.name} className="flex flex-col items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                  <Image src={tech.logo} alt={tech.name} width={48} height={48} />
+                  {/* <span className="text-sm font-medium">{tech.name}</span> */}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Portfolio Section */}
-      <section id="portfolio" className="w-full py-16 md:py-24 bg-card">
+      <section id="portfolio" className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Featured Work</h2>
