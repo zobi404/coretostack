@@ -190,9 +190,15 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Skills Section */}
+      {/* Why Choose Us Section */}
       <section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold">Why Choose Us</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto mt-2">
+              We combine expertise and passion to deliver outstanding results.
+            </p>
+          </div>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div className="space-y-6">
@@ -202,11 +208,11 @@ export default function Home() {
                       <p className="font-semibold">{skill.name}</p>
                       <p className="text-primary font-semibold">{skill.value}%</p>
                     </div>
-                    <Progress value={skill.value} className="h-2 [&>div]:bg-gradient-to-r [&>div]:from-cyan-400 [&>div]:to-blue-500" />
+                    <Progress value={skill.value} className="h-2 [&>div]:bg-primary" />
                   </div>
                 ))}
               </div>
-              <Button size="lg" className="mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600 rounded-full px-8 py-3 font-bold">
+              <Button size="lg" className="mt-8 rounded-full px-8 py-3 font-bold">
                 Hire Our Developers <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -219,7 +225,7 @@ export default function Home() {
                 data-ai-hint="team collaboration"
                 className="rounded-lg object-cover"
               />
-              <div className="absolute -bottom-8 -left-8 bg-gradient-to-br from-red-500 to-orange-400 rounded-3xl p-8 text-white shadow-xl transform -rotate-12">
+              <div className="absolute -bottom-8 -left-8 bg-primary rounded-3xl p-8 text-primary-foreground shadow-xl transform -rotate-12">
                 <h3 className="font-headline text-2xl font-bold text-center">Boost your<br />Digital Presence</h3>
               </div>
             </div>
