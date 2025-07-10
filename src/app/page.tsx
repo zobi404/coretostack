@@ -3,9 +3,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight, Code, PenTool, Smartphone } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { LogoCarousel } from "@/components/ui/logo-carousel";
+import TypedHeading from "@/components/home/TypedHeading";
 
 const services = [
   {
@@ -42,12 +41,6 @@ const portfolioItems = [
   },
 ];
 
-const skills = [
-  { name: "App Development", value: 90 },
-  { name: "Web Development", value: 90 },
-  { name: "UI/UX Development", value: 90 },
-];
-
 const processSteps = [
   {
     step: "01",
@@ -70,11 +63,9 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="w-full py-20 md:py-40 text-center">
+      <section className="w-full py-24 md:py-48 text-center">
         <div className="container mx-auto px-4">
-          <h1 className="font-headline text-4xl md:text-7xl font-bold tracking-tighter mb-6 animate-fade-in-up">
-            CodeToStack Studios
-          </h1>
+          <TypedHeading />
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-300">
             Innovation by Design. We build stunning web and mobile experiences that captivate your audience and grow your business.
           </p>
@@ -117,9 +108,9 @@ export default function Home() {
       </section>
       
       {/* Why Choose Us Section */}
-      <section className="w-full py-16 md:py-32 bg-background">
+      <section className="w-full py-20 md:py-32 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-24 items-center">
             <div className="relative animate-slide-in-from-left">
               <Image
                 src="https://placehold.co/600x700.png"
@@ -132,20 +123,12 @@ export default function Home() {
             </div>
             <div className="animate-slide-in-from-right space-y-8">
               <h2 className="font-headline text-3xl md:text-4xl font-bold">Combine expertise and passion to deliver outstanding results.</h2>
-              <div className="space-y-6">
-                {skills.map((skill) => (
-                  <div key={skill.name}>
-                    <div className="flex justify-between items-center mb-1">
-                      <p className="font-semibold text-lg">{skill.name}</p>
-                      <p className="text-primary font-semibold">{skill.value}%</p>
-                    </div>
-                    <Progress value={skill.value} className="h-2 [&>div]:bg-primary" />
-                  </div>
-                ))}
-              </div>
+               <p className="text-muted-foreground leading-relaxed text-lg">
+                We are a passionate team of designers, developers, and strategists dedicated to creating digital experiences that are not only beautiful but also effective. Our focus is on delivering high-quality solutions that drive growth and create lasting value for our clients.
+               </p>
               <Button size="lg" asChild>
-                <Link href="/contact">
-                  Hire Our Developers <ArrowRight className="ml-2 h-5 w-5" />
+                <Link href="/about">
+                  More About Us <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
@@ -213,14 +196,14 @@ export default function Home() {
                   </div>
                   <CardContent className="p-6">
                     <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
-                    <Badge variant="secondary" className="mt-2">{item.category}</Badge>
+                    <p className="text-sm text-primary">{item.category}</p>
                   </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
           <div className="text-center mt-12 animate-fade-in">
-            <Button asChild variant="link" className="text-lg">
+            <Button asChild variant="link" className="text-lg text-primary">
               <Link href="/portfolio">
                 View All Projects <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
