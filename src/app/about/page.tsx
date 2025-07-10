@@ -23,6 +23,13 @@ const teamMembers = [
   },
 ];
 
+const stats = [
+    { label: "Active Clients", value: "10+" },
+    { label: "Projects Done", value: "30+" },
+    { label: "Team Members", value: "30+" },
+    { label: "Glorious Years", value: "10+" },
+]
+
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-16">
@@ -99,6 +106,27 @@ export default function AboutPage() {
             <p className="text-muted-foreground">Innovation, Collaboration, Integrity, and Excellence are the core principles that guide our work and culture.</p>
           </CardContent>
         </Card>
+      </section>
+
+      <section className="mb-20">
+        <div className="relative bg-primary text-primary-foreground rounded-2xl overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1440 300">
+                <path fill="currentColor" d="M 1440 300 L 1440 0 C 1200 150 800 200 0 0 L 0 300 Z"></path>
+            </svg>
+          </div>
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-8 p-12 text-center">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <p className="text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+                  <span className="h-1.5 w-1.5 bg-primary-foreground/80 rounded-full"></span>
+                  {stat.label}
+                </p>
+                <p className="text-5xl font-bold mt-2">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="text-center">
