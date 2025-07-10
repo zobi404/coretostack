@@ -78,7 +78,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t border-primary-foreground/20 pt-8 text-center text-sm text-primary-foreground/80">
-          <p>&copy; {new Date().getFullYear()} CodeToStack. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} CoreToStack. All rights reserved.</p>
         </div>
       </div>
     </footer>

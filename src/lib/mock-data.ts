@@ -20,7 +20,7 @@ export const mockPosts: Post[] = [
         <li><strong>Faster Load Times:</strong> Fewer elements mean smaller page sizes and quicker rendering.</li>
         <li><strong>Timeless Aesthetic:</strong> Minimalist designs tend to age better than trend-heavy ones.</li>
       </ul>
-      <p>At CodeToStack, we embrace minimalist principles to create designs that are not only beautiful but also highly functional. It's about finding the perfect balance between form and function.</p>
+      <p>At CoreToStack, we embrace minimalist principles to create designs that are not only beautiful but also highly functional. It's about finding the perfect balance between form and function.</p>
     `
   },
   {

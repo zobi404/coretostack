@@ -33,7 +33,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                         <h3 className="text-xl font-semibold">Email Us</h3>
-                        <p className="text-muted-foreground text-lg">hello@codetostack.com</p>
+                        <p className="text-muted-foreground text-lg">hello@coretostack.com</p>
                     </div>
                 </div>
                 <div className="flex items-start gap-4">

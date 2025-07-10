@@ -35,7 +35,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center mb-16 md:mb-24">
-        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">About CodeToStack</h1>
+        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">About CoreToStack</h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We are a passionate team of designers, developers, and strategists dedicated to creating digital experiences that are not only beautiful but also effective.
         </p>
@@ -56,7 +56,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our story is one of passion, innovation, and a relentless pursuit of excellence.</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-                CodeToStack is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
+                CoreToStack is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
             </p>
           </div>
         </div>

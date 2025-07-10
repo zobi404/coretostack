@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CodeToStack Studios",
+  title: "CoreToStack",
   description: "Innovation by Design. We build stunning web and mobile experiences.",
 };
 

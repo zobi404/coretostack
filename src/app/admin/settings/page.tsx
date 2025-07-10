@@ -17,7 +17,7 @@ export default function AdminSettingsPage() {
             <form className="space-y-4 max-w-lg">
               <div className="space-y-2">
                 <Label htmlFor="email">Public Email</Label>
-                <Input id="email" defaultValue="hello@codetostack.com" />
+                <Input id="email" defaultValue="hello@coretostack.com" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>

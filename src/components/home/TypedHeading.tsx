@@ -43,7 +43,7 @@ export default function TypedHeading() {
 
   return (
     <h1 className="font-headline text-4xl md:text-7xl font-bold tracking-tighter mb-6 animate-fade-in-up">
-      Code to <span className="text-primary">{words[index].substring(0, subIndex)}</span>
+      Core to <span className="text-primary">{words[index].substring(0, subIndex)}</span>
       <span className={blink ? 'animate-ping' : ''}>|</span>
     </h1>
   );
