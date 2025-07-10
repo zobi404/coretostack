@@ -2,25 +2,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ArrowRight, Code, PenTool, Gem } from "lucide-react";
+import { ArrowRight, Code, PenTool, Gem, Smartphone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const services = [
   {
     icon: <PenTool className="w-8 h-8 text-primary" />,
-    title: "UI/UX Design",
-    description: "Crafting intuitive and beautiful user interfaces that delight users and drive engagement.",
+    title: "Understanding Your Company's DNA",
+    description: "Be it unique logo designs or complete brand identity, we assist in taking your business to new digital heights. PixelGlint provides your business with a unique brand persona, reinvents logos, mockups and so much more.",
   },
   {
     icon: <Code className="w-8 h-8 text-primary" />,
     title: "Web Development",
-    description: "Building fast, scalable, and secure web applications tailored to your business needs.",
+    description: "Here at PixelGlint, we take your ideas and empower your business through various digital strategies. We help our clients establish their online presence by developing unique and functional websites.",
   },
   {
     icon: <Gem className="w-8 h-8 text-primary" />,
-    title: "Brand Identity",
-    description: "Creating memorable brand identities that tell your story and resonate with your audience.",
+    title: "UI/UX Development",
+    description: "PixelGlint aims at providing complete digital solutions to its clients. Our development and design team work closely to bring the best of both worlds to the table. We have highly trained professionals who work to provide the best.",
   },
+  {
+    icon: <Smartphone className="w-8 h-8 text-primary" />,
+    title: "Mobile App Development",
+    description: "PixelGlint has a strong mobile app development team that works on scalable mobile apps. We have experts who take every challenge with a new perspective and propose unique solutions.",
+  }
 ];
 
 const portfolioItems = [
@@ -71,7 +76,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="w-full py-16 md:py-24">
+      <section id="services" className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our Services</h2>
@@ -79,17 +84,17 @@ export default function Home() {
               From concept to launch, we provide end-to-end solutions.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="text-center transform hover:scale-105 transition-transform duration-300">
+              <Card key={index} className="text-center bg-card shadow-lg p-4">
                 <CardHeader>
                   <div className="mx-auto bg-primary/10 rounded-full p-4 w-fit mb-4">
                     {service.icon}
                   </div>
-                  <CardTitle className="font-headline">{service.title}</CardTitle>
+                  <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{service.description}</p>
+                  <p className="text-muted-foreground text-sm">{service.description}</p>
                 </CardContent>
               </Card>
             ))}
