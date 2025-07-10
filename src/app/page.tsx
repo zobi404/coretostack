@@ -115,6 +115,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Process Section */}
+      <section id="process" className="w-full py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="text-sm font-semibold tracking-wider">OUR PROCESS</Badge>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold mt-2">
+              Linear Path to Digital Transformation
+            </h2>
+          </div>
+
+          <div className="relative">
+            <div className="flex justify-between items-center w-full max-w-4xl mx-auto mb-16">
+              {processSteps.map((step, index) => (
+                <div key={step.step} className="flex items-center z-10">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 text-white font-bold text-2xl shadow-lg">
+                    {step.step}
+                  </div>
+                  {index < processSteps.length - 1 && (
+                    <svg className="w-32 h-6 text-gray-300 dark:text-gray-600 hidden md:block" fill="none" viewBox="0 0 130 24" stroke="currentColor">
+                      <path strokeDasharray="5, 5" strokeWidth="2" d="M0 12 C 43.33 12, 86.67 12, 130 12" />
+                    </svg>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              {processSteps.map((step) => (
+                <div key={step.step} className="flex flex-col items-center">
+                  <div className="mb-6">
+                     <Image
+                      src={step.imageUrl}
+                      alt={step.title}
+                      width={400}
+                      height={300}
+                      data-ai-hint={step.hint}
+                      className="rounded-lg object-contain h-48 w-auto"
+                    />
+                  </div>
+                  <h3 className="font-headline text-xl font-bold mb-2">{step.title}</h3>
+                  <p className="text-muted-foreground max-w-xs">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section id="services" className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
@@ -185,54 +233,6 @@ export default function Home() {
                 <div key={tech.name} className="flex flex-col items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                   <Image src={tech.logo} alt={tech.name} width={48} height={48} />
                   {/* <span className="text-sm font-medium">{tech.name}</span> */}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Our Process Section */}
-      <section id="process" className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="text-sm font-semibold tracking-wider">OUR PROCESS</Badge>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold mt-2">
-              Linear Path to Digital Transformation
-            </h2>
-          </div>
-
-          <div className="relative">
-            <div className="flex justify-between items-center w-full max-w-4xl mx-auto mb-16">
-              {processSteps.map((step, index) => (
-                <div key={step.step} className="flex items-center z-10">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 text-white font-bold text-2xl shadow-lg">
-                    {step.step}
-                  </div>
-                  {index < processSteps.length - 1 && (
-                    <svg className="w-32 h-6 text-gray-300 dark:text-gray-600 hidden md:block" fill="none" viewBox="0 0 130 24" stroke="currentColor">
-                      <path strokeDasharray="5, 5" strokeWidth="2" d="M0 12 C 43.33 12, 86.67 12, 130 12" />
-                    </svg>
-                  )}
-                </div>
-              ))}
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              {processSteps.map((step) => (
-                <div key={step.step} className="flex flex-col items-center">
-                  <div className="mb-6">
-                     <Image
-                      src={step.imageUrl}
-                      alt={step.title}
-                      width={400}
-                      height={300}
-                      data-ai-hint={step.hint}
-                      className="rounded-lg object-contain h-48 w-auto"
-                    />
-                  </div>
-                  <h3 className="font-headline text-xl font-bold mb-2">{step.title}</h3>
-                  <p className="text-muted-foreground max-w-xs">{step.description}</p>
                 </div>
               ))}
             </div>
