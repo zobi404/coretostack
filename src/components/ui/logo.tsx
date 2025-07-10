@@ -10,9 +10,9 @@ export function Logo({ className }: { className?: string }) {
         alt="CoreToStack Logo" 
         width={32} 
         height={32} 
-        className="h-8 w-8"
+        className="h-20 w-20"
       />
-      <span className="font-headline">CoreToStack</span>
+      {/* <span className="font-headline">CoreToStack</span> */}
     </Link>
   );
 }
