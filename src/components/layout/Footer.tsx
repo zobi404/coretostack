@@ -1,63 +1,87 @@
 import Link from 'next/link';
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
-import { Twitter, Linkedin, Github } from 'lucide-react';
+import { Twitter, Linkedin, Github, Facebook } from 'lucide-react';
+
+const companyLinks = [
+    { href: "/about", label: "About Us" },
+    { href: "/blog", label: "Blog" },
+    { href: "/careers", label: "Careers" },
+    { href: "/contact", label: "Contact Us" },
+];
+
+const serviceLinks = [
+    { href: "/services", label: "Web Development" },
+    { href: "/services", label: "UI/UX Design" },
+    { href: "/services", label: "Mobile App Development" },
+    { href: "/services", label: "Cloud & DevOps" },
+];
+
 
 export default function Footer() {
   return (
-    <footer className="bg-card text-card-foreground border-t">
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1">
-            <Logo />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Innovation by Design.
+    <footer className="bg-primary text-primary-foreground">
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="col-span-1 md:col-span-2 lg:col-span-1">
+            <Logo className="text-primary-foreground" />
+            <p className="mt-4 text-sm text-primary-foreground/80">
+              Innovation by Design. We build stunning web and mobile experiences that captivate your audience and grow your business.
             </p>
-            <div className="flex mt-4 space-x-4">
-              <Button variant="ghost" size="icon" asChild>
+          </div>
+          <div>
+            <h3 className="font-headline font-semibold text-xl">Company</h3>
+            <nav className="mt-4 flex flex-col space-y-3">
+              {companyLinks.map(link => (
+                <Link key={link.href} href={link.href} className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full border border-primary-foreground/80 block"></span>
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div>
+             <h3 className="font-headline font-semibold text-xl">Services</h3>
+            <nav className="mt-4 flex flex-col space-y-3">
+               {serviceLinks.map(link => (
+                <Link key={link.href} href={link.href} className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full border border-primary-foreground/80 block"></span>
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+           <div>
+            <h3 className="font-headline font-semibold text-xl">Let's Connect!</h3>
+            <p className="mt-4 text-sm text-primary-foreground/80">
+                Connect with entrepreneurs, build your network, make great business.
+            </p>
+            <div className="flex mt-4 space-x-2">
+              <Button variant="ghost" size="icon" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="h-5 w-5 text-primary-foreground" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" asChild>
+               <Button variant="ghost" size="icon" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full" asChild>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <Facebook className="h-5 w-5 text-primary-foreground" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                  <Linkedin className="h-5 w-5" />
+                  <Linkedin className="h-5 w-5 text-primary-foreground" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" asChild>
+              <Button variant="ghost" size="icon" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <Github className="h-5 w-5" />
+                  <Github className="h-5 w-5 text-primary-foreground" />
                 </a>
               </Button>
             </div>
           </div>
-          <div>
-            <h3 className="font-headline font-semibold">Company</h3>
-            <nav className="mt-4 flex flex-col space-y-2">
-              <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link>
-              <Link href="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">Blog</Link>
-              <Link href="/careers" className="text-sm text-muted-foreground hover:text-primary transition-colors">Careers</Link>
-            </nav>
-          </div>
-          <div>
-            <h3 className="font-headline font-semibold">Services</h3>
-            <nav className="mt-4 flex flex-col space-y-2">
-              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Web Development</Link>
-              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">UI/UX Design</Link>
-              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mobile App Development</Link>
-            </nav>
-          </div>
-           <div>
-            <h3 className="font-headline font-semibold">Connect</h3>
-            <nav className="mt-4 flex flex-col space-y-2">
-              <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact</Link>
-              <Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors">Admin</Link>
-            </nav>
-          </div>
         </div>
-        <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} CodeToStack Studios. All rights reserved.</p>
+        <div className="mt-12 border-t border-primary-foreground/20 pt-8 text-center text-sm text-primary-foreground/80">
+          <p>&copy; {new Date().getFullYear()} CodeToStack. All rights reserved.</p>
         </div>
       </div>
     </footer>
