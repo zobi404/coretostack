@@ -98,13 +98,13 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full bg-card py-20 md:py-32 text-center">
         <div className="container mx-auto px-4">
-          <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4">
+          <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4 animate-fade-in-up">
             CodeToStack Studios
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in-up animation-delay-300">
             Innovation by Design. We build stunning web and mobile experiences that captivate your audience and grow your business.
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-600">
             <Button asChild size="lg">
               <Link href="/contact">Get Started</Link>
             </Button>
@@ -118,7 +118,7 @@ export default function Home() {
       {/* Our Process Section */}
       <section id="process" className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-12 md:mb-16 animate-fade-in-up">
             <Badge variant="outline" className="text-sm font-semibold tracking-wider">OUR PROCESS</Badge>
             <h2 className="font-headline text-3xl md:text-4xl font-bold mt-2">
               Linear Path to Digital Transformation
@@ -129,7 +129,7 @@ export default function Home() {
             {/* Desktop View: Numbered steps with lines */}
             <div className="hidden md:flex justify-between items-center w-full max-w-4xl mx-auto mb-16">
               {processSteps.map((step, index) => (
-                <div key={step.step} className="flex items-center z-10">
+                <div key={step.step} className="flex items-center z-10 animate-fade-in" style={{ animationDelay: `${index * 200}ms` }}>
                   <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-400 text-white font-bold text-2xl shadow-lg">
                     {step.step}
                   </div>
@@ -144,8 +144,8 @@ export default function Home() {
             
             {/* Content grid */}
             <div className="grid md:grid-cols-3 gap-12 text-center">
-              {processSteps.map((step) => (
-                <div key={step.step} className="flex flex-col items-center">
+              {processSteps.map((step, index) => (
+                <div key={step.step} className="flex flex-col items-center animate-fade-in-up" style={{ animationDelay: `${index * 200}ms` }}>
                    {/* Mobile View: Numbered step */}
                   <div className="flex md:hidden items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-400 text-white font-bold text-2xl shadow-lg mb-4">
                     {step.step}
@@ -172,7 +172,7 @@ export default function Home() {
       {/* Services Section */}
       <section id="services" className="w-full py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our Services</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mt-2">
               From concept to launch, we provide end-to-end solutions.
@@ -180,7 +180,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="bg-background shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Card key={index} className="bg-background shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
                 <CardHeader className="flex flex-row items-start gap-4 space-y-0 text-left">
                   <div className="bg-primary/10 rounded-lg p-3">
                     {service.icon}
@@ -199,14 +199,14 @@ export default function Home() {
       {/* Why Choose Us Section */}
       <section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Why Choose Us</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mt-2">
               We combine expertise and passion to deliver outstanding results.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="animate-slide-in-from-left">
               <div className="space-y-6">
                 {skills.map((skill) => (
                   <div key={skill.name}>
@@ -222,7 +222,7 @@ export default function Home() {
                 Hire Our Developers <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
-            <div className="relative">
+            <div className="relative animate-slide-in-from-right">
               <Image
                 src="https://placehold.co/600x500.png"
                 width={600}
@@ -237,12 +237,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-24">
+          <div className="text-center mt-24 animate-fade-in-up">
             <p className="text-sm font-semibold tracking-widest text-muted-foreground mb-2">• TECHNOLOGIES •</p>
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Technologies We Work On</h2>
             <div className="mt-8 flex justify-center items-center flex-wrap gap-x-8 gap-y-6">
-              {technologies.map(tech => (
-                <div key={tech.name} className="flex flex-col items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+              {technologies.map((tech, index) => (
+                <div key={tech.name} className="flex flex-col items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
                   <Image src={tech.logo} alt={tech.name} width={48} height={48} />
                   {/* <span className="text-sm font-medium">{tech.name}</span> */}
                 </div>
@@ -255,16 +255,16 @@ export default function Home() {
       {/* Portfolio Section */}
       <section id="portfolio" className="w-full py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Featured Work</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mt-2">
               We are proud of our work. Here are some of our recent projects.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {portfolioItems.map((item) => (
+            {portfolioItems.map((item, index) => (
               <Link href="/portfolio" key={item.id}>
-                <Card className="group overflow-hidden bg-background">
+                <Card className="group overflow-hidden bg-background animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
                   <div className="overflow-hidden">
                     <Image
                       src={item.imageUrl}
@@ -283,7 +283,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 animate-fade-in">
             <Button asChild variant="link">
               <Link href="/portfolio">
                 View All Projects <ArrowRight className="ml-2 h-4 w-4" />
@@ -295,7 +295,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="w-full py-20 md:py-32 bg-background">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 text-center animate-fade-in">
           <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">
             Have a project in mind?
           </h2>
