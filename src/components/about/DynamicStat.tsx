@@ -63,7 +63,7 @@ export default function DynamicStat({ stat }: DynamicStatProps) {
 
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="flex flex-col items-center justify-center">
       <p className="text-sm uppercase tracking-widest flex items-center justify-center gap-2">
         <span className="h-1.5 w-1.5 bg-primary-foreground/80 rounded-full"></span>
         {stat.label}

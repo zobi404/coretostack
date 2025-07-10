@@ -116,7 +116,7 @@ export default function AboutPage() {
                 <path fill="currentColor" d="M 1440 300 L 1440 0 C 1200 150 800 200 0 0 L 0 300 Z"></path>
             </svg>
           </div>
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-8 p-12 text-center">
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-8 p-12 text-center items-center justify-center">
             {stats.map((stat) => (
               <DynamicStat key={stat.label} stat={stat} />
             ))}
