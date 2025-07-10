@@ -164,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="w-full py-16 md:py-24 bg-background">
+      <section id="services" className="w-full py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our Services</h2>
@@ -174,7 +174,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Card key={index} className="bg-background shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="flex flex-row items-start gap-4 space-y-0 text-left">
                   <div className="bg-primary/10 rounded-lg p-3">
                     {service.icon}
@@ -191,7 +191,7 @@ export default function Home() {
       </section>
       
       {/* Skills Section */}
-      <section className="w-full py-16 md:py-24 bg-card">
+      <section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -252,7 +252,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {portfolioItems.map((item) => (
               <Link href="/portfolio" key={item.id}>
-                <Card className="group overflow-hidden">
+                <Card className="group overflow-hidden bg-background">
                   <div className="overflow-hidden">
                     <Image
                       src={item.imageUrl}
@@ -282,7 +282,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-20 md:py-32">
+      <section className="w-full py-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">
             Have a project in mind?
