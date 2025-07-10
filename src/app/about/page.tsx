@@ -32,7 +32,39 @@ export default function AboutPage() {
           We are a passionate team of designers, developers, and strategists dedicated to creating digital experiences that are not only beautiful but also effective.
         </p>
       </section>
-      
+
+      <section className="mb-20">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="relative">
+            <div className="aspect-square w-full max-w-lg mx-auto rounded-full overflow-hidden shadow-lg">
+                <Image
+                  src="https://placehold.co/600x600.png"
+                  alt="Team collaboration"
+                  width={600}
+                  height={600}
+                  data-ai-hint="team collaboration"
+                  className="object-cover w-full h-full"
+                />
+            </div>
+            <div className="absolute -bottom-8 left-0 bg-gradient-to-br from-red-500 to-primary text-primary-foreground p-6 rounded-3xl transform -rotate-12 shadow-xl">
+                <h3 className="text-4xl font-bold">25+</h3>
+                <p className="font-semibold uppercase tracking-wider text-sm">Professional Advisors</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+                <p className="text-sm font-bold tracking-widest text-primary">WHO WE ARE</p>
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+            </div>
+            <h2 className="font-headline text-4xl font-bold mb-6">10+ years of experience in providing digital consultation to companies of all sizes</h2>
+            <p className="text-muted-foreground leading-relaxed">
+                CodeToStack is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="grid md:grid-cols-3 gap-8 mb-20 text-center">
         <Card>
           <CardHeader>
