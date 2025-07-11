@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -59,7 +60,7 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     mode: "onChange",
   })
   
-  const { ref: imageUrlRef, ...imageUrlRest } = form.register("imageUrl");
+  const imageUrlRef = form.register("imageUrl");
 
 
   async function onSubmit(data: PortfolioFormValues) {
@@ -152,14 +153,13 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
             <FormField
               control={form.control}
               name="imageUrl"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
                     <Input
                      type="file"
-                     {...imageUrlRest}
-                     ref={imageUrlRef}
+                     {...imageUrlRef}
                      />
                   </FormControl>
                    <FormDescription>

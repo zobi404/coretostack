@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -58,9 +59,8 @@ export function BlogForm({ post }: BlogFormProps) {
     mode: "onChange",
   })
 
-  const { ref: imageUrlRef, ...imageUrlRest } = form.register("imageUrl");
-  const { ref: authorImageRef, ...authorImageRest } = form.register("authorImage");
-
+  const imageUrlRef = form.register("imageUrl");
+  const authorImageRef = form.register("authorImage");
 
   async function onSubmit(data: BlogFormValues) {
     let imageUrl = post?.imageUrl;
@@ -162,14 +162,13 @@ export function BlogForm({ post }: BlogFormProps) {
                <FormField
                 control={form.control}
                 name="authorImage"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Author Image URL</FormLabel>
                     <FormControl>
                       <Input 
                         type="file"
-                        {...authorImageRest}
-                        ref={authorImageRef}
+                        {...authorImageRef}
                       />
                     </FormControl>
                     <FormMessage />
@@ -197,14 +196,13 @@ export function BlogForm({ post }: BlogFormProps) {
                 <FormField
                 control={form.control}
                 name="imageUrl"
-                render={({ field }) => (
+                render={() => (
                     <FormItem>
                     <FormLabel>Post Image URL</FormLabel>
                     <FormControl>
                         <Input
                           type="file"
-                          {...imageUrlRest}
-                          ref={imageUrlRef}
+                          {...imageUrlRef}
                         />
                     </FormControl>
                     <FormMessage />
