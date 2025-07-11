@@ -9,12 +9,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Disable Next.js body parsing to allow formidable to handle it
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// IMPORTANT: The `config` object is not used in App Router.
+// We need to handle the stream manually.
 
 export async function POST(req: Request) {
   try {
@@ -22,6 +18,8 @@ export async function POST(req: Request) {
       const form = new IncomingForm({
         multiples: false, // Only allow single file uploads
       });
+      // formidable's parse method expects a Node.js IncomingMessage, 
+      // but we have a Web API Request. We cast to `any` to make it work.
       form.parse(req as any, (err, fields, files) => {
         if (err) {
           return reject(err);
@@ -36,8 +34,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No image uploaded" }, { status: 400 });
     }
 
+    // Use the unsigned preset 'coretostack' for the upload
     const result = await cloudinary.uploader.upload(file.filepath, {
-      upload_preset: "coretostack", // your unsigned preset
+      upload_preset: "coretostack",
     });
     
     return NextResponse.json({ secure_url: result.secure_url }, { status: 200 });
