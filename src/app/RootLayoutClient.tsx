@@ -4,8 +4,10 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-import React from 'react';
+import React, { Suspense } from 'react';
+import dynamic from "next/dynamic";
+
+const ProgressBar = dynamic(() => import('next-nprogress-bar').then(m => m.AppProgressBar), { ssr: false });
 
 export default function RootLayoutClient({
   children,
@@ -18,14 +20,14 @@ export default function RootLayoutClient({
 
   return (
     <div className="flex flex-col min-h-screen">
-       <React.Suspense fallback={null}>
+       <Suspense fallback={null}>
         <ProgressBar
           height="3px"
           color="hsl(var(--primary))"
           options={{ showSpinner: false }}
           shallowRouting
         />
-      </React.Suspense>
+      </Suspense>
       {!isAdminPage && !isLoginPage && <Header />}
       <main className="flex-grow">{children}</main>
       {!isAdminPage && !isLoginPage && <Footer />}
