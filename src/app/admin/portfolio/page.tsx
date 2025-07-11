@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const portfolioItems = [
   { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/100x100.png", hint: "corporate office" },
@@ -20,9 +21,11 @@ export default function AdminPortfolioPage() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">Portfolio Projects</h1>
           <p className="text-muted-foreground">Manage your showcased work.</p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add New Project
+        <Button asChild>
+          <Link href="/admin/portfolio/new">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add New Project
+          </Link>
         </Button>
       </div>
       

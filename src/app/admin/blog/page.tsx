@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { mockPosts } from "@/lib/mock-data";
+import Link from "next/link";
 
 export default function AdminBlogPage() {
   return (
@@ -14,9 +15,11 @@ export default function AdminBlogPage() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">Blog Posts</h1>
           <p className="text-muted-foreground">Manage your articles and content.</p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add New Post
+        <Button asChild>
+          <Link href="/admin/blog/new">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add New Post
+          </Link>
         </Button>
       </div>
       

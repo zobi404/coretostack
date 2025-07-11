@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
+import Link from "next/link";
 
 const pricingPlans = [
   { title: "Starter", price: "$999", recommended: false },
@@ -19,9 +20,11 @@ export default function AdminPricingPage() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">Pricing Plans</h1>
           <p className="text-muted-foreground">Manage your service pricing tiers.</p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add New Plan
+        <Button asChild>
+          <Link href="/admin/pricing/new">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add New Plan
+          </Link>
         </Button>
       </div>
       
