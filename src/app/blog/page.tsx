@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { BlogList } from "@/components/blog/BlogList";
 import { BlogListSkeleton } from "@/components/blog/BlogList";
 import { Suspense } from "react";

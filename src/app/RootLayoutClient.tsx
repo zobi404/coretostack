@@ -1,5 +1,6 @@
 
 "use client";
+export const dynamic = "force-dynamic";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Header from "@/components/layout/Header";
@@ -17,9 +18,7 @@ function NavigationProgressBar() {
     setIsAnimating(false);
   }, [pathname, searchParams]);
   
-  // This is a simplified simulation of a progress bar.
-  // In a real app, you might use a more sophisticated library
-  // or listen to router events if they were available in App Router.
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isAnimating) {

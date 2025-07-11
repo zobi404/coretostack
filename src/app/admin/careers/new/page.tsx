@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { JobForm } from '@/components/admin/JobForm';
 
 export default function NewJobOpeningPage() {

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,6 +7,7 @@ import RootLayoutClient from "./RootLayoutClient";
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import { cn } from "@/lib/utils";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import React, { Suspense, useEffect, useState } from 'react';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -35,7 +37,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn("font-body antialiased", ptSans.variable, playfairDisplay.variable)}>
         <GoogleAnalytics />
-        <RootLayoutClient>{children}</RootLayoutClient>
+        <Suspense fallback={null}>
+          <RootLayoutClient>{children}</RootLayoutClient>
+        </Suspense>
         <Toaster />
       </body>
     </html>
