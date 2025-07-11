@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
+import { Sidebar, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import AdminSidebarContent from '@/components/layout/AdminSidebarContent';
 import AdminHeader from '@/components/layout/AdminHeader';
 import { Toaster } from '@/components/ui/toaster';
@@ -43,17 +43,17 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
-        <Sidebar>
-          <AdminSidebarContent />
-        </Sidebar>
-        <div className="flex-1 flex flex-col">
-          <AdminHeader />
-          <main className="flex-1 p-4 md:p-6">
-            {children}
-          </main>
+        <div className="flex min-h-screen">
+            <Sidebar>
+                <AdminSidebarContent />
+            </Sidebar>
+            <div className="flex flex-1 flex-col">
+                <AdminHeader />
+                <main className="flex-1 p-4 md:p-6 lg:p-8">
+                    {children}
+                </main>
+            </div>
         </div>
-      </div>
       <Toaster />
     </SidebarProvider>
   );
