@@ -134,15 +134,6 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
         });
         return;
       }
-      
-      if (!project && finalCarouselUrls.length === 0) {
-        toast({
-          variant: "destructive",
-          title: "Carousel Images Required",
-          description: "Please upload at least one carousel image.",
-        });
-        return;
-      }
 
       const projectData = { 
           ...data, 
@@ -225,7 +216,7 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                     name="projectUrl"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Project URL</FormLabel>
+                        <FormLabel>Project URL (Optional)</FormLabel>
                         <FormControl>
                             <Input placeholder="https://example.com" {...field} />
                         </FormControl>
@@ -282,7 +273,7 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
               name="carouselImageUrls"
               render={() => (
                 <FormItem>
-                  <FormLabel>Carousel Images</FormLabel>
+                  <FormLabel>Carousel Images (Optional)</FormLabel>
                   <FormControl>
                     <Input type="file" accept="image/*" multiple {...carouselImagesRef} />
                   </FormControl>

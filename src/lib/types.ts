@@ -24,7 +24,7 @@ export interface PortfolioItem {
   id: string;
   title: string;
   category: string;
-  projectUrl: string;
+  projectUrl?: string;
   bannerImageUrl: string;
   bannerImageHint: string;
   carouselImageUrls: string[];

@@ -66,29 +66,31 @@ export default async function PortfolioDetailPage({ params }: { params: { id: st
         />
       </div>
 
-       <div className="max-w-6xl mx-auto">
-        <h2 className="font-headline text-3xl font-bold mb-8 text-center">Project Gallery</h2>
-        <Carousel className="w-full" opts={{ loop: true }}>
-            <CarouselContent>
-            {item.carouselImageUrls.map((url, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-1">
-                    <div className="aspect-square relative overflow-hidden rounded-lg">
-                        <Image
-                            src={url}
-                            alt={`${item.title} gallery image ${index + 1}`}
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                </div>
-                </CarouselItem>
-            ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
-       </div>
+       {item.carouselImageUrls && item.carouselImageUrls.length > 0 && (
+         <div className="max-w-6xl mx-auto">
+          <h2 className="font-headline text-3xl font-bold mb-8 text-center">Project Gallery</h2>
+          <Carousel className="w-full" opts={{ loop: true }}>
+              <CarouselContent>
+              {item.carouselImageUrls.map((url, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1">
+                      <div className="aspect-square relative overflow-hidden rounded-lg">
+                          <Image
+                              src={url}
+                              alt={`${item.title} gallery image ${index + 1}`}
+                              fill
+                              className="object-cover"
+                          />
+                      </div>
+                  </div>
+                  </CarouselItem>
+              ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+          </Carousel>
+         </div>
+       )}
     </div>
   );
 }
