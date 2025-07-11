@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight, Code, PenTool, Smartphone, MessageSquare, Monitor } from "lucide-react";
 import TypedHeading from "@/components/home/TypedHeading";
+import { getPortfolioItems } from "@/lib/services/portfolio-service";
 
 const LogoCarousel = dynamic(() => import('@/components/ui/logo-carousel').then(m => m.LogoCarousel));
 
@@ -36,23 +37,6 @@ const services = [
   }
 ];
 
-const portfolioItems = [
-  {
-    id: 1,
-    title: "Project Alpha",
-    category: "Web App",
-    imageUrl: "https://placehold.co/600x400.png",
-    hint: "abstract gradients",
-  },
-  {
-    id: 2,
-    title: "Project Beta",
-    category: "Mobile Design",
-    imageUrl: "https://placehold.co/600x400.png",
-    hint: "modern cityscape",
-  },
-];
-
 const processSteps = [
   {
     step: "01",
@@ -71,7 +55,10 @@ const processSteps = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const allPortfolioItems = await getPortfolioItems();
+  const portfolioItems = allPortfolioItems.slice(0, 2);
+
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
