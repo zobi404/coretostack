@@ -78,7 +78,9 @@ export default function AdminDashboardPage() {
               {recentPosts.map(post => (
                 <div key={post.slug} className="flex items-start gap-4">
                   <div className="flex-grow">
-                    <p className="font-semibold">{post.title}</p>
+                     <Link href={`/blog/${post.slug}`} className="font-semibold hover:underline" target="_blank">
+                      {post.title}
+                    </Link>
                     <p className="text-sm text-muted-foreground">{post.author} &middot; {post.date}</p>
                   </div>
                 </div>
