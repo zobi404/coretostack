@@ -12,25 +12,27 @@ cloudinary.config({
 
 
 export async function uploadImage(formData: FormData) {
-
     const file = formData.get('image') as File;
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
+    const buffer = Buffer.from(arrayBuffer);
 
     const results = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream({
             tags: ['coretostack-uploads'],
         }, function (error, result) {
             if (error) {
+                console.error("Cloudinary Error:", error);
                 reject(error);
                 return;
             }
             resolve(result);
         })
-            .end(buffer);
+        .end(buffer);
     });
 
-    revalidatePath("/")
-    return results
-
+    revalidatePath("/");
+    revalidatePath("/admin/blog");
+    revalidatePath("/admin/portfolio");
+    
+    return results;
 }
