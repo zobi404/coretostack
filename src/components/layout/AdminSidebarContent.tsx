@@ -19,6 +19,7 @@ import {
   Settings,
   Home,
   Mailbox,
+  Users,
 } from 'lucide-react';
 import { Logo } from '../ui/logo';
 import { Button } from '../ui/button';
@@ -29,6 +30,7 @@ const adminNavLinks = [
   { href: '/admin/blog', label: 'Blog', icon: Pencil },
   { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
   { href: '/admin/pricing', label: 'Pricing', icon: DollarSign },
+  { href: '/admin/careers', label: 'Careers', icon: Users },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 

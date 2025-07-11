@@ -28,7 +28,7 @@ export interface PortfolioItem {
   projectUrl?: string;
   bannerImageUrl: string;
   bannerImageHint: string;
-  carouselImageUrls: string[];
+  carouselImageUrls?: string[];
   description: string;
 }
 
@@ -48,4 +48,12 @@ export interface Inquiry {
   subject: string;
   message: string;
   createdAt: string;
+}
+
+export interface JobOpening {
+  id: string;
+  title: string;
+  location: string;
+  type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
+  description: string;
 }
