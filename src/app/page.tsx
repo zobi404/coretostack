@@ -187,8 +187,8 @@ export default async function Home() {
                     <Image
                       src={item.imageUrl}
                       alt={item.title}
-                      width={600}
-                      height={400}
+                      width={500}
+                      height={300}
                       data-ai-hint={item.hint}
                       className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                     />
