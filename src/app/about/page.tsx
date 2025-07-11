@@ -5,10 +5,10 @@ import { Award, Users, Target } from "lucide-react";
 import DynamicStat from "@/components/about/DynamicStat";
 
 const stats = [
-    { label: "Active Clients", value: 10, suffix: "+" },
+    { label: "Active Clients", value: 2, suffix: "+" },
     { label: "Projects Done", value: 30, suffix: "+" },
-    { label: "Team Members", value: 30, suffix: "+" },
-    { label: "Glorious Years", value: 10, suffix: "+" },
+    { label: "Team Members", value: 5, suffix: "+" },
+    { label: "Glorious Years", value: 3, suffix: "+" },
 ]
 
 export default function AboutPage() {
@@ -36,7 +36,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our story is one of passion, innovation, and a relentless pursuit of excellence.</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-                PixelGlint Studios is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
+                CoreToStack is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
             </p>
           </div>
         </div>
