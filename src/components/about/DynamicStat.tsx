@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 
 interface Stat {
   label: string;
@@ -12,7 +12,7 @@ interface DynamicStatProps {
   stat: Stat;
 }
 
-export default function DynamicStat({ stat }: DynamicStatProps) {
+function DynamicStat({ stat }: DynamicStatProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -29,13 +29,14 @@ export default function DynamicStat({ stat }: DynamicStatProps) {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -75,3 +76,5 @@ export default function DynamicStat({ stat }: DynamicStatProps) {
     </div>
   );
 }
+
+export default memo(DynamicStat);

@@ -1,6 +1,3 @@
-
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { getPortfolioItems } from "@/lib/services/portfolio-service";
 import PortfolioGrid from "./PortfolioGrid";
 

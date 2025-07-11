@@ -6,7 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { getPost, getPosts } from '@/lib/services/blog-service';
 import { mockComments } from '@/lib/mock-data';
 
-const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { ssr: false });
+const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { 
+  ssr: false,
+  loading: () => <p>Loading comments...</p> 
+});
 
 export const revalidate = 60; // Revalidate this page every 60 seconds
 
@@ -51,6 +54,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             fill 
             data-ai-hint={post.imageHint}
             className="object-cover" 
+            priority
         />
       </div>
 
