@@ -40,3 +40,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
     }
 }
+
