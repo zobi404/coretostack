@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebase";
 import { useState } from "react";
 
@@ -29,10 +30,16 @@ export function LoginForm() {
       router.push("/admin");
     } catch (error) {
       console.error("Firebase Auth Error:", error);
+      let description = "An unexpected error occurred. Please try again.";
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            description = "Invalid email or password. Please ensure the user exists in your Firebase project.";
+        }
+      }
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "Invalid email or password.",
+        description: description,
       });
     } finally {
       setIsLoading(false);
