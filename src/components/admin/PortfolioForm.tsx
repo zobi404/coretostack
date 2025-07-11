@@ -27,7 +27,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { PortfolioItem } from "@/lib/types"
 import { addPortfolioItem, updatePortfolioItem } from "@/lib/services/portfolio-service"
 import { useRouter } from "next/navigation"
-import { uploadImage } from "@/lib/actions/cloudinary-actions"
 
 const portfolioFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
@@ -62,6 +61,32 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   
   const imageUrlRef = form.register("imageUrl");
 
+  async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image.');
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("API Upload Error:", error);
+        toast({
+          variant: "destructive",
+          title: "Image Upload Failed",
+          description: "Could not upload image via API.",
+        });
+        return null;
+      }
+  }
+
 
   async function onSubmit(data: PortfolioFormValues) {
     let finalImageUrl = project?.imageUrl;
@@ -70,13 +95,15 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     try {
 
         if (imageFile && imageFile.size > 0) {
-          const formData = new FormData();
-          formData.append('image', imageFile)
-          const res = await uploadImage(formData) as { secure_url: string };
-          finalImageUrl = res.secure_url
+          const res = await uploadImageViaApi(imageFile);
+          if (res) {
+            finalImageUrl = res.secure_url;
+          } else {
+             return; // Stop submission if upload fails
+          }
         }
 
-        if (!finalImageUrl) {
+        if (!project && !finalImageUrl) {
           toast({
             variant: "destructive",
             title: "Image Error",

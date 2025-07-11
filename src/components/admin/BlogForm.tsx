@@ -21,7 +21,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { Post } from "@/lib/types"
 import { addPost, updatePost } from "@/lib/services/blog-service"
 import { useRouter } from "next/navigation"
-import { uploadImage } from "@/lib/actions/cloudinary-actions"
 
 const blogFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
@@ -62,6 +61,33 @@ export function BlogForm({ post }: BlogFormProps) {
   const imageUrlRef = form.register("imageUrl");
   const authorImageRef = form.register("authorImage");
 
+  async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image.');
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("API Upload Error:", error);
+        toast({
+          variant: "destructive",
+          title: "Image Upload Failed",
+          description: "Could not upload image via API.",
+        });
+        return null;
+      }
+  }
+
+
   async function onSubmit(data: BlogFormValues) {
     let finalImageUrl = post?.imageUrl;
     let finalAuthorImageUrl = post?.authorImage;
@@ -71,24 +97,28 @@ export function BlogForm({ post }: BlogFormProps) {
 
     try {
         if (postImageFile && postImageFile.size > 0) {
-          const postImageFormData = new FormData();
-          postImageFormData.append('image', postImageFile)
-          const postImageRes = await uploadImage(postImageFormData) as { secure_url: string };
-          finalImageUrl = postImageRes.secure_url;
+          const postImageRes = await uploadImageViaApi(postImageFile);
+          if (postImageRes) {
+            finalImageUrl = postImageRes.secure_url;
+          } else {
+             return; // Stop submission if upload fails
+          }
         }
 
         if (authorImageFile && authorImageFile.size > 0) {
-          const authorAvatarFormData = new FormData();
-          authorAvatarFormData.append('image', authorImageFile)
-          const authorAvatarRes = await uploadImage(authorAvatarFormData) as { secure_url: string };
-          finalAuthorImageUrl = authorAvatarRes.secure_url;
+          const authorAvatarRes = await uploadImageViaApi(authorImageFile);
+          if (authorAvatarRes) {
+            finalAuthorImageUrl = authorAvatarRes.secure_url;
+          } else {
+             return; // Stop submission if upload fails
+          }
         }
 
-        if (!finalImageUrl || !finalAuthorImageUrl) {
+        if (!post && (!finalImageUrl || !finalAuthorImageUrl)) {
           toast({
             variant: "destructive",
             title: "Image Error",
-            description: "A post image and author image are required.",
+            description: "A post image and author image are required for new posts.",
           });
           return;
         }
