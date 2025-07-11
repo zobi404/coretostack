@@ -9,21 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
-
-interface PricingPlan {
-  title: string;
-  price: string;
-  recommended: boolean;
-}
-
-const initialPricingPlans: PricingPlan[] = [
-  { title: "Starter", price: "$999", recommended: false },
-  { title: "Business", price: "$2,499", recommended: true },
-  { title: "Enterprise", price: "Custom", recommended: false },
-];
+import { mockPricingPlans } from "@/lib/mock-data";
+import type { PricingPlan } from "@/lib/types";
 
 export default function AdminPricingPage() {
-  const [plans, setPlans] = useState<PricingPlan[]>(initialPricingPlans);
+  const [plans, setPlans] = useState<PricingPlan[]>(mockPricingPlans);
   const [planToDelete, setPlanToDelete] = useState<PricingPlan | null>(null);
 
   const handleDelete = () => {
@@ -77,7 +67,9 @@ export default function AdminPricingPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                           <DropdownMenuItem asChild>
+                              <Link href={`/admin/pricing/${encodeURIComponent(plan.title)}/edit`}>Edit</Link>
+                           </DropdownMenuItem>
                           <AlertDialogTrigger asChild>
                             <DropdownMenuItem
                               className="text-destructive"

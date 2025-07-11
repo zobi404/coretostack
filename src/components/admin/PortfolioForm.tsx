@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
+import type { PortfolioItem } from "@/lib/types"
 
 const portfolioFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
@@ -32,15 +33,21 @@ const portfolioFormSchema = z.object({
 
 type PortfolioFormValues = z.infer<typeof portfolioFormSchema>
 
-const defaultValues: Partial<PortfolioFormValues> = {
-  title: "",
-  imageUrl: "",
+interface PortfolioFormProps {
+    project?: PortfolioItem;
 }
 
 const categories = ["Web Development", "UI/UX Design", "Mobile App", "Branding"];
 
-export function PortfolioForm() {
+export function PortfolioForm({ project }: PortfolioFormProps) {
   const { toast } = useToast()
+  
+  const defaultValues: Partial<PortfolioFormValues> = {
+    title: project?.title || "",
+    category: project?.category || undefined,
+    imageUrl: project?.imageUrl || "",
+  }
+  
   const form = useForm<PortfolioFormValues>({
     resolver: zodResolver(portfolioFormSchema),
     defaultValues,
@@ -49,8 +56,8 @@ export function PortfolioForm() {
 
   function onSubmit(data: PortfolioFormValues) {
     toast({
-      title: "Project Submitted!",
-      description: "Your new portfolio project has been saved.",
+      title: `Project ${project ? 'Updated' : 'Submitted'}!`,
+      description: `Your portfolio project has been ${project ? 'updated' : 'saved'}.`,
     })
     console.log(data)
   }
@@ -111,7 +118,7 @@ export function PortfolioForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Add Project</Button>
+            <Button type="submit">{project ? 'Update Project' : 'Add Project'}</Button>
           </form>
         </Form>
       </CardContent>

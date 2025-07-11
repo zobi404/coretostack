@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
+import type { PricingPlan } from "@/lib/types"
 
 const pricingFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -29,16 +30,21 @@ const pricingFormSchema = z.object({
 
 type PricingFormValues = z.infer<typeof pricingFormSchema>
 
-const defaultValues: Partial<PricingFormValues> = {
-  title: "",
-  price: "",
-  description: "",
-  features: "",
-  isRecommended: false,
+interface PricingFormProps {
+  plan?: PricingPlan;
 }
 
-export function PricingForm() {
+export function PricingForm({ plan }: PricingFormProps) {
   const { toast } = useToast()
+  
+  const defaultValues: Partial<PricingFormValues> = {
+    title: plan?.title || "",
+    price: plan?.price || "",
+    description: plan?.description || "",
+    features: plan?.features || "",
+    isRecommended: plan?.recommended || false,
+  }
+
   const form = useForm<PricingFormValues>({
     resolver: zodResolver(pricingFormSchema),
     defaultValues,
@@ -47,8 +53,8 @@ export function PricingForm() {
 
   function onSubmit(data: PricingFormValues) {
     toast({
-      title: "Pricing Plan Submitted!",
-      description: "Your new pricing plan has been saved.",
+      title: `Pricing Plan ${plan ? 'Updated' : 'Submitted'}!`,
+      description: `Your pricing plan has been ${plan ? 'updated' : 'saved'}.`,
     })
     console.log(data)
   }
@@ -141,7 +147,7 @@ export function PricingForm() {
                   </FormItem>
                 )}
               />
-            <Button type="submit">Create Plan</Button>
+            <Button type="submit">{plan ? 'Update Plan' : 'Create Plan'}</Button>
           </form>
         </Form>
       </CardContent>

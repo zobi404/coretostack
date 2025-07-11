@@ -1,4 +1,4 @@
-import type { Post, Comment } from './types';
+import type { Post, Comment, PortfolioItem, PricingPlan } from './types';
 
 export const mockPosts: Post[] = [
   {
@@ -50,4 +50,16 @@ export const mockPosts: Post[] = [
 export const mockComments: Comment[] = [
     { id: '1', author: 'Alice', authorImage: 'https://placehold.co/100x100.png', timestamp: '2 hours ago', text: 'Great article! Really clarified some concepts for me.' },
     { id: '2', author: 'Bob', authorImage: 'https://placehold.co/100x100.png', timestamp: '1 hour ago', text: 'I love the focus on user experience. It\'s so often overlooked.' },
+];
+
+export const mockPortfolioItems: PortfolioItem[] = [
+  { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/100x100.png", hint: "corporate office" },
+  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/100x100.png", hint: "mobile app" },
+  { id: 3, title: "EcoGoods Branding", category: "Branding", imageUrl: "https://placehold.co/100x100.png", hint: "nature minimalist" },
+];
+
+export const mockPricingPlans: PricingPlan[] = [
+  { title: "Starter", price: "$999", description: "For small startups", features: "Landing Page Website,Basic UI/UX Design,Contact Form Integration,3-Month Support", recommended: false },
+  { title: "Business", price: "$2,499", description: "For growing businesses", features: "5-Page Website,Custom UI/UX Design,CMS Integration,Basic SEO,6-Month Support", recommended: true },
+  { title: "Enterprise", price: "Custom", description: "For large organizations", features: "Custom Web Application,Advanced E-commerce,Mobile App Development,Dedicated Support", recommended: false },
 ];

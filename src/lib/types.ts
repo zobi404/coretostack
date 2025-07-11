@@ -18,3 +18,19 @@ export interface Comment {
   timestamp: string;
   text: string;
 }
+
+export interface PortfolioItem {
+  id: number;
+  title: string;
+  category: string;
+  imageUrl: string;
+  hint: string;
+}
+
+export interface PricingPlan {
+  title: string;
+  price: string;
+  description: string;
+  features: string;
+  recommended: boolean;
+}

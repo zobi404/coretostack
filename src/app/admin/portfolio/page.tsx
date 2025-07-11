@@ -10,23 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
-
-interface PortfolioItem {
-  id: number;
-  title: string;
-  category: string;
-  imageUrl: string;
-  hint: string;
-}
-
-const initialPortfolioItems: PortfolioItem[] = [
-  { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/100x100.png", hint: "corporate office" },
-  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/100x100.png", hint: "mobile app" },
-  { id: 3, title: "EcoGoods Branding", category: "Branding", imageUrl: "https://placehold.co/100x100.png", hint: "nature minimalist" },
-];
+import { mockPortfolioItems } from "@/lib/mock-data";
+import type { PortfolioItem } from "@/lib/types";
 
 export default function AdminPortfolioPage() {
-  const [items, setItems] = useState<PortfolioItem[]>(initialPortfolioItems);
+  const [items, setItems] = useState<PortfolioItem[]>(mockPortfolioItems);
   const [itemToDelete, setItemToDelete] = useState<PortfolioItem | null>(null);
 
   const handleDelete = () => {
@@ -87,7 +75,9 @@ export default function AdminPortfolioPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href={`/admin/portfolio/${item.id}/edit`}>Edit</Link>
+                          </DropdownMenuItem>
                           <AlertDialogTrigger asChild>
                             <DropdownMenuItem
                               className="text-destructive"
