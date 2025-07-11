@@ -14,8 +14,8 @@ const portfolioItems = [
 ];
 
 export default function AdminDashboardPage() {
-  const recentPosts = mockPosts.slice(0, 2);
-  const recentProjects = portfolioItems.slice(0, 2);
+  const recentPosts = mockPosts.slice(0, 3);
+  const recentProjects = portfolioItems.slice(0, 3);
 
   return (
     <div>
@@ -64,21 +64,23 @@ export default function AdminDashboardPage() {
       </div>
       <div className="mt-8 grid gap-8 md:grid-cols-2">
         <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Recent Blog Posts</CardTitle>
-            <CardDescription>A quick look at your latest articles.</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="font-headline">Recent Blog Posts</CardTitle>
+              <CardDescription>A quick look at your latest articles.</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/admin/blog">Manage Blog</Link>
+            </Button>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentPosts.map(post => (
-                <div key={post.slug} className="flex items-center gap-4">
+                <div key={post.slug} className="flex items-start gap-4">
                   <div className="flex-grow">
                     <p className="font-semibold">{post.title}</p>
                     <p className="text-sm text-muted-foreground">{post.author} &middot; {post.date}</p>
                   </div>
-                  <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/blog`}>Manage</Link>
-                  </Button>
                 </div>
               ))}
             </div>
@@ -86,9 +88,14 @@ export default function AdminDashboardPage() {
         </Card>
         
         <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Recent Portfolio Projects</CardTitle>
-            <CardDescription>Your latest showcased work.</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="font-headline">Recent Portfolio Projects</CardTitle>
+              <CardDescription>Your latest showcased work.</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/admin/portfolio">Manage Portfolio</Link>
+            </Button>
           </CardHeader>
           <CardContent>
              <div className="space-y-4">
@@ -106,9 +113,6 @@ export default function AdminDashboardPage() {
                     <p className="font-semibold">{item.title}</p>
                     <div className="text-sm text-muted-foreground"><Badge variant="outline" className="text-xs">{item.category}</Badge></div>
                   </div>
-                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/portfolio`}>Manage</Link>
-                  </Button>
                 </div>
               ))}
             </div>
