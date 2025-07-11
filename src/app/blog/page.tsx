@@ -1,4 +1,6 @@
 import { BlogList } from "@/components/blog/BlogList";
+import { BlogListSkeleton } from "@/components/blog/BlogList";
+import { Suspense } from "react";
 
 export default function BlogPage() {
   return (
@@ -9,7 +11,9 @@ export default function BlogPage() {
           Insights, tutorials, and stories from the world of design and development.
         </p>
       </section>
-      <BlogList />
+      <Suspense fallback={<BlogListSkeleton />}>
+        <BlogList />
+      </Suspense>
     </div>
   );
 }

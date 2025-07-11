@@ -106,7 +106,7 @@ function JobCardSkeleton() {
 
 export default function CareersPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="container mx-auto px-4 py-16 md:py-24"><div className="space-y-8 max-w-4xl mx-auto">{[...Array(3)].map((_, index) => <JobCardSkeleton key={index} />)}</div></div>}>
             <CareersPageContent />
         </Suspense>
     )

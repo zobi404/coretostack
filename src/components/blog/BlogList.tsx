@@ -74,7 +74,7 @@ export function BlogList() {
     );
 }
 
-function BlogListSkeleton() {
+export function BlogListSkeleton() {
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {[...Array(3)].map((_, i) => (

@@ -61,9 +61,9 @@ export function BlogForm({ post }: BlogFormProps) {
   const imageUrlRef = form.register("imageUrl");
   const authorImageRef = form.register("authorImage");
 
-  async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
+  async function uploadImageViaApi(imageFile: File): Promise<{ urls: string[] } | null> {
       const formData = new FormData();
-      formData.append('image', imageFile);
+      formData.append('images', imageFile);
 
       try {
         const response = await fetch('/api/upload', {
@@ -101,8 +101,8 @@ export function BlogForm({ post }: BlogFormProps) {
     try {
         if (postImageFile && postImageFile.size > 0) {
           const postImageRes = await uploadImageViaApi(postImageFile);
-          if (postImageRes) {
-            finalImageUrl = postImageRes.secure_url;
+          if (postImageRes?.urls?.[0]) {
+            finalImageUrl = postImageRes.urls[0];
           } else {
              return; // Stop submission if upload fails
           }
@@ -110,8 +110,8 @@ export function BlogForm({ post }: BlogFormProps) {
 
         if (authorImageFile && authorImageFile.size > 0) {
           const authorAvatarRes = await uploadImageViaApi(authorImageFile);
-          if (authorAvatarRes) {
-            finalAuthorImageUrl = authorAvatarRes.secure_url;
+          if (authorAvatarRes?.urls?.[0]) {
+            finalAuthorImageUrl = authorAvatarRes.urls[0];
           } else {
              return; // Stop submission if upload fails
           }
@@ -254,7 +254,7 @@ export function BlogForm({ post }: BlogFormProps) {
                         <Input placeholder="minimalist workspace" {...field} />
                     </FormControl>
                     <FormDescription>
-                        One or two keywords for AI image generation.
+                       <span>One or two keywords for AI image generation.</span>
                     </FormDescription>
                     <FormMessage />
                     </FormItem>
