@@ -60,7 +60,6 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   
   const imageUrlRef = form.register("imageUrl");
 
-  // Unsigned upload to Cloudinary (coretostack preset)
   async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -71,16 +70,16 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
         body: formData,
       });
 
+      const result = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Upload failed");
+        throw new Error(result.error || "Upload failed");
       }
 
-      const result = await response.json();
       return result;
     } catch (error) {
       console.error("Image Upload Error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Could not upload image via API.";
+      const errorMessage = error instanceof Error ? error.message : "Could not upload image.";
       toast({
         variant: "destructive",
         title: "Image Upload Failed",

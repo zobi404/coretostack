@@ -71,15 +71,16 @@ export function BlogForm({ post }: BlogFormProps) {
           body: formData,
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-           const errorData = await response.json();
-           throw new Error(errorData.error || 'Failed to upload image.');
+           throw new Error(result.error || 'Failed to upload image.');
         }
 
-        return await response.json();
+        return result;
       } catch (error) {
         console.error("API Upload Error:", error);
-        const errorMessage = error instanceof Error ? error.message : "Could not upload image via API.";
+        const errorMessage = error instanceof Error ? error.message : "Could not upload image.";
         toast({
           variant: "destructive",
           title: "Image Upload Failed",
