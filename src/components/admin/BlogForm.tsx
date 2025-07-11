@@ -58,6 +58,10 @@ export function BlogForm({ post }: BlogFormProps) {
     mode: "onChange",
   })
 
+  const { ref: imageUrlRef, ...imageUrlRest } = form.register("imageUrl");
+  const { ref: authorImageRef, ...authorImageRest } = form.register("authorImage");
+
+
   async function onSubmit(data: BlogFormValues) {
     let imageUrl = post?.imageUrl;
     let authorImage = post?.authorImage;
@@ -158,16 +162,14 @@ export function BlogForm({ post }: BlogFormProps) {
                <FormField
                 control={form.control}
                 name="authorImage"
-                render={({ field: { onChange }, ...field }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Author Image URL</FormLabel>
                     <FormControl>
                       <Input 
-                      type="file"
-                      {...field}
-                      onChange={(e) => {
-                        onChange(e.target.files)
-                      }}
+                        type="file"
+                        {...authorImageRest}
+                        ref={authorImageRef}
                       />
                     </FormControl>
                     <FormMessage />
@@ -195,16 +197,14 @@ export function BlogForm({ post }: BlogFormProps) {
                 <FormField
                 control={form.control}
                 name="imageUrl"
-                render={({ field: { onChange }, ...field}) => (
+                render={({ field }) => (
                     <FormItem>
                     <FormLabel>Post Image URL</FormLabel>
                     <FormControl>
                         <Input
-                        type="file"
-                        {...field} 
-                        onChange={(e) => {
-                          onChange(e.target.files)
-                        }}
+                          type="file"
+                          {...imageUrlRest}
+                          ref={imageUrlRef}
                         />
                     </FormControl>
                     <FormMessage />

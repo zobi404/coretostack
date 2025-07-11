@@ -58,6 +58,9 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     defaultValues,
     mode: "onChange",
   })
+  
+  const { ref: imageUrlRef, ...imageUrlRest } = form.register("imageUrl");
+
 
   async function onSubmit(data: PortfolioFormValues) {
     let imageUrl = project?.imageUrl;
@@ -149,16 +152,14 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
             <FormField
               control={form.control}
               name="imageUrl"
-              render={({ field: { onChange }, ...field }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
                     <Input
                      type="file"
-                     {...field} 
-                     onChange={(e) => {
-                       onChange(e.target.files)
-                     }}
+                     {...imageUrlRest}
+                     ref={imageUrlRef}
                      />
                   </FormControl>
                    <FormDescription>
