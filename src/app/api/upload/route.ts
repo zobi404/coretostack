@@ -1,23 +1,8 @@
+
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
-import { Readable } from 'stream';
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Helper to convert a buffer to a stream
-function bufferToStream(buffer: Buffer) {
-    const readable = new Readable({
-        read() {
-            this.push(buffer);
-            this.push(null);
-        },
-    });
-    return readable;
-}
+import { writeFile } from "fs/promises";
+import { join } from "path";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: Request) {
   try {
@@ -28,30 +13,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
     }
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Use a promise to handle the upload stream
-    const result: any = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-            {
-                upload_preset: "coretostack",
-            },
-            (error, result) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(result);
-            }
-        );
-        bufferToStream(buffer).pipe(uploadStream);
-    });
+    // Create a unique filename
+    const extension = file.name.split('.').pop();
+    const filename = `${uuidv4()}.${extension}`;
+    
+    // Define the path to save the file
+    const publicDir = join(process.cwd(), 'public');
+    const uploadsDir = join(publicDir, 'uploads');
+    const path = join(uploadsDir, filename);
+    
+    // Write the file to the public/uploads directory
+    await writeFile(path, buffer);
 
-    return NextResponse.json({ secure_url: result.secure_url }, { status: 200 });
+    const relativePath = `/uploads/${filename}`;
+
+    return NextResponse.json({ secure_url: relativePath }, { status: 200 });
 
   } catch (error) {
-    console.error("Cloudinary upload error:", error);
+    console.error("File upload error:", error);
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during upload.";
     return NextResponse.json({ error: `Upload failed: ${errorMessage}` }, { status: 500 });
   }
