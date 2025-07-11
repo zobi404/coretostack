@@ -11,13 +11,15 @@ import { Badge } from "@/components/ui/badge";
 import { getPosts } from "@/lib/services/blog-service";
 import { getPortfolioItems } from "@/lib/services/portfolio-service";
 import { getInquiries } from "@/lib/services/inquiry-service";
-import type { Post, PortfolioItem, Inquiry } from "@/lib/types";
+import { getJobOpenings } from "@/lib/services/job-service";
+import type { Post, PortfolioItem, Inquiry, JobOpening } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboardPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [jobs, setJobs] = useState<JobOpening[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -25,14 +27,16 @@ export default function AdminDashboardPage() {
     async function fetchData() {
       try {
         setLoading(true);
-        const [postsData, portfolioItemsData, inquiriesData] = await Promise.all([
+        const [postsData, portfolioItemsData, inquiriesData, jobsData] = await Promise.all([
           getPosts(),
           getPortfolioItems(),
-          getInquiries()
+          getInquiries(),
+          getJobOpenings(),
         ]);
         setPosts(postsData);
         setPortfolioItems(portfolioItemsData);
         setInquiries(inquiriesData);
+        setJobs(jobsData);
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
         toast({
@@ -64,16 +68,6 @@ export default function AdminDashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Visitors</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12,345</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Inquiries</CardTitle>
             <Mailbox className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -100,6 +94,16 @@ export default function AdminDashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{portfolioItems.length}</div>
             <p className="text-xs text-muted-foreground">Total projects showcased</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Open Jobs</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{jobs.length}</div>
+            <p className="text-xs text-muted-foreground">Currently open positions</p>
           </CardContent>
         </Card>
       </div>
@@ -148,7 +152,7 @@ export default function AdminDashboardPage() {
                       alt={item.title}
                       className="aspect-square rounded-md object-cover"
                       height="48"
-                      src={item.bannerImageUrl}
+                      src={item.bannerImageUrl || "https://placehold.co/48x48.png"}
                       width="48"
                       data-ai-hint={item.bannerImageHint || 'project image'}
                     />
