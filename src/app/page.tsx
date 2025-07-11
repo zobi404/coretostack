@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -181,23 +182,21 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {portfolioItems.map((item, index) => (
-              <Link href="/portfolio" key={item.id}>
-                <Card className="group overflow-hidden bg-background animate-fade-in-up border-none shadow-lg" style={{ animationDelay: `${index * 150}ms` }}>
-                  <div className="overflow-hidden rounded-t-lg">
+              <Link href="/portfolio" key={item.id} className="group">
+                <div className="overflow-hidden rounded-lg bg-background animate-fade-in-up shadow-lg hover:shadow-primary/10 transition-shadow duration-300" style={{ animationDelay: `${index * 150}ms` }}>
                     <Image
                       src={item.imageUrl}
                       alt={item.title}
                       width={600}
                       height={400}
                       data-ai-hint={item.hint}
-                      className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
-                    <p className="text-sm text-primary">{item.category}</p>
-                  </CardContent>
-                </Card>
+                </div>
+                <div className="py-4">
+                  <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
+                  <p className="text-sm text-primary">{item.category}</p>
+                </div>
               </Link>
             ))}
           </div>
