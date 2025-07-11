@@ -2,15 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Logo } from '@/components/ui/logo';
 import {
-  SidebarHeader,
   SidebarContent,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Pencil, Briefcase, DollarSign, Settings, Home } from 'lucide-react';
+import { LayoutDashboard, Pencil, Briefcase, DollarSign, Settings } from 'lucide-react';
 
 const adminNavLinks = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -25,10 +23,7 @@ export default function AdminSidebarContent() {
 
   return (
     <>
-      <SidebarHeader>
-        <Logo />
-      </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="pt-6">
         <SidebarMenu>
           {adminNavLinks.map((link) => (
             <SidebarMenuItem key={link.href}>
