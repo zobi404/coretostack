@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { getPost, getPosts } from '@/lib/services/blog-service';
-import { mockComments } from '@/lib/mock-data';
 import BlogPostClient from '@/components/blog/BlogPostClient';
 
 export const revalidate = 60; // Revalidate this page every 60 seconds
@@ -53,7 +52,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         />
       </div>
 
-      <BlogPostClient post={post} initialComments={mockComments} />
+      <BlogPostClient postId={post.id} content={post.content} />
 
     </article>
   );

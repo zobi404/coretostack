@@ -1,26 +1,26 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import type { Post, Comment } from '@/lib/types';
 
+// Use dynamic import for the comment section to avoid SSR
 const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { 
   ssr: false,
-  loading: () => <p>Loading comments...</p> 
+  loading: () => <div className="mt-12">Loading comments...</div> 
 });
 
 interface BlogPostClientProps {
-  post: Post;
-  initialComments: Comment[];
+  content: string;
+  postId: string;
 }
 
-export default function BlogPostClient({ post, initialComments }: BlogPostClientProps) {
+export default function BlogPostClient({ content, postId }: BlogPostClientProps) {
   return (
     <>
       <div 
         className="prose dark:prose-invert max-w-none text-foreground prose-p:text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
-      <CommentSection initialComments={initialComments} postId={post.id} />
+      <CommentSection postId={postId} />
     </>
   );
 }

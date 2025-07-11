@@ -8,12 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Comment } from "@/lib/types";
 
 interface CommentSectionProps {
-  initialComments: Comment[];
   postId: string;
 }
 
-export default function CommentSection({ initialComments, postId }: CommentSectionProps) {
-  const [comments, setComments] = useState<Comment[]>(initialComments);
+const mockComments: Comment[] = [
+    { id: '1', author: 'Alice', authorImage: 'https://placehold.co/100x100.png', timestamp: '2 hours ago', text: 'Great article! Really clarified some concepts for me.' },
+    { id: '2', author: 'Bob', authorImage: 'https://placehold.co/100x100.png', timestamp: '1 hour ago', text: 'I love the focus on user experience. It\'s so often overlooked.' },
+];
+
+export default function CommentSection({ postId }: CommentSectionProps) {
+  const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 

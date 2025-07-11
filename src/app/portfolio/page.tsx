@@ -1,12 +1,6 @@
-import { getPortfolioItems } from "@/lib/services/portfolio-service";
 import PortfolioGrid from "./PortfolioGrid";
 
-export const revalidate = 60; // Revalidate every 60 seconds
-
-export default async function PortfolioPage() {
-  const portfolioItems = await getPortfolioItems();
-  const categories = ["All", ...new Set(portfolioItems.map(item => item.category))];
-
+export default function PortfolioPage() {
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center mb-16 md:mb-24">
@@ -15,8 +9,7 @@ export default async function PortfolioPage() {
           We're proud of the work we've done. Explore our projects to see how we've helped businesses like yours succeed.
         </p>
       </section>
-
-      <PortfolioGrid items={portfolioItems} categories={categories} />
+      <PortfolioGrid />
     </div>
   );
 }

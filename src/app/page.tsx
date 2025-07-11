@@ -1,12 +1,12 @@
 
-import Image from "next/image";
-import Link from "next/link";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight, Code, PenTool, Smartphone, MessageSquare, Monitor } from "lucide-react";
 import TypedHeading from "@/components/home/TypedHeading";
-import { getPortfolioItems } from "@/lib/services/portfolio-service";
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import { FeaturedPortfolioSection } from "@/components/home/FeaturedPortfolioSection";
 
 const LogoCarousel = dynamic(() => import('@/components/ui/logo-carousel').then(m => m.LogoCarousel));
 
@@ -56,10 +56,7 @@ const processSteps = [
   },
 ]
 
-export default async function Home() {
-  const allPortfolioItems = await getPortfolioItems();
-  const portfolioItems = allPortfolioItems.slice(0, 2);
-
+export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
@@ -171,46 +168,7 @@ export default async function Home() {
       </section>
 
 
-      {/* Portfolio Section */}
-      <section id="portfolio" className="w-full py-16 md:py-24 bg-card">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="font-headline text-3xl md:text-4xl font-bold">Featured Work</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto mt-4 text-lg">
-              We are proud of our work. Here are some of our recent projects.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {portfolioItems.map((item, index) => (
-              <Link href={`/portfolio/${item.id}`} key={item.id} className="group">
-                <div className="overflow-hidden rounded-lg bg-background animate-fade-in-up shadow-lg hover:shadow-primary/10 transition-shadow duration-300" style={{ animationDelay: `${index * 150}ms` }}>
-                  <div className="mx-auto max-w-[400px]">
-                    <Image
-                      src={item.bannerImageUrl}
-                      alt={item.title}
-                      width={400}
-                      height={300}
-                      data-ai-hint={item.bannerImageHint}
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                </div>
-                <div className="py-4 text-center">
-                  <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
-                  <p className="text-sm text-primary">{item.category}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-12 animate-fade-in">
-            <Button asChild variant="link" className="text-lg text-primary">
-              <Link href="/portfolio">
-                View All Projects <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <FeaturedPortfolioSection />
 
       {/* CTA Section */}
       <section className="w-full py-20 md:py-32 bg-background">
