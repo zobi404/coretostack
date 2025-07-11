@@ -69,27 +69,25 @@ export default function InquiryDetailPage() {
       <Card>
         <CardHeader>
           <CardTitle className="font-headline text-2xl">{inquiry.subject}</CardTitle>
-          <CardDescription>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm">
-                <div className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    <span>{inquiry.name}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                     <a href={`mailto:${inquiry.email}`} className="hover:underline">{inquiry.email}</a>
-                </div>
-                 <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <time dateTime={inquiry.createdAt}>
-                        {new Date(inquiry.createdAt).toLocaleString()}
-                    </time>
-                </div>
-            </div>
-          </CardDescription>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span>{inquiry.name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                   <a href={`mailto:${inquiry.email}`} className="hover:underline">{inquiry.email}</a>
+              </div>
+               <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <time dateTime={inquiry.createdAt}>
+                      {new Date(inquiry.createdAt).toLocaleString()}
+                  </time>
+              </div>
+          </div>
         </CardHeader>
         <CardContent>
-            <div className="prose dark:prose-invert max-w-none text-foreground whitespace-pre-wrap">
+            <div className="prose dark:prose-invert max-w-none text-foreground whitespace-pre-wrap pt-4 border-t">
                 {inquiry.message}
             </div>
         </CardContent>
