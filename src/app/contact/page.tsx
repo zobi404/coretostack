@@ -31,7 +31,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                         <h3 className="text-xl font-semibold">Email Us</h3>
-                        <p className="text-muted-foreground text-lg">hello@coretostack.com</p>
+                        <p className="text-muted-foreground text-lg">coretostack@gmail.com</p>
                     </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -40,7 +40,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                         <h3 className="text-xl font-semibold">Call Us</h3>
-                        <p className="text-muted-foreground text-lg">(123) 456-7890</p>
+                        <p className="text-muted-foreground text-xl">(+92) 333-789090</p>
                     </div>
                 </div>
             </div>
@@ -50,6 +50,7 @@ export default function ContactPage() {
             <Card className="bg-card border-none shadow-xl">
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl">Send us a Message</CardTitle>
+                    <p className="text-muted-foreground text-sm">(Expected reply within 12 hours.)</p>
                 </CardHeader>
                 <CardContent>
                    <ContactForm />

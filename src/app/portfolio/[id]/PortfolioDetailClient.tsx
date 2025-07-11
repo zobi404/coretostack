@@ -94,7 +94,7 @@ export default function PortfolioDetailClient({ id }: { id: string }) {
 
        {item.carouselImageUrls && item.carouselImageUrls.length > 0 && (
          <div className="mt-24">
-          <h2 className="font-headline text-3xl font-bold mb-8 text-center">Project Gallery</h2>
+          <h2 className="font-headline text-3xl font-bold mb-8 text-center">Project Snapshots</h2>
           <Carousel className="w-full max-w-4xl mx-auto" opts={{ loop: true }}>
               <CarouselContent>
               {item.carouselImageUrls.map((url, index) => (
