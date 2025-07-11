@@ -1,7 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Briefcase, Eye } from "lucide-react";
+import { Users, FileText, Briefcase, Eye, ArrowRight } from "lucide-react";
+import { mockPosts } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+
+// This would typically come from a centralized data source or API
+const portfolioItems = [
+  { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/100x100.png", hint: "corporate office" },
+  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/100x100.png", hint: "mobile app" },
+  { id: 3, title: "EcoGoods Branding", category: "Branding", imageUrl: "https://placehold.co/100x100.png", hint: "nature minimalist" },
+];
 
 export default function AdminDashboardPage() {
+  const recentPosts = mockPosts.slice(0, 2);
+  const recentProjects = portfolioItems.slice(0, 2);
+
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight mb-6 font-headline">Dashboard</h1>
@@ -32,7 +47,7 @@ export default function AdminDashboardPage() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2</div>
+            <div className="text-2xl font-bold">{mockPosts.length}</div>
             <p className="text-xs text-muted-foreground">Total published posts</p>
           </CardContent>
         </Card>
@@ -42,23 +57,64 @@ export default function AdminDashboardPage() {
             <Briefcase className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8</div>
+            <div className="text-2xl font-bold">{portfolioItems.length}</div>
             <p className="text-xs text-muted-foreground">Total projects showcased</p>
           </CardContent>
         </Card>
       </div>
-       <div className="mt-8">
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
         <Card>
-            <CardHeader>
-                <CardTitle className="font-headline">Recent Activity</CardTitle>
-                <CardDescription>A log of recent events on your site.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {/* Placeholder for recent activity feed */}
-                <p className="text-muted-foreground">No recent activity to display.</p>
-            </CardContent>
+          <CardHeader>
+            <CardTitle className="font-headline">Recent Blog Posts</CardTitle>
+            <CardDescription>A quick look at your latest articles.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentPosts.map(post => (
+                <div key={post.slug} className="flex items-center gap-4">
+                  <div className="flex-grow">
+                    <p className="font-semibold">{post.title}</p>
+                    <p className="text-sm text-muted-foreground">{post.author} &middot; {post.date}</p>
+                  </div>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/admin/blog`}>Manage</Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
         </Card>
-    </div>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline">Recent Portfolio Projects</CardTitle>
+            <CardDescription>Your latest showcased work.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <div className="space-y-4">
+              {recentProjects.map(item => (
+                <div key={item.id} className="flex items-center gap-4">
+                   <Image
+                      alt={item.title}
+                      className="aspect-square rounded-md object-cover"
+                      height="48"
+                      src={item.imageUrl}
+                      width="48"
+                      data-ai-hint={item.hint}
+                    />
+                  <div className="flex-grow">
+                    <p className="font-semibold">{item.title}</p>
+                    <p className="text-sm text-muted-foreground"><Badge variant="outline" className="text-xs">{item.category}</Badge></p>
+                  </div>
+                   <Button variant="outline" size="sm" asChild>
+                    <Link href={`/admin/portfolio`}>Manage</Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
