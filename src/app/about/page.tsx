@@ -3,27 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award, Users, Target } from "lucide-react";
 import DynamicStat from "@/components/about/DynamicStat";
 
-const teamMembers = [
-  {
-    name: "Jane Doe",
-    role: "CEO & Founder",
-    imageUrl: "https://placehold.co/400x400.png",
-    hint: "professional woman",
-  },
-  {
-    name: "John Smith",
-    role: "Lead Designer",
-    imageUrl: "https://placehold.co/400x400.png",
-    hint: "professional man",
-  },
-  {
-    name: "Emily White",
-    role: "Lead Developer",
-    imageUrl: "https://placehold.co/400x400.png",
-    hint: "software developer",
-  },
-];
-
 const stats = [
     { label: "Active Clients", value: 10, suffix: "+" },
     { label: "Projects Done", value: 30, suffix: "+" },
@@ -110,26 +89,6 @@ export default function AboutPage() {
               <DynamicStat key={stat.label} stat={stat} />
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold mb-12">Meet the Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
-          {teamMembers.map((member) => (
-            <div key={member.name} className="flex flex-col items-center text-center">
-              <Image
-                src={member.imageUrl}
-                alt={member.name}
-                width={200}
-                height={200}
-                data-ai-hint={member.hint}
-                className="w-40 h-40 rounded-full object-cover mb-4 shadow-lg"
-              />
-              <h3 className="font-headline text-xl font-semibold">{member.name}</h3>
-              <p className="text-primary">{member.role}</p>
-            </div>
-          ))}
         </div>
       </section>
     </div>
