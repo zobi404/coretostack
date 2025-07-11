@@ -8,6 +8,7 @@ import type { PricingPlan } from '@/lib/types';
 
 
 export default function EditPricingPlanPage({ params }: { params: { title: string } }) {
+  const { title } = params;
   const [plan, setPlan] = useState<PricingPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -17,7 +18,7 @@ export default function EditPricingPlanPage({ params }: { params: { title: strin
       try {
         setLoading(true);
         // The param is the document ID
-        const planData = await getPricingPlan(params.title);
+        const planData = await getPricingPlan(title);
         if (planData) {
           setPlan(planData);
         } else {
@@ -31,7 +32,7 @@ export default function EditPricingPlanPage({ params }: { params: { title: strin
       }
     };
     fetchPlan();
-  }, [params.title]);
+  }, [title]);
 
   if (loading) {
     return (

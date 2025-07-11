@@ -7,6 +7,7 @@ import { getPortfolioItem } from "@/lib/services/portfolio-service";
 import type { PortfolioItem } from '@/lib/types';
 
 export default function EditPortfolioItemPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const [project, setProject] = useState<PortfolioItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -15,7 +16,7 @@ export default function EditPortfolioItemPage({ params }: { params: { id: string
     const fetchProject = async () => {
       try {
         setLoading(true);
-        const projectData = await getPortfolioItem(params.id);
+        const projectData = await getPortfolioItem(id);
         if (projectData) {
           setProject(projectData);
         } else {
@@ -29,7 +30,7 @@ export default function EditPortfolioItemPage({ params }: { params: { id: string
       }
     };
     fetchProject();
-  }, [params.id]);
+  }, [id]);
 
   if (loading) {
     return (

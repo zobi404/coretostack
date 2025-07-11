@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import type { Inquiry } from '@/lib/types';
 
 export default function InquiryDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const [inquiry, setInquiry] = useState<Inquiry | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -18,7 +19,7 @@ export default function InquiryDetailPage({ params }: { params: { id: string } }
     const fetchInquiry = async () => {
       try {
         setLoading(true);
-        const inquiryData = await getInquiry(params.id);
+        const inquiryData = await getInquiry(id);
         if (inquiryData) {
           setInquiry(inquiryData);
         } else {
@@ -32,7 +33,7 @@ export default function InquiryDetailPage({ params }: { params: { id: string } }
       }
     };
     fetchInquiry();
-  }, [params.id]);
+  }, [id]);
 
 
   if (loading) {

@@ -7,6 +7,7 @@ import { getPostById } from "@/lib/services/blog-service";
 import type { Post } from '@/lib/types';
 
 export default function EditBlogPostPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -16,7 +17,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
       try {
         setLoading(true);
         // The slug is actually the document ID here
-        const postData = await getPostById(params.slug);
+        const postData = await getPostById(slug);
         if (postData) {
           setPost(postData);
         } else {
@@ -30,7 +31,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
       }
     };
     fetchPost();
-  }, [params.slug]);
+  }, [slug]);
 
   if (loading) {
     return (
