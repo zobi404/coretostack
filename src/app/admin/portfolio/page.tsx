@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { getPortfolioItems, deletePortfolioItem } from "@/lib/services/portfolio-service";
 import type { PortfolioItem } from "@/lib/types";
@@ -19,6 +19,7 @@ export default function AdminPortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [itemToDelete, setItemToDelete] = useState<PortfolioItem | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -56,8 +57,14 @@ export default function AdminPortfolioPage() {
         });
       } finally {
         setItemToDelete(null);
+        setIsAlertOpen(false);
       }
     }
+  };
+
+  const openDeleteDialog = (item: PortfolioItem) => {
+    setItemToDelete(item);
+    setIsAlertOpen(true);
   };
 
   if (loading) {
@@ -83,7 +90,7 @@ export default function AdminPortfolioPage() {
         </Button>
       </div>
       
-      <AlertDialog>
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <Card>
           <CardContent className="p-0">
             <Table>
@@ -103,9 +110,9 @@ export default function AdminPortfolioPage() {
                         alt={item.title}
                         className="aspect-square rounded-md object-cover"
                         height="64"
-                        src={item.imageUrl}
+                        src={item.bannerImageUrl || "https://placehold.co/64x64.png"}
                         width="64"
-                        data-ai-hint={item.hint}
+                        data-ai-hint={item.bannerImageHint || "abstract"}
                       />
                     </TableCell>
                     <TableCell className="font-medium">{item.title}</TableCell>
@@ -122,14 +129,12 @@ export default function AdminPortfolioPage() {
                           <DropdownMenuItem asChild>
                             <Link href={`/admin/portfolio/${item.id}/edit`}>Edit</Link>
                           </DropdownMenuItem>
-                          <AlertDialogTrigger asChild>
                             <DropdownMenuItem
                               className="text-destructive"
-                              onSelect={() => setItemToDelete(item)}
+                              onSelect={() => openDeleteDialog(item)}
                             >
                               Delete
                             </DropdownMenuItem>
-                          </AlertDialogTrigger>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

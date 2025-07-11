@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -38,11 +39,11 @@ export default function PortfolioGrid({ items, categories }: PortfolioGridProps)
           <Link href={`/portfolio/${item.id}`} key={item.id} className="group block [break-inside:avoid]">
             <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card border-none">
               <Image
-                src={item.bannerImageUrl}
+                src={item.bannerImageUrl || "https://placehold.co/600x400.png"}
                 alt={item.title}
                 width={600}
                 height={400} // Default height, actual will be determined by image aspect ratio
-                data-ai-hint={item.bannerImageHint}
+                data-ai-hint={item.bannerImageHint || "abstract project"}
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               />
             </div>

@@ -148,12 +148,14 @@ export default function AdminDashboardPage() {
                       alt={item.title}
                       className="aspect-square rounded-md object-cover"
                       height="48"
-                      src={item.imageUrl}
+                      src={item.bannerImageUrl || "https://placehold.co/48x48.png"}
                       width="48"
-                      data-ai-hint={item.hint || 'project image'}
+                      data-ai-hint={item.bannerImageHint || 'project image'}
                     />
                   <div className="flex-grow">
-                    <p className="font-semibold">{item.title}</p>
+                    <Link href={`/portfolio/${item.id}`} className="font-semibold hover:underline" target="_blank">
+                      {item.title}
+                    </Link>
                     <div className="text-sm text-muted-foreground"><Badge variant="outline" className="text-xs">{item.category}</Badge></div>
                   </div>
                 </div>
