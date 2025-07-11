@@ -1,59 +1,26 @@
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { getPost, getPosts } from '@/lib/services/blog-service';
-import BlogPostClient from '@/components/blog/BlogPostClient';
 
-export const revalidate = 60; // Revalidate this page every 60 seconds
+import { notFound } from 'next/navigation';
+import { getPosts } from '@/lib/services/blog-service';
+import BlogPostDetailClient from './BlogPostDetailClient';
+
+export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map(post => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts = await getPosts();
+    return posts.map(post => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Failed to generate static params for blog posts:", error);
+    return [];
+  }
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
-
-  if (!post) {
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  if (!params.slug) {
     notFound();
   }
 
-  return (
-    <article className="container max-w-4xl mx-auto px-4 py-12">
-      <header className="mb-8">
-        <div className="mb-4">
-          {post.tags.map(tag => <Badge key={tag} variant="outline" className="mr-2">{tag}</Badge>)}
-        </div>
-        <h1 className="font-headline text-4xl md:text-5xl font-extrabold tracking-tight mb-4">{post.title}</h1>
-        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={post.authorImage} alt={post.author} />
-              <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span>{post.author}</span>
-          </div>
-          <span>•</span>
-          <time dateTime={post.date}>{new Date(post.date).toLocaleDateString()}</time>
-        </div>
-      </header>
-      
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-8">
-        <Image 
-            src={post.imageUrl} 
-            alt={post.title} 
-            fill 
-            data-ai-hint={post.imageHint}
-            className="object-cover" 
-            priority
-        />
-      </div>
-
-      <BlogPostClient postId={post.id} content={post.content} />
-
-    </article>
-  );
+  return <BlogPostDetailClient slug={params.slug} />;
 }
