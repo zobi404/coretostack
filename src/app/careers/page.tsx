@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Briefcase, ArrowRight } from "lucide-react";
@@ -8,7 +8,7 @@ import { getJobOpenings } from "@/lib/services/job-service";
 import type { JobOpening } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function CareersPage() {
+function CareersPageContent() {
   const [jobOpenings, setJobOpenings] = useState<JobOpening[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -102,4 +102,12 @@ function JobCardSkeleton() {
       </CardFooter>
     </Card>
   );
+}
+
+export default function CareersPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CareersPageContent />
+        </Suspense>
+    )
 }

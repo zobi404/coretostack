@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award, Users, Target } from "lucide-react";
@@ -14,7 +15,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center mb-16 md:mb-24">
-        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">About CoreToStack</h1>
+        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">About PixelGlint Studios</h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We are a passionate team of designers, developers, and strategists dedicated to creating digital experiences that are not only beautiful but also effective.
         </p>
@@ -24,7 +25,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="relative">
              <Image
-              src="/about.jpg"
+              src="https://placehold.co/600x600.png"
               alt="Team collaboration"
               width={600}
               height={600}
@@ -35,7 +36,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <h2 className="font-headline text-3xl md:text-4xl font-bold">Our story is one of passion, innovation, and a relentless pursuit of excellence.</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-                CoreToStack is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
+                PixelGlint Studios is a software development and design agency recognized globally. We provide digital transformation services to companies all over the world. We pride ourselves in assisting our clients transition into the digital world smoothly.
             </p>
           </div>
         </div>
