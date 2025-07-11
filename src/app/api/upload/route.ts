@@ -1,6 +1,6 @@
 
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +23,10 @@ export async function POST(req: Request) {
     // Define the path to save the file
     const publicDir = join(process.cwd(), 'public');
     const uploadsDir = join(publicDir, 'uploads');
+    
+    // Ensure the uploads directory exists
+    await mkdir(uploadsDir, { recursive: true });
+
     const path = join(uploadsDir, filename);
     
     // Write the file to the public/uploads directory
