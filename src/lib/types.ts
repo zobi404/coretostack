@@ -24,8 +24,11 @@ export interface PortfolioItem {
   id: string;
   title: string;
   category: string;
-  imageUrl: string;
-  hint: string;
+  projectUrl: string;
+  bannerImageUrl: string;
+  bannerImageHint: string;
+  carouselImageUrls: string[];
+  description: string;
 }
 
 export interface PricingPlan {

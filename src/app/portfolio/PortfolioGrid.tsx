@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { PortfolioItem } from "@/lib/types";
 
@@ -34,14 +35,14 @@ export default function PortfolioGrid({ items, categories }: PortfolioGridProps)
 
       <section className="[column-count:1] sm:[column-count:2] lg:[column-count:3] gap-8 space-y-8">
         {filteredItems.map((item) => (
-          <a href="#" key={item.id} className="group block [break-inside:avoid]">
+          <Link href={`/portfolio/${item.id}`} key={item.id} className="group block [break-inside:avoid]">
             <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card border-none">
               <Image
-                src={item.imageUrl}
+                src={item.bannerImageUrl}
                 alt={item.title}
                 width={600}
                 height={400} // Default height, actual will be determined by image aspect ratio
-                data-ai-hint={item.hint}
+                data-ai-hint={item.bannerImageHint}
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               />
             </div>
@@ -49,7 +50,7 @@ export default function PortfolioGrid({ items, categories }: PortfolioGridProps)
               <h3 className="font-headline text-2xl font-bold">{item.title}</h3>
               <p className="text-primary font-semibold tracking-wider uppercase text-sm mt-1">{item.category}</p>
             </div>
-          </a>
+          </Link>
         ))}
       </section>
     </>

@@ -7,19 +7,14 @@ import { v4 as uuidv4 } from 'uuid';
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const file = formData.get("image") as File | null;
+    const files = formData.getAll("images") as File[];
 
-    if (!file) {
-      return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
+    if (!files || files.length === 0) {
+      return NextResponse.json({ error: "No files uploaded." }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const uploadedUrls = [];
 
-    // Create a unique filename
-    const extension = file.name.split('.').pop();
-    const filename = `${uuidv4()}.${extension}`;
-    
     // Define the path to save the file
     const publicDir = join(process.cwd(), 'public');
     const uploadsDir = join(publicDir, 'uploads');
@@ -27,14 +22,25 @@ export async function POST(req: Request) {
     // Ensure the uploads directory exists
     await mkdir(uploadsDir, { recursive: true });
 
-    const path = join(uploadsDir, filename);
-    
-    // Write the file to the public/uploads directory
-    await writeFile(path, buffer);
+    for (const file of files) {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
 
-    const relativePath = `/uploads/${filename}`;
+        // Create a unique filename
+        const extension = file.name.split('.').pop();
+        const filename = `${uuidv4()}.${extension}`;
+        
+        const path = join(uploadsDir, filename);
+        
+        // Write the file to the public/uploads directory
+        await writeFile(path, buffer);
 
-    return NextResponse.json({ secure_url: relativePath }, { status: 200 });
+        const relativePath = `/uploads/${filename}`;
+        uploadedUrls.push(relativePath);
+    }
+
+
+    return NextResponse.json({ urls: uploadedUrls }, { status: 200 });
 
   } catch (error) {
     console.error("File upload error:", error);

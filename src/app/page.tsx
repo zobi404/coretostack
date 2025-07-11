@@ -182,15 +182,15 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {portfolioItems.map((item, index) => (
-              <Link href="/portfolio" key={item.id} className="group">
+              <Link href={`/portfolio/${item.id}`} key={item.id} className="group">
                 <div className="overflow-hidden rounded-lg bg-background animate-fade-in-up shadow-lg hover:shadow-primary/10 transition-shadow duration-300" style={{ animationDelay: `${index * 150}ms` }}>
                   <div className="mx-auto max-w-[400px]">
                     <Image
-                      src={item.imageUrl}
+                      src={item.bannerImageUrl}
                       alt={item.title}
                       width={400}
                       height={300}
-                      data-ai-hint={item.hint}
+                      data-ai-hint={item.bannerImageHint}
                       className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>

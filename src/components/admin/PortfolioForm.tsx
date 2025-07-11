@@ -27,12 +27,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { PortfolioItem } from "@/lib/types"
 import { addPortfolioItem, updatePortfolioItem } from "@/lib/services/portfolio-service"
 import { useRouter } from "next/navigation"
+import { Textarea } from "../ui/textarea"
 
 const portfolioFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
   category: z.string({ required_error: "Please select a category." }),
-  imageUrl: z.any().optional(),
-  hint: z.string().optional(),
+  projectUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
+  description: z.string().min(10, "Description must be at least 10 characters long."),
+  bannerImageUrl: z.any().optional(),
+  bannerImageHint: z.string().optional(),
+  carouselImageUrls: z.any().optional(),
 })
 
 type PortfolioFormValues = z.infer<typeof portfolioFormSchema>
@@ -50,7 +54,9 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   const defaultValues: Partial<PortfolioFormValues> = {
     title: project?.title || "",
     category: project?.category || undefined,
-    hint: project?.hint || "",
+    projectUrl: project?.projectUrl || "",
+    description: project?.description || "",
+    bannerImageHint: project?.bannerImageHint || "",
   }
   
   const form = useForm<PortfolioFormValues>({
@@ -59,11 +65,14 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     mode: "onChange",
   })
   
-  const imageUrlRef = form.register("imageUrl");
+  const bannerImageRef = form.register("bannerImageUrl");
+  const carouselImagesRef = form.register("carouselImageUrls");
 
-  async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
+  async function uploadImagesViaApi(imageFiles: FileList): Promise<{ urls: string[] } | null> {
     const formData = new FormData();
-    formData.append("image", imageFile);
+    Array.from(imageFiles).forEach(file => {
+      formData.append("images", file);
+    });
 
     try {
       const response = await fetch("/api/upload", {
@@ -80,7 +89,7 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
       return result;
     } catch (error) {
       console.error("Image Upload Error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Could not upload image.";
+      const errorMessage = error instanceof Error ? error.message : "Could not upload images.";
       toast({
         variant: "destructive",
         title: "Image Upload Failed",
@@ -91,29 +100,56 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   }
 
   async function onSubmit(data: PortfolioFormValues) {
-    let finalImageUrl = project?.imageUrl;
-    const imageFile = data.imageUrl?.[0];
+    let finalBannerUrl = project?.bannerImageUrl;
+    let finalCarouselUrls = project?.carouselImageUrls || [];
+
+    const bannerFile = data.bannerImageUrl?.[0];
+    const carouselFiles = data.carouselImageUrls;
 
     try {
-      if (imageFile && imageFile.size > 0) {
-        const uploadResult = await uploadImageViaApi(imageFile);
-        if (uploadResult) {
-          finalImageUrl = uploadResult.secure_url;
+      if (bannerFile && bannerFile.size > 0) {
+        const uploadResult = await uploadImagesViaApi(data.bannerImageUrl);
+        if (uploadResult?.urls?.[0]) {
+          finalBannerUrl = uploadResult.urls[0];
         } else {
           return; // Stop form submission if image upload fails
         }
       }
 
-      if (!project && !finalImageUrl) {
+      if (carouselFiles && carouselFiles.length > 0) {
+        const uploadResult = await uploadImagesViaApi(carouselFiles);
+        if (uploadResult?.urls) {
+          // If editing, add new images to existing ones.
+          finalCarouselUrls = project ? [...finalCarouselUrls, ...uploadResult.urls] : uploadResult.urls;
+        } else {
+            return;
+        }
+      }
+
+      if (!project && !finalBannerUrl) {
         toast({
           variant: "destructive",
-          title: "Image Required",
-          description: "Please upload an image before submitting.",
+          title: "Banner Image Required",
+          description: "Please upload a banner image before submitting.",
+        });
+        return;
+      }
+      
+      if (!project && finalCarouselUrls.length === 0) {
+        toast({
+          variant: "destructive",
+          title: "Carousel Images Required",
+          description: "Please upload at least one carousel image.",
         });
         return;
       }
 
-      const projectData = { ...data, imageUrl: finalImageUrl };
+      const projectData = { 
+          ...data, 
+          projectUrl: data.projectUrl || '',
+          bannerImageUrl: finalBannerUrl, 
+          carouselImageUrls: finalCarouselUrls,
+      };
 
       if (project) {
         await updatePortfolioItem(project.id, projectData);
@@ -159,57 +195,103 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <div className="grid md:grid-cols-2 gap-8">
+                <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        {categories.map((category) => (
+                            <SelectItem key={category} value={category}>
+                            {category}
+                            </SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="projectUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Project URL</FormLabel>
+                        <FormControl>
+                            <Input placeholder="https://example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+            </div>
+             <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
+                        <Textarea placeholder="Describe the project..." className="min-h-[120px]" {...field} />
                     </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+                    <FormMessage />
+                    </FormItem>
+                )}
             />
+             <div className="grid md:grid-cols-2 gap-8">
+                <FormField
+                control={form.control}
+                name="bannerImageUrl"
+                render={() => (
+                    <FormItem>
+                    <FormLabel>Banner Image</FormLabel>
+                    <FormControl>
+                        <Input type="file" accept="image/*" {...bannerImageRef} />
+                    </FormControl>
+                    <FormDescription>The main image for the portfolio grid.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="bannerImageHint"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Banner Image AI Hint</FormLabel>
+                    <FormControl>
+                        <Input placeholder="e.g. corporate office" {...field} />
+                    </FormControl>
+                     <FormDescription>Keywords for AI image suggestions.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
             <FormField
               control={form.control}
-              name="imageUrl"
+              name="carouselImageUrls"
               render={() => (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel>Carousel Images</FormLabel>
                   <FormControl>
-                    <Input type="file" accept="image/*" {...imageUrlRef} />
+                    <Input type="file" accept="image/*" multiple {...carouselImagesRef} />
                   </FormControl>
-                  <FormDescription>Upload a project image.</FormDescription>
+                  <FormDescription>Upload multiple images for the project detail page.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="hint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image AI Hint</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. corporate office" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting
                 ? "Saving..."
