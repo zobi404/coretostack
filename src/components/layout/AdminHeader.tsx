@@ -14,14 +14,29 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Home } from 'lucide-react';
 import Link from 'next/link';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminHeader() {
   const router = useRouter();
+  const { toast } = useToast();
 
-  const handleLogout = () => {
-    // Mock logout
-    localStorage.removeItem('user-authenticated');
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast({
+        title: 'Logged Out',
+        description: 'You have been successfully logged out.',
+      });
+      router.push('/login');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Logout Failed',
+        description: 'An error occurred while logging out.',
+      });
+    }
   };
 
   return (
@@ -37,8 +52,8 @@ export default function AdminHeader() {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
             <Avatar>
-              <AvatarImage src="https://placehold.co/100x100.png" alt="Admin" />
-              <AvatarFallback>A</AvatarFallback>
+              <AvatarImage src={auth.currentUser?.photoURL || "https://placehold.co/100x100.png"} alt="Admin" />
+              <AvatarFallback>{auth.currentUser?.email?.charAt(0).toUpperCase() || 'A'}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
