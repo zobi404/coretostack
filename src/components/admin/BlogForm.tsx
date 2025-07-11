@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
+import type { Post } from "@/lib/types"
 
 const blogFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
@@ -27,15 +28,20 @@ const blogFormSchema = z.object({
 
 type BlogFormValues = z.infer<typeof blogFormSchema>
 
-const defaultValues: Partial<BlogFormValues> = {
-  title: "",
-  author: "",
-  tags: "",
-  content: "",
+interface BlogFormProps {
+  post?: Partial<Post> & { tags: string }; // Allow post to be optional for creation
 }
 
-export function BlogForm() {
+export function BlogForm({ post }: BlogFormProps) {
   const { toast } = useToast()
+  
+  const defaultValues: Partial<BlogFormValues> = {
+    title: post?.title || "",
+    author: post?.author || "",
+    tags: post?.tags || "",
+    content: post?.content || "",
+  }
+  
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogFormSchema),
     defaultValues,
@@ -44,8 +50,8 @@ export function BlogForm() {
 
   function onSubmit(data: BlogFormValues) {
     toast({
-      title: "Blog Post Submitted!",
-      description: "Your new blog post has been saved.",
+      title: `Blog Post ${post ? 'Updated' : 'Submitted'}!`,
+      description: `Your blog post has been ${post ? 'updated' : 'saved'}.`,
     })
     console.log(data)
     // Here you would typically call an API to save the data
@@ -117,7 +123,7 @@ export function BlogForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Create Post</Button>
+            <Button type="submit">{post ? 'Update Post' : 'Create Post'}</Button>
           </form>
         </Form>
       </CardContent>
