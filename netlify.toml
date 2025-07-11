@@ -7,3 +7,9 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from = "/googlef5bb50339648d3a9.html"
+  to = "/googlef5bb50339648d3a9.html"
+  status = 200
+
