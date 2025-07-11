@@ -36,3 +36,12 @@ export interface PricingPlan {
   features: string; // Comma-separated
   recommended: boolean;
 }
+
+export interface Inquiry {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  createdAt: string;
+}

@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { addInquiry } from "@/lib/services/inquiry-service";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -41,18 +42,23 @@ export function ContactForm() {
 
     async function onSubmit(data: ContactFormValues) {
         setIsLoading(true);
-        // Simulate an API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setIsLoading(false);
-
-        console.log(data);
-
-        toast({
-            title: "Message Sent!",
-            description: "Thanks for reaching out. We'll get back to you soon.",
-        });
-
-        form.reset();
+        try {
+            await addInquiry(data);
+            toast({
+                title: "Message Sent!",
+                description: "Thanks for reaching out. We'll get back to you soon.",
+            });
+            form.reset();
+        } catch (error) {
+            console.error("Failed to send message:", error);
+            toast({
+                variant: "destructive",
+                title: "Submission Failed",
+                description: "Could not send your message. Please try again later.",
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }
   
     return (

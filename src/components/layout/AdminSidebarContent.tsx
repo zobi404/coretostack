@@ -18,12 +18,14 @@ import {
   DollarSign,
   Settings,
   Home,
+  Mailbox,
 } from 'lucide-react';
 import { Logo } from '../ui/logo';
 import { Button } from '../ui/button';
 
 const adminNavLinks = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/inquiries', label: 'Inquiries', icon: Mailbox },
   { href: '/admin/blog', label: 'Blog', icon: Pencil },
   { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
   { href: '/admin/pricing', label: 'Pricing', icon: DollarSign },

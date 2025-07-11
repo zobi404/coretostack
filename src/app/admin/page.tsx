@@ -1,17 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Briefcase, Eye } from "lucide-react";
+import { Users, FileText, Briefcase, Eye, Mailbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { getPosts } from "@/lib/services/blog-service";
 import { getPortfolioItems } from "@/lib/services/portfolio-service";
+import { getInquiries } from "@/lib/services/inquiry-service";
 
 export const revalidate = 60; // Revalidate data every 60 seconds
 
 export default async function AdminDashboardPage() {
   const posts = await getPosts();
   const portfolioItems = await getPortfolioItems();
+  const inquiries = await getInquiries();
 
   const recentPosts = posts.slice(0, 3);
   const recentProjects = portfolioItems.slice(0, 3);
@@ -32,12 +34,12 @@ export default async function AdminDashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Blog Viewers</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Inquiries</CardTitle>
+            <Mailbox className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">78,921</div>
-            <p className="text-xs text-muted-foreground">+15.2% from last month</p>
+            <div className="text-2xl font-bold">{inquiries.length}</div>
+            <p className="text-xs text-muted-foreground">New messages received</p>
           </CardContent>
         </Card>
         <Card>
