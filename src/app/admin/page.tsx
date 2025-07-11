@@ -1,5 +1,9 @@
+
+"use client";
+
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Briefcase, Eye, Mailbox } from "lucide-react";
+import { Users, FileText, Briefcase, Mailbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,13 +11,49 @@ import { Badge } from "@/components/ui/badge";
 import { getPosts } from "@/lib/services/blog-service";
 import { getPortfolioItems } from "@/lib/services/portfolio-service";
 import { getInquiries } from "@/lib/services/inquiry-service";
+import type { Post, PortfolioItem, Inquiry } from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
 
-export const revalidate = 60; // Revalidate data every 60 seconds
+export default function AdminDashboardPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-export default async function AdminDashboardPage() {
-  const posts = await getPosts();
-  const portfolioItems = await getPortfolioItems();
-  const inquiries = await getInquiries();
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const [postsData, portfolioItemsData, inquiriesData] = await Promise.all([
+          getPosts(),
+          getPortfolioItems(),
+          getInquiries()
+        ]);
+        setPosts(postsData);
+        setPortfolioItems(portfolioItemsData);
+        setInquiries(inquiriesData);
+      } catch (error) {
+        console.error("Failed to fetch dashboard data:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load dashboard data. You may not have the required permissions.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [toast]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
 
   const recentPosts = posts.slice(0, 3);
   const recentProjects = portfolioItems.slice(0, 3);
@@ -110,7 +150,7 @@ export default async function AdminDashboardPage() {
                       height="48"
                       src={item.imageUrl}
                       width="48"
-                      data-ai-hint={item.hint}
+                      data-ai-hint={item.hint || 'project image'}
                     />
                   <div className="flex-grow">
                     <p className="font-semibold">{item.title}</p>
