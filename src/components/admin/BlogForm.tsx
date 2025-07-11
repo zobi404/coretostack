@@ -63,40 +63,40 @@ export function BlogForm({ post }: BlogFormProps) {
   const authorImageRef = form.register("authorImage");
 
   async function onSubmit(data: BlogFormValues) {
-    let imageUrl = post?.imageUrl;
-    let authorImage = post?.authorImage;
+    let finalImageUrl = post?.imageUrl;
+    let finalAuthorImageUrl = post?.authorImage;
 
-    const postImage = data.imageUrl?.[0];
-    const authorAvatar = data.authorImage?.[0];
+    const postImageFile = data.imageUrl?.[0];
+    const authorImageFile = data.authorImage?.[0];
 
     try {
-        if(postImage){
+        if (postImageFile && postImageFile.size > 0) {
           const postImageFormData = new FormData();
-          postImageFormData.append('image', postImage)
+          postImageFormData.append('image', postImageFile)
           const postImageRes = await uploadImage(postImageFormData) as { secure_url: string };
-          imageUrl = postImageRes.secure_url;
+          finalImageUrl = postImageRes.secure_url;
         }
 
-        if(authorAvatar){
+        if (authorImageFile && authorImageFile.size > 0) {
           const authorAvatarFormData = new FormData();
-          authorAvatarFormData.append('image', authorAvatar)
+          authorAvatarFormData.append('image', authorImageFile)
           const authorAvatarRes = await uploadImage(authorAvatarFormData) as { secure_url: string };
-          authorImage = authorAvatarRes.secure_url;
+          finalAuthorImageUrl = authorAvatarRes.secure_url;
         }
 
-        if(!imageUrl || !authorImage){
+        if (!finalImageUrl || !finalAuthorImageUrl) {
           toast({
             variant: "destructive",
-            title: "Error",
-            description: "Please upload all images.",
-        });
-        return;
+            title: "Image Error",
+            description: "A post image and author image are required.",
+          });
+          return;
         }
 
         const postData = {
           ...data,
-          imageUrl,
-          authorImage,
+          imageUrl: finalImageUrl,
+          authorImage: finalAuthorImageUrl,
           tags: data.tags.split(',').map(tag => tag.trim()),
           date: post?.date || new Date().toISOString().split('T')[0], // Keep original date or set new one
         };
@@ -164,10 +164,11 @@ export function BlogForm({ post }: BlogFormProps) {
                 name="authorImage"
                 render={() => (
                   <FormItem>
-                    <FormLabel>Author Image URL</FormLabel>
+                    <FormLabel>Author Image</FormLabel>
                     <FormControl>
                       <Input 
                         type="file"
+                        accept="image/*"
                         {...authorImageRef}
                       />
                     </FormControl>
@@ -198,10 +199,11 @@ export function BlogForm({ post }: BlogFormProps) {
                 name="imageUrl"
                 render={() => (
                     <FormItem>
-                    <FormLabel>Post Image URL</FormLabel>
+                    <FormLabel>Post Image</FormLabel>
                     <FormControl>
                         <Input
                           type="file"
+                          accept="image/*"
                           {...imageUrlRef}
                         />
                     </FormControl>

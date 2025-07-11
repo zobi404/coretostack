@@ -64,35 +64,37 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
 
 
   async function onSubmit(data: PortfolioFormValues) {
-    let imageUrl = project?.imageUrl;
-    const image = data.imageUrl?.[0];
+    let finalImageUrl = project?.imageUrl;
+    const imageFile = data.imageUrl?.[0];
 
     try {
 
-        if(image){
+        if (imageFile && imageFile.size > 0) {
           const formData = new FormData();
-          formData.append('image', image)
+          formData.append('image', imageFile)
           const res = await uploadImage(formData) as { secure_url: string };
-          imageUrl = res.secure_url
+          finalImageUrl = res.secure_url
         }
 
-        if(!imageUrl){
+        if (!finalImageUrl) {
           toast({
             variant: "destructive",
-            title: "Error",
-            description: "Please upload an image.",
-        });
-        return;
+            title: "Image Error",
+            description: "Please upload an image for the project.",
+          });
+          return;
         }
 
+        const projectData = { ...data, imageUrl: finalImageUrl };
+
         if (project) {
-            await updatePortfolioItem(project.id, {...data, imageUrl});
+            await updatePortfolioItem(project.id, projectData);
             toast({
                 title: "Project Updated!",
                 description: "Your portfolio project has been updated.",
             });
         } else {
-            await addPortfolioItem({...data, imageUrl});
+            await addPortfolioItem(projectData);
             toast({
                 title: "Project Submitted!",
                 description: "Your portfolio project has been saved.",
@@ -159,6 +161,7 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                   <FormControl>
                     <Input
                      type="file"
+                     accept="image/*"
                      {...imageUrlRef}
                      />
                   </FormControl>
