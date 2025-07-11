@@ -2,17 +2,20 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { PortfolioForm } from '@/components/admin/PortfolioForm';
 import { getPortfolioItem } from "@/lib/services/portfolio-service";
 import type { PortfolioItem } from '@/lib/types';
 
-export default function EditPortfolioItemPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function EditPortfolioItemPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [project, setProject] = useState<PortfolioItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     const fetchProject = async () => {
       try {
         setLoading(true);

@@ -2,17 +2,20 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { BlogForm } from '@/components/admin/BlogForm';
 import { getPostById } from "@/lib/services/blog-service";
 import type { Post } from '@/lib/types';
 
-export default function EditBlogPostPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function EditBlogPostPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (!slug) return;
     const fetchPost = async () => {
       try {
         setLoading(true);

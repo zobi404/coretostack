@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { getInquiry } from "@/lib/services/inquiry-service";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, User, Mail, Calendar } from "lucide-react";
@@ -9,13 +10,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { Inquiry } from '@/lib/types';
 
-export default function InquiryDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function InquiryDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [inquiry, setInquiry] = useState<Inquiry | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     const fetchInquiry = async () => {
       try {
         setLoading(true);

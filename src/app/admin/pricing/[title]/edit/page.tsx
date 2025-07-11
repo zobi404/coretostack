@@ -2,18 +2,21 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { PricingForm } from '@/components/admin/PricingForm';
 import { getPricingPlan } from "@/lib/services/pricing-service";
 import type { PricingPlan } from '@/lib/types';
 
 
-export default function EditPricingPlanPage({ params }: { params: { title: string } }) {
-  const { title } = params;
+export default function EditPricingPlanPage() {
+  const params = useParams();
+  const title = params.title as string;
   const [plan, setPlan] = useState<PricingPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   
   useEffect(() => {
+    if (!title) return;
     const fetchPlan = async () => {
       try {
         setLoading(true);
