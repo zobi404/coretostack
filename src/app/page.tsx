@@ -184,16 +184,18 @@ export default async function Home() {
             {portfolioItems.map((item, index) => (
               <Link href="/portfolio" key={item.id} className="group">
                 <div className="overflow-hidden rounded-lg bg-background animate-fade-in-up shadow-lg hover:shadow-primary/10 transition-shadow duration-300" style={{ animationDelay: `${index * 150}ms` }}>
+                  <div className="mx-auto max-w-[400px]">
                     <Image
                       src={item.imageUrl}
                       alt={item.title}
-                      width={500}
+                      width={400}
                       height={300}
                       data-ai-hint={item.hint}
                       className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                  </div>
                 </div>
-                <div className="py-4">
+                <div className="py-4 text-center">
                   <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
                   <p className="text-sm text-primary">{item.category}</p>
                 </div>
