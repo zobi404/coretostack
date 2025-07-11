@@ -26,11 +26,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { PortfolioItem } from "@/lib/types"
 import { addPortfolioItem, updatePortfolioItem } from "@/lib/services/portfolio-service"
 import { useRouter } from "next/navigation"
+import { uploadImage } from "@/lib/actions/cloudinary-actions"
 
 const portfolioFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
   category: z.string({ required_error: "Please select a category." }),
-  imageUrl: z.string().url({ message: "Please enter a valid URL." }),
+  imageUrl: z.any().optional(),
   hint: z.string().optional(),
 })
 
@@ -49,7 +50,6 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   const defaultValues: Partial<PortfolioFormValues> = {
     title: project?.title || "",
     category: project?.category || undefined,
-    imageUrl: project?.imageUrl || "",
     hint: project?.hint || "",
   }
   
@@ -60,15 +60,35 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   })
 
   async function onSubmit(data: PortfolioFormValues) {
+    let imageUrl = project?.imageUrl;
+    const image = data.imageUrl?.[0];
+
     try {
+
+        if(image){
+          const formData = new FormData();
+          formData.append('image', image)
+          const res = await uploadImage(formData) as { secure_url: string };
+          imageUrl = res.secure_url
+        }
+
+        if(!imageUrl){
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please upload an image.",
+        });
+        return;
+        }
+
         if (project) {
-            await updatePortfolioItem(project.id, data);
+            await updatePortfolioItem(project.id, {...data, imageUrl});
             toast({
                 title: "Project Updated!",
                 description: "Your portfolio project has been updated.",
             });
         } else {
-            await addPortfolioItem(data);
+            await addPortfolioItem({...data, imageUrl});
             toast({
                 title: "Project Submitted!",
                 description: "Your portfolio project has been saved.",
@@ -129,14 +149,20 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
             <FormField
               control={form.control}
               name="imageUrl"
-              render={({ field }) => (
+              render={({ field: { onChange }, ...field }) => (
                 <FormItem>
-                  <FormLabel>Image URL</FormLabel>
+                  <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://placehold.co/600x400.png" {...field} />
+                    <Input
+                     type="file"
+                     {...field} 
+                     onChange={(e) => {
+                       onChange(e.target.files)
+                     }}
+                     />
                   </FormControl>
                    <FormDescription>
-                      Provide a URL for the project image.
+                      Upload an image for the project.
                     </FormDescription>
                   <FormMessage />
                 </FormItem>

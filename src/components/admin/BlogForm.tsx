@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { Post } from "@/lib/types"
 import { addPost, updatePost } from "@/lib/services/blog-service"
 import { useRouter } from "next/navigation"
+import { uploadImage } from "@/lib/actions/cloudinary-actions"
 
 const blogFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
@@ -27,9 +28,9 @@ const blogFormSchema = z.object({
   tags: z.string().min(2, "Please add at least one tag."),
   content: z.string().min(100, "Content must be at least 100 characters long."),
   excerpt: z.string().min(10, "Excerpt is required.").max(200, "Excerpt too long."),
-  imageUrl: z.string().url("Must be a valid URL."),
+  imageUrl: z.any().optional(),
   imageHint: z.string().optional(),
-  authorImage: z.string().url("Author image must be a valid URL."),
+  authorImage: z.any().optional(),
 })
 
 type BlogFormValues = z.infer<typeof blogFormSchema>
@@ -48,8 +49,6 @@ export function BlogForm({ post }: BlogFormProps) {
     tags: post?.tags || "",
     content: post?.content || "",
     excerpt: post?.excerpt || "",
-    imageUrl: post?.imageUrl || "https://placehold.co/1200x630.png",
-    authorImage: post?.authorImage || "https://placehold.co/100x100.png",
     imageHint: post?.imageHint || "",
   }
   
@@ -60,13 +59,45 @@ export function BlogForm({ post }: BlogFormProps) {
   })
 
   async function onSubmit(data: BlogFormValues) {
-    const postData = {
-        ...data,
-        tags: data.tags.split(',').map(tag => tag.trim()),
-        date: post?.date || new Date().toISOString().split('T')[0], // Keep original date or set new one
-    };
+    let imageUrl = post?.imageUrl;
+    let authorImage = post?.authorImage;
+
+    const postImage = data.imageUrl?.[0];
+    const authorAvatar = data.authorImage?.[0];
 
     try {
+        if(postImage){
+          const postImageFormData = new FormData();
+          postImageFormData.append('image', postImage)
+          const postImageRes = await uploadImage(postImageFormData) as { secure_url: string };
+          imageUrl = postImageRes.secure_url;
+        }
+
+        if(authorAvatar){
+          const authorAvatarFormData = new FormData();
+          authorAvatarFormData.append('image', authorAvatar)
+          const authorAvatarRes = await uploadImage(authorAvatarFormData) as { secure_url: string };
+          authorImage = authorAvatarRes.secure_url;
+        }
+
+        if(!imageUrl || !authorImage){
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please upload all images.",
+        });
+        return;
+        }
+
+        const postData = {
+          ...data,
+          imageUrl,
+          authorImage,
+          tags: data.tags.split(',').map(tag => tag.trim()),
+          date: post?.date || new Date().toISOString().split('T')[0], // Keep original date or set new one
+        };
+
+
         if (post) {
             await updatePost(post.id, postData);
             toast({
@@ -127,11 +158,17 @@ export function BlogForm({ post }: BlogFormProps) {
                <FormField
                 control={form.control}
                 name="authorImage"
-                render={({ field }) => (
+                render={({ field: { onChange }, ...field }) => (
                   <FormItem>
                     <FormLabel>Author Image URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://placehold.co/100x100.png" {...field} />
+                      <Input 
+                      type="file"
+                      {...field}
+                      onChange={(e) => {
+                        onChange(e.target.files)
+                      }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,11 +195,17 @@ export function BlogForm({ post }: BlogFormProps) {
                 <FormField
                 control={form.control}
                 name="imageUrl"
-                render={({ field }) => (
+                render={({ field: { onChange }, ...field}) => (
                     <FormItem>
                     <FormLabel>Post Image URL</FormLabel>
                     <FormControl>
-                        <Input placeholder="https://placehold.co/1200x630.png" {...field} />
+                        <Input
+                        type="file"
+                        {...field} 
+                        onChange={(e) => {
+                          onChange(e.target.files)
+                        }}
+                        />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
