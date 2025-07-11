@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ContactForm } from "@/components/contact/ContactForm";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function ContactPage() {
@@ -54,15 +52,7 @@ export default function ContactPage() {
                     <CardTitle className="font-headline text-2xl">Send us a Message</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form className="space-y-6">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <Input placeholder="Your Name" />
-                            <Input type="email" placeholder="Your Email" />
-                        </div>
-                        <Input placeholder="Subject" />
-                        <Textarea placeholder="Your Message" rows={6} />
-                        <Button type="submit" size="lg" className="w-full">Send Message</Button>
-                    </form>
+                   <ContactForm />
                 </CardContent>
             </Card>
         </div>
