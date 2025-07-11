@@ -14,10 +14,11 @@ export interface Post {
 
 export interface Comment {
   id: string;
+  postId: string;
   author: string;
   authorImage: string;
-  timestamp: string;
   text: string;
+  createdAt: string;
 }
 
 export interface PortfolioItem {
