@@ -8,8 +8,8 @@ export function Logo({ className }: { className?: string }) {
       <Image 
         src="/logo.png" 
         alt="CoreToStack Logo" 
-        width={32} 
-        height={32} 
+        width={80} 
+        height={80} 
         className="h-20 w-20"
       />
       {/* <span className="font-headline">CoreToStack</span> */}
