@@ -25,7 +25,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="relative">
              <Image
-              src="https://placehold.co/600x600.png"
+              src="/about.jpg"
               alt="Team collaboration"
               width={600}
               height={600}
