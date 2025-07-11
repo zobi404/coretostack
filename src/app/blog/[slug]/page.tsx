@@ -1,15 +1,10 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { getPost, getPosts } from '@/lib/services/blog-service';
 import { mockComments } from '@/lib/mock-data';
-
-const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { 
-  ssr: false,
-  loading: () => <p>Loading comments...</p> 
-});
+import BlogPostClient from '@/components/blog/BlogPostClient';
 
 export const revalidate = 60; // Revalidate this page every 60 seconds
 
@@ -58,12 +53,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         />
       </div>
 
-      <div 
-        className="prose dark:prose-invert max-w-none text-foreground prose-p:text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      <BlogPostClient post={post} initialComments={mockComments} />
 
-      <CommentSection initialComments={mockComments} postId={post.id} />
     </article>
   );
 }
