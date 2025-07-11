@@ -90,60 +90,61 @@ export default function AdminPortfolioPage() {
         </Button>
       </div>
       
-      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <Card>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="hidden w-[100px] sm:table-cell">Image</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="hidden sm:table-cell">
-                      <Image
-                        alt={item.title}
-                        className="aspect-square rounded-md object-cover"
-                        height="64"
-                        src={item.bannerImageUrl || "https://placehold.co/64x64.png"}
-                        width="64"
-                        data-ai-hint={item.bannerImageHint || "abstract"}
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">{item.title}</TableCell>
-                    <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem asChild>
-                            <Link href={`/admin/portfolio/${item.id}/edit`}>Edit</Link>
+      <Card>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="hidden w-[100px] sm:table-cell">Image</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead><span className="sr-only">Actions</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="hidden sm:table-cell">
+                    <Image
+                      alt={item.title}
+                      className="aspect-square rounded-md object-cover"
+                      height="64"
+                      src={item.bannerImageUrl || "https://placehold.co/64x64.png"}
+                      width="64"
+                      data-ai-hint={item.bannerImageHint || "abstract"}
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium">{item.title}</TableCell>
+                  <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/portfolio/${item.id}/edit`}>Edit</Link>
+                        </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onSelect={() => openDeleteDialog(item)}
+                          >
+                            Delete
                           </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-destructive"
-                              onSelect={() => openDeleteDialog(item)}
-                            >
-                              Delete
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>

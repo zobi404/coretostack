@@ -26,7 +26,7 @@ export default async function PortfolioDetailPage({ params }: { params: { id: st
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="mb-8">
+        <div className="mb-12">
             <Button variant="outline" asChild>
                 <Link href="/portfolio" className="inline-flex items-center gap-2">
                     <ArrowLeft className="h-4 w-4" />
@@ -35,46 +35,48 @@ export default async function PortfolioDetailPage({ params }: { params: { id: st
             </Button>
         </div>
       
-      <header className="mb-12 text-center">
-        <Badge variant="secondary" className="mb-4">{item.category}</Badge>
-        <h1 className="font-headline text-4xl md:text-6xl font-bold mb-4">{item.title}</h1>
-        {item.projectUrl && (
-             <Button variant="link" asChild>
-                <a href={item.projectUrl} target="_blank" rel="noopener noreferrer">
-                    Visit Project <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-            </Button>
-        )}
-      </header>
-
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-16 shadow-lg">
-        <Image 
-            src={item.bannerImageUrl} 
-            alt={item.title} 
-            fill 
-            data-ai-hint={item.bannerImageHint}
-            className="object-cover" 
-            priority
-        />
-      </div>
-
-      <div className="max-w-4xl mx-auto mb-16">
-        <h2 className="font-headline text-3xl font-bold mb-4">About the Project</h2>
-        <div 
-            className="prose dark:prose-invert max-w-none text-muted-foreground"
-            dangerouslySetInnerHTML={{ __html: item.description }}
-        />
+      <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
+        <div className="lg:col-span-2">
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-16 shadow-lg">
+                <Image 
+                    src={item.bannerImageUrl} 
+                    alt={item.title} 
+                    fill 
+                    data-ai-hint={item.bannerImageHint}
+                    className="object-cover" 
+                    priority
+                />
+            </div>
+        </div>
+        
+        <aside className="lg:col-span-1">
+            <div className="sticky top-24">
+                 <Badge variant="secondary" className="mb-4">{item.category}</Badge>
+                <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4">{item.title}</h1>
+                <div 
+                    className="prose dark:prose-invert max-w-none text-muted-foreground mb-8"
+                    dangerouslySetInnerHTML={{ __html: item.description }}
+                />
+                {item.projectUrl && (
+                    <Button asChild>
+                        <a href={item.projectUrl} target="_blank" rel="noopener noreferrer">
+                            Visit Project <ExternalLink className="ml-2 h-4 w-4" />
+                        </a>
+                    </Button>
+                )}
+            </div>
+        </aside>
       </div>
 
        {item.carouselImageUrls && item.carouselImageUrls.length > 0 && (
-         <div className="max-w-6xl mx-auto">
+         <div className="mt-24">
           <h2 className="font-headline text-3xl font-bold mb-8 text-center">Project Gallery</h2>
-          <Carousel className="w-full" opts={{ loop: true }}>
+          <Carousel className="w-full max-w-4xl mx-auto" opts={{ loop: true }}>
               <CarouselContent>
               {item.carouselImageUrls.map((url, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={index} className="md:basis-1/2">
                   <div className="p-1">
-                      <div className="aspect-square relative overflow-hidden rounded-lg">
+                      <div className="aspect-video relative overflow-hidden rounded-lg">
                           <Image
                               src={url}
                               alt={`${item.title} gallery image ${index + 1}`}
