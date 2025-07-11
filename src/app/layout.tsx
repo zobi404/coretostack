@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import RootLayoutClient from "./RootLayoutClient";
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import { cn } from "@/lib/utils";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -32,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("font-body antialiased", ptSans.variable, playfairDisplay.variable)}>
+        <GoogleAnalytics />
         <RootLayoutClient>{children}</RootLayoutClient>
         <Toaster />
       </body>
