@@ -12,19 +12,13 @@ export default function GoogleAnalytics() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!GA_MEASUREMENT_ID) {
+    if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") {
       return;
     }
     const url = pathname + searchParams.toString();
-    
-    // @ts-ignore
-    if (window.gtag) {
-        // @ts-ignore
-        window.gtag("config", GA_MEASUREMENT_ID, {
-            page_path: url,
-        });
-    }
-
+    window.gtag("config", GA_MEASUREMENT_ID, {
+      page_path: url,
+    });
   }, [pathname, searchParams]);
 
   if (!GA_MEASUREMENT_ID) {
@@ -45,6 +39,7 @@ export default function GoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+            
             gtag('config', '${GA_MEASUREMENT_ID}', {
               page_path: window.location.pathname,
             });
