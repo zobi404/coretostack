@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, Trash2, Eye } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { getInquiries, deleteInquiry } from "@/lib/services/inquiry-service";
@@ -17,6 +18,7 @@ export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [inquiryToDelete, setInquiryToDelete] = useState<Inquiry | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -30,7 +32,7 @@ export default function AdminInquiriesPage() {
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load inquiries.",
+          description: "Failed to load inquiries. Check permissions.",
         });
       } finally {
         setLoading(false);
@@ -57,9 +59,15 @@ export default function AdminInquiriesPage() {
         });
       } finally {
         setInquiryToDelete(null);
+        setIsAlertOpen(false);
       }
     }
   };
+
+  const openDeleteDialog = (inquiry: Inquiry) => {
+    setInquiryToDelete(inquiry);
+    setIsAlertOpen(true);
+  }
 
   if (loading) {
     return <div>Loading inquiries...</div>;
@@ -74,7 +82,7 @@ export default function AdminInquiriesPage() {
         </div>
       </div>
       
-      <AlertDialog>
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <Card>
           <CardContent className="p-0">
             <Table>
@@ -108,14 +116,12 @@ export default function AdminInquiriesPage() {
                                 <Eye className="h-4 w-4" /> View Message
                               </Link>
                            </DropdownMenuItem>
-                          <AlertDialogTrigger asChild>
                             <DropdownMenuItem 
                               className="text-destructive flex items-center gap-2"
-                              onSelect={() => setInquiryToDelete(inquiry)}
+                              onSelect={() => openDeleteDialog(inquiry)}
                             >
                               <Trash2 className="h-4 w-4" /> Delete
                             </DropdownMenuItem>
-                          </AlertDialogTrigger>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -133,7 +139,7 @@ export default function AdminInquiriesPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setInquiryToDelete(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setIsAlertOpen(false)}>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
