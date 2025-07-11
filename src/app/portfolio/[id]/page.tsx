@@ -16,7 +16,7 @@ export async function generateStaticParams() {
   }
 }
 
-export default function PortfolioDetailPage({ params }: { params: { id: string } }) {
+export default async function PortfolioDetailPage({ params }: { params: { id: string } }) {
   if (!params.id) {
     notFound();
   }
