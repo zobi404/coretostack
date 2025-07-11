@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sidebar, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import AdminSidebarContent from '@/components/layout/AdminSidebarContent';
 import AdminHeader from '@/components/layout/AdminHeader';
 import { Toaster } from '@/components/ui/toaster';
