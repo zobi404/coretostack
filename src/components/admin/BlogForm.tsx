@@ -18,28 +18,39 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Post } from "@/lib/types"
+import { addPost, updatePost } from "@/lib/services/blog-service"
+import { useRouter } from "next/navigation"
 
 const blogFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
   author: z.string().min(2, "Author name is required."),
   tags: z.string().min(2, "Please add at least one tag."),
   content: z.string().min(100, "Content must be at least 100 characters long."),
+  excerpt: z.string().min(10, "Excerpt is required.").max(200, "Excerpt too long."),
+  imageUrl: z.string().url("Must be a valid URL."),
+  imageHint: z.string().optional(),
+  authorImage: z.string().url("Author image must be a valid URL."),
 })
 
 type BlogFormValues = z.infer<typeof blogFormSchema>
 
 interface BlogFormProps {
-  post?: Partial<Post> & { tags: string }; // Allow post to be optional for creation
+  post?: Post & { tags: string }; // Allow post to be optional for creation
 }
 
 export function BlogForm({ post }: BlogFormProps) {
   const { toast } = useToast()
+  const router = useRouter()
   
   const defaultValues: Partial<BlogFormValues> = {
     title: post?.title || "",
     author: post?.author || "",
     tags: post?.tags || "",
     content: post?.content || "",
+    excerpt: post?.excerpt || "",
+    imageUrl: post?.imageUrl || "https://placehold.co/1200x630.png",
+    authorImage: post?.authorImage || "https://placehold.co/100x100.png",
+    imageHint: post?.imageHint || "",
   }
   
   const form = useForm<BlogFormValues>({
@@ -48,13 +59,37 @@ export function BlogForm({ post }: BlogFormProps) {
     mode: "onChange",
   })
 
-  function onSubmit(data: BlogFormValues) {
-    toast({
-      title: `Blog Post ${post ? 'Updated' : 'Submitted'}!`,
-      description: `Your blog post has been ${post ? 'updated' : 'saved'}.`,
-    })
-    console.log(data)
-    // Here you would typically call an API to save the data
+  async function onSubmit(data: BlogFormValues) {
+    const postData = {
+        ...data,
+        tags: data.tags.split(',').map(tag => tag.trim()),
+        date: post?.date || new Date().toISOString().split('T')[0], // Keep original date or set new one
+    };
+
+    try {
+        if (post) {
+            await updatePost(post.id, postData);
+            toast({
+                title: "Blog Post Updated!",
+                description: "Your blog post has been successfully updated.",
+            });
+        } else {
+            await addPost(postData);
+            toast({
+                title: "Blog Post Submitted!",
+                description: "Your new blog post has been saved.",
+            });
+        }
+        router.push('/admin/blog');
+        router.refresh(); // re-fetch server-side data
+    } catch (error) {
+        console.error("Failed to save post:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to save the blog post. Please try again.",
+        });
+    }
   }
 
   return (
@@ -91,21 +126,82 @@ export function BlogForm({ post }: BlogFormProps) {
               />
                <FormField
                 control={form.control}
-                name="tags"
+                name="authorImage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tags</FormLabel>
+                    <FormLabel>Author Image URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="UI/UX, Design" {...field} />
+                      <Input placeholder="https://placehold.co/100x100.png" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Separate tags with commas.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <Input placeholder="UI/UX, Design" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Separate tags with commas.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid md:grid-cols-2 gap-8">
+                <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Post Image URL</FormLabel>
+                    <FormControl>
+                        <Input placeholder="https://placehold.co/1200x630.png" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="imageHint"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Image AI Hint</FormLabel>
+                    <FormControl>
+                        <Input placeholder="minimalist workspace" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                        One or two keywords for AI image generation.
+                    </FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
+             <FormField
+              control={form.control}
+              name="excerpt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Excerpt</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="A short summary of the post..."
+                      className="min-h-[100px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="content"
@@ -114,8 +210,8 @@ export function BlogForm({ post }: BlogFormProps) {
                   <FormLabel>Content</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Write your blog post here... Markdown is supported."
-                      className="min-h-[200px]"
+                      placeholder="Write your blog post here... HTML is supported."
+                      className="min-h-[300px]"
                       {...field}
                     />
                   </FormControl>
@@ -123,7 +219,9 @@ export function BlogForm({ post }: BlogFormProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit">{post ? 'Update Post' : 'Create Post'}</Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Saving..." : (post ? 'Update Post' : 'Create Post')}
+            </Button>
           </form>
         </Form>
       </CardContent>

@@ -1,20 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Briefcase, Eye, ArrowRight } from "lucide-react";
-import { mockPosts } from "@/lib/mock-data";
+import { Users, FileText, Briefcase, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { getPosts } from "@/lib/services/blog-service";
+import { getPortfolioItems } from "@/lib/services/portfolio-service";
 
-// This would typically come from a centralized data source or API
-const portfolioItems = [
-  { id: 1, title: "Innovate Inc. Website", category: "Web Development", imageUrl: "https://placehold.co/100x100.png", hint: "corporate office" },
-  { id: 2, title: "ConnectApp UI/UX", category: "UI/UX Design", imageUrl: "https://placehold.co/100x100.png", hint: "mobile app" },
-  { id: 3, title: "EcoGoods Branding", category: "Branding", imageUrl: "https://placehold.co/100x100.png", hint: "nature minimalist" },
-];
+export const revalidate = 60; // Revalidate data every 60 seconds
 
-export default function AdminDashboardPage() {
-  const recentPosts = mockPosts.slice(0, 3);
+export default async function AdminDashboardPage() {
+  const posts = await getPosts();
+  const portfolioItems = await getPortfolioItems();
+
+  const recentPosts = posts.slice(0, 3);
   const recentProjects = portfolioItems.slice(0, 3);
 
   return (
@@ -47,7 +46,7 @@ export default function AdminDashboardPage() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockPosts.length}</div>
+            <div className="text-2xl font-bold">{posts.length}</div>
             <p className="text-xs text-muted-foreground">Total published posts</p>
           </CardContent>
         </Card>
@@ -76,12 +75,12 @@ export default function AdminDashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {recentPosts.map(post => (
-                <div key={post.slug} className="flex items-start gap-4">
+                <div key={post.id} className="flex items-start gap-4">
                   <div className="flex-grow">
                      <Link href={`/blog/${post.slug}`} className="font-semibold hover:underline" target="_blank">
                       {post.title}
                     </Link>
-                    <p className="text-sm text-muted-foreground">{post.author} &middot; {post.date}</p>
+                    <p className="text-sm text-muted-foreground">{post.author} &middot; {new Date(post.date).toLocaleDateString()}</p>
                   </div>
                 </div>
               ))}

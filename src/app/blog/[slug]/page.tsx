@@ -3,17 +3,16 @@ import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { mockPosts, mockComments } from '@/lib/mock-data';
+import { getPost, getPosts } from '@/lib/services/blog-service';
+import { mockComments } from '@/lib/mock-data';
 
 const CommentSection = dynamic(() => import('@/components/blog/CommentSection'), { ssr: false });
 
-// This function would fetch data from a CMS in a real app
-async function getPost(slug: string) {
-  return mockPosts.find(post => post.slug === slug);
-}
+export const revalidate = 60; // Revalidate this page every 60 seconds
 
 export async function generateStaticParams() {
-  return mockPosts.map(post => ({
+  const posts = await getPosts();
+  return posts.map(post => ({
     slug: post.slug,
   }));
 }
@@ -41,7 +40,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             <span>{post.author}</span>
           </div>
           <span>•</span>
-          <time dateTime={post.date}>{post.date}</time>
+          <time dateTime={post.date}>{new Date(post.date).toLocaleDateString()}</time>
         </div>
       </header>
       
@@ -60,7 +59,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
 
-      <CommentSection initialComments={mockComments} postId={post.slug} />
+      <CommentSection initialComments={mockComments} postId={post.id} />
     </article>
   );
 }

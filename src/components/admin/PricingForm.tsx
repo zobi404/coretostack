@@ -19,13 +19,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
 import type { PricingPlan } from "@/lib/types"
+import { addPricingPlan, updatePricingPlan } from "@/lib/services/pricing-service"
+import { useRouter } from "next/navigation"
 
 const pricingFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   price: z.string().min(1, "Price is required (e.g., $99, Custom)."),
   description: z.string().min(10, "Description is required."),
   features: z.string().min(10, "Please list at least one feature."),
-  isRecommended: z.boolean().default(false).optional(),
+  recommended: z.boolean().default(false).optional(),
 })
 
 type PricingFormValues = z.infer<typeof pricingFormSchema>
@@ -36,13 +38,14 @@ interface PricingFormProps {
 
 export function PricingForm({ plan }: PricingFormProps) {
   const { toast } = useToast()
+  const router = useRouter()
   
   const defaultValues: Partial<PricingFormValues> = {
     title: plan?.title || "",
     price: plan?.price || "",
     description: plan?.description || "",
-    features: plan?.features || "",
-    isRecommended: plan?.recommended || false,
+    features: plan?.features || "", // Stored as a single string, split by newlines
+    recommended: plan?.recommended || false,
   }
 
   const form = useForm<PricingFormValues>({
@@ -51,12 +54,31 @@ export function PricingForm({ plan }: PricingFormProps) {
     mode: "onChange",
   })
 
-  function onSubmit(data: PricingFormValues) {
-    toast({
-      title: `Pricing Plan ${plan ? 'Updated' : 'Submitted'}!`,
-      description: `Your pricing plan has been ${plan ? 'updated' : 'saved'}.`,
-    })
-    console.log(data)
+  async function onSubmit(data: PricingFormValues) {
+    try {
+        if (plan) {
+            await updatePricingPlan(plan.id, data);
+            toast({
+                title: "Pricing Plan Updated!",
+                description: "Your pricing plan has been updated.",
+            });
+        } else {
+            await addPricingPlan(data);
+            toast({
+                title: "Pricing Plan Submitted!",
+                description: "Your new pricing plan has been saved.",
+            });
+        }
+        router.push('/admin/pricing');
+        router.refresh();
+    } catch (error) {
+        console.error("Failed to save pricing plan:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to save the pricing plan. Please try again.",
+        });
+    }
   }
 
   return (
@@ -127,7 +149,7 @@ export function PricingForm({ plan }: PricingFormProps) {
             />
              <FormField
                 control={form.control}
-                name="isRecommended"
+                name="recommended"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
@@ -147,7 +169,9 @@ export function PricingForm({ plan }: PricingFormProps) {
                   </FormItem>
                 )}
               />
-            <Button type="submit">{plan ? 'Update Plan' : 'Create Plan'}</Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Saving..." : (plan ? 'Update Plan' : 'Create Plan')}
+            </Button>
           </form>
         </Form>
       </CardContent>

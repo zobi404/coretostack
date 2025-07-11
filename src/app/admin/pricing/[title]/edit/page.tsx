@@ -1,14 +1,11 @@
 import { PricingForm } from '@/components/admin/PricingForm';
-import { mockPricingPlans } from "@/lib/mock-data";
+import { getPricingPlan } from "@/lib/services/pricing-service";
 import { notFound } from 'next/navigation';
 
-// This would fetch real data in a real app
-async function getPlan(title: string) {
-    return mockPricingPlans.find(p => p.title === decodeURIComponent(title));
-}
 
 export default async function EditPricingPlanPage({ params }: { params: { title: string } }) {
-  const plan = await getPlan(params.title);
+  // The param is now the document ID, not the title
+  const plan = await getPricingPlan(params.title);
 
   if (!plan) {
     return notFound();

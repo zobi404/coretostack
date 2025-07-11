@@ -24,11 +24,14 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent } from "@/components/ui/card"
 import type { PortfolioItem } from "@/lib/types"
+import { addPortfolioItem, updatePortfolioItem } from "@/lib/services/portfolio-service"
+import { useRouter } from "next/navigation"
 
 const portfolioFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title must not be longer than 100 characters."),
   category: z.string({ required_error: "Please select a category." }),
   imageUrl: z.string().url({ message: "Please enter a valid URL." }),
+  hint: z.string().optional(),
 })
 
 type PortfolioFormValues = z.infer<typeof portfolioFormSchema>
@@ -41,11 +44,13 @@ const categories = ["Web Development", "UI/UX Design", "Mobile App", "Branding"]
 
 export function PortfolioForm({ project }: PortfolioFormProps) {
   const { toast } = useToast()
+  const router = useRouter()
   
   const defaultValues: Partial<PortfolioFormValues> = {
     title: project?.title || "",
     category: project?.category || undefined,
     imageUrl: project?.imageUrl || "",
+    hint: project?.hint || "",
   }
   
   const form = useForm<PortfolioFormValues>({
@@ -54,12 +59,31 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     mode: "onChange",
   })
 
-  function onSubmit(data: PortfolioFormValues) {
-    toast({
-      title: `Project ${project ? 'Updated' : 'Submitted'}!`,
-      description: `Your portfolio project has been ${project ? 'updated' : 'saved'}.`,
-    })
-    console.log(data)
+  async function onSubmit(data: PortfolioFormValues) {
+    try {
+        if (project) {
+            await updatePortfolioItem(project.id, data);
+            toast({
+                title: "Project Updated!",
+                description: "Your portfolio project has been updated.",
+            });
+        } else {
+            await addPortfolioItem(data);
+            toast({
+                title: "Project Submitted!",
+                description: "Your portfolio project has been saved.",
+            });
+        }
+        router.push('/admin/portfolio');
+        router.refresh();
+    } catch (error) {
+        console.error("Failed to save project:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to save the project. Please try again.",
+        });
+    }
   }
 
   return (
@@ -118,7 +142,22 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit">{project ? 'Update Project' : 'Add Project'}</Button>
+             <FormField
+              control={form.control}
+              name="hint"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image AI Hint</FormLabel>
+                  <FormControl>
+                    <Input placeholder="corporate office" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Saving..." : (project ? 'Update Project' : 'Add Project')}
+            </Button>
           </form>
         </Form>
       </CardContent>

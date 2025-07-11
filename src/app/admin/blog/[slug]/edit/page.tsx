@@ -1,14 +1,10 @@
 import { BlogForm } from '@/components/admin/BlogForm';
-import { mockPosts } from "@/lib/mock-data";
+import { getPostById } from "@/lib/services/blog-service";
 import { notFound } from 'next/navigation';
 
-// This would fetch real data in a real app
-async function getPost(slug: string) {
-    return mockPosts.find(p => p.slug === slug);
-}
-
 export default async function EditBlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+  // Use slug as the ID for fetching
+  const post = await getPostById(params.slug);
 
   if (!post) {
     return notFound();

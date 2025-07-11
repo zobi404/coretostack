@@ -1,15 +1,9 @@
 import { PortfolioForm } from '@/components/admin/PortfolioForm';
-import { mockPortfolioItems } from "@/lib/mock-data";
+import { getPortfolioItem } from "@/lib/services/portfolio-service";
 import { notFound } from 'next/navigation';
 
-// This would fetch real data in a real app
-async function getProject(id: string) {
-    const projectId = parseInt(id, 10);
-    return mockPortfolioItems.find(p => p.id === projectId);
-}
-
 export default async function EditPortfolioItemPage({ params }: { params: { id: string } }) {
-  const project = await getProject(params.id);
+  const project = await getPortfolioItem(params.id);
 
   if (!project) {
     return notFound();

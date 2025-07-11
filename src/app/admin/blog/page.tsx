@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,19 +9,60 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
-import { mockPosts } from "@/lib/mock-data";
+import { getPosts, deletePost } from "@/lib/services/blog-service";
 import type { Post } from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminBlogPage() {
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
   const [postToDelete, setPostToDelete] = useState<Post | null>(null);
+  const { toast } = useToast();
 
-  const handleDelete = () => {
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const fetchedPosts = await getPosts();
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load blog posts.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPosts();
+  }, [toast]);
+
+  const handleDelete = async () => {
     if (postToDelete) {
-      setPosts(posts.filter(p => p.slug !== postToDelete.slug));
-      setPostToDelete(null);
+      try {
+        await deletePost(postToDelete.id);
+        setPosts(posts.filter(p => p.id !== postToDelete.id));
+        toast({
+          title: "Success",
+          description: "Blog post deleted successfully.",
+        });
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete blog post.",
+        });
+      } finally {
+        setPostToDelete(null);
+      }
     }
   };
+
+  if (loading) {
+    return <div>Loading posts...</div>;
+  }
 
   return (
     <div>
@@ -53,7 +94,7 @@ export default function AdminBlogPage() {
               </TableHeader>
               <TableBody>
                 {posts.map((post) => (
-                  <TableRow key={post.slug}>
+                  <TableRow key={post.id}>
                     <TableCell className="font-medium">{post.title}</TableCell>
                     <TableCell>{post.author}</TableCell>
                     <TableCell><Badge variant="outline">Published</Badge></TableCell>
@@ -68,7 +109,7 @@ export default function AdminBlogPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                            <DropdownMenuItem asChild>
-                              <Link href={`/admin/blog/${post.slug}/edit`}>Edit</Link>
+                              <Link href={`/admin/blog/${post.id}/edit`}>Edit</Link>
                            </DropdownMenuItem>
                           <AlertDialogTrigger asChild>
                             <DropdownMenuItem 

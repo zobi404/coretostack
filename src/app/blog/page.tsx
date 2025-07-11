@@ -3,9 +3,13 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { mockPosts } from "@/lib/mock-data";
+import { getPosts } from "@/lib/services/blog-service";
 
-export default function BlogPage() {
+export const revalidate = 60; // Revalidate this page every 60 seconds
+
+export default async function BlogPage() {
+  const posts = await getPosts();
+
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center mb-16 md:mb-24">
@@ -16,7 +20,7 @@ export default function BlogPage() {
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-        {mockPosts.map((post) => (
+        {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
             <Card className="h-full flex flex-col transition-shadow hover:shadow-2xl bg-card border-none">
               <CardHeader className="p-0">
@@ -45,7 +49,7 @@ export default function BlogPage() {
                   </Avatar>
                   <div>
                     <p className="text-sm font-semibold">{post.author}</p>
-                    <p className="text-xs text-muted-foreground">{post.date}</p>
+                    <p className="text-xs text-muted-foreground">{new Date(post.date).toLocaleDateString()}</p>
                   </div>
                 </div>
               </CardFooter>

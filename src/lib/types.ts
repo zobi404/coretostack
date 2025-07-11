@@ -1,4 +1,5 @@
 export interface Post {
+  id: string;
   slug: string;
   title: string;
   excerpt: string;
@@ -20,7 +21,7 @@ export interface Comment {
 }
 
 export interface PortfolioItem {
-  id: number;
+  id: string;
   title: string;
   category: string;
   imageUrl: string;
@@ -28,9 +29,10 @@ export interface PortfolioItem {
 }
 
 export interface PricingPlan {
+  id: string;
   title: string;
   price: string;
   description: string;
-  features: string;
+  features: string; // Comma-separated
   recommended: boolean;
 }

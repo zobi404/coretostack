@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -10,19 +10,58 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
-import { mockPortfolioItems } from "@/lib/mock-data";
+import { getPortfolioItems, deletePortfolioItem } from "@/lib/services/portfolio-service";
 import type { PortfolioItem } from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminPortfolioPage() {
-  const [items, setItems] = useState<PortfolioItem[]>(mockPortfolioItems);
+  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [itemToDelete, setItemToDelete] = useState<PortfolioItem | null>(null);
+  const { toast } = useToast();
 
-  const handleDelete = () => {
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const fetchedItems = await getPortfolioItems();
+        setItems(fetchedItems);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load portfolio items.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchItems();
+  }, [toast]);
+
+  const handleDelete = async () => {
     if (itemToDelete) {
-      setItems(items.filter(item => item.id !== itemToDelete.id));
-      setItemToDelete(null);
+      try {
+        await deletePortfolioItem(itemToDelete.id);
+        setItems(items.filter(item => item.id !== itemToDelete.id));
+        toast({
+          title: "Success",
+          description: "Portfolio item deleted.",
+        });
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete portfolio item.",
+        });
+      } finally {
+        setItemToDelete(null);
+      }
     }
   };
+
+  if (loading) {
+    return <div>Loading items...</div>
+  }
 
   return (
     <div>

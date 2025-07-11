@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,19 +9,58 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
-import { mockPricingPlans } from "@/lib/mock-data";
+import { getPricingPlans, deletePricingPlan } from "@/lib/services/pricing-service";
 import type { PricingPlan } from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminPricingPage() {
-  const [plans, setPlans] = useState<PricingPlan[]>(mockPricingPlans);
+  const [plans, setPlans] = useState<PricingPlan[]>([]);
+  const [loading, setLoading] = useState(true);
   const [planToDelete, setPlanToDelete] = useState<PricingPlan | null>(null);
+  const { toast } = useToast();
 
-  const handleDelete = () => {
+  useEffect(() => {
+    async function fetchPlans() {
+      try {
+        const fetchedPlans = await getPricingPlans();
+        setPlans(fetchedPlans);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load pricing plans.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPlans();
+  }, [toast]);
+
+  const handleDelete = async () => {
     if (planToDelete) {
-      setPlans(plans.filter(p => p.title !== planToDelete.title));
-      setPlanToDelete(null);
+      try {
+        await deletePricingPlan(planToDelete.id);
+        setPlans(plans.filter(p => p.id !== planToDelete.id));
+        toast({
+          title: "Success",
+          description: "Pricing plan deleted.",
+        });
+      } catch (error) {
+         toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete pricing plan.",
+        });
+      } finally {
+        setPlanToDelete(null);
+      }
     }
   };
+
+  if (loading) {
+    return <div>Loading plans...</div>
+  }
 
   return (
     <div>
@@ -52,7 +91,7 @@ export default function AdminPricingPage() {
               </TableHeader>
               <TableBody>
                 {plans.map((plan) => (
-                  <TableRow key={plan.title}>
+                  <TableRow key={plan.id}>
                     <TableCell className="font-medium">{plan.title}</TableCell>
                     <TableCell>{plan.price}</TableCell>
                     <TableCell>
@@ -68,7 +107,7 @@ export default function AdminPricingPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                            <DropdownMenuItem asChild>
-                              <Link href={`/admin/pricing/${encodeURIComponent(plan.title)}/edit`}>Edit</Link>
+                              <Link href={`/admin/pricing/${plan.id}/edit`}>Edit</Link>
                            </DropdownMenuItem>
                           <AlertDialogTrigger asChild>
                             <DropdownMenuItem
