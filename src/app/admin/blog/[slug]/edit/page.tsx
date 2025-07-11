@@ -1,15 +1,53 @@
+
+"use client";
+
+import { useEffect, useState } from 'react';
 import { BlogForm } from '@/components/admin/BlogForm';
 import { getPostById } from "@/lib/services/blog-service";
-import { notFound } from 'next/navigation';
+import type { Post } from '@/lib/types';
 
-export default async function EditBlogPostPage({ params }: { params: { slug: string } }) {
-  // Use slug as the ID for fetching
-  const post = await getPostById(params.slug);
+export default function EditBlogPostPage({ params }: { params: { slug: string } }) {
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!post) {
-    return notFound();
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setLoading(true);
+        // The slug is actually the document ID here
+        const postData = await getPostById(params.slug);
+        if (postData) {
+          setPost(postData);
+        } else {
+          setNotFound(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch post:", error);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [params.slug]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
   }
 
+  if (notFound) {
+    return <div>Post not found.</div>;
+  }
+
+  if (!post) {
+     return null;
+  }
+  
   // Convert tags array back to a comma-separated string for the form
   const postForForm = { ...post, tags: post.tags.join(', ') };
 

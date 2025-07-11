@@ -1,12 +1,50 @@
+
+"use client";
+
+import { useEffect, useState } from 'react';
 import { PortfolioForm } from '@/components/admin/PortfolioForm';
 import { getPortfolioItem } from "@/lib/services/portfolio-service";
-import { notFound } from 'next/navigation';
+import type { PortfolioItem } from '@/lib/types';
 
-export default async function EditPortfolioItemPage({ params }: { params: { id: string } }) {
-  const project = await getPortfolioItem(params.id);
+export default function EditPortfolioItemPage({ params }: { params: { id: string } }) {
+  const [project, setProject] = useState<PortfolioItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        setLoading(true);
+        const projectData = await getPortfolioItem(params.id);
+        if (projectData) {
+          setProject(projectData);
+        } else {
+          setNotFound(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch project:", error);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProject();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (notFound) {
+    return <div>Project not found.</div>;
+  }
+  
   if (!project) {
-    return notFound();
+    return null;
   }
 
   return (

@@ -1,15 +1,50 @@
+
+"use client";
+
+import { useEffect, useState } from 'react';
 import { getInquiry } from "@/lib/services/inquiry-service";
-import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, User, Mail, Calendar } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import type { Inquiry } from '@/lib/types';
 
-export default async function InquiryDetailPage({ params }: { params: { id: string } }) {
-  const inquiry = await getInquiry(params.id);
+export default function InquiryDetailPage({ params }: { params: { id: string } }) {
+  const [inquiry, setInquiry] = useState<Inquiry | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!inquiry) {
-    return notFound();
+  useEffect(() => {
+    const fetchInquiry = async () => {
+      try {
+        setLoading(true);
+        const inquiryData = await getInquiry(params.id);
+        if (inquiryData) {
+          setInquiry(inquiryData);
+        } else {
+          setNotFound(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch inquiry:", error);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInquiry();
+  }, [params.id]);
+
+
+  if (loading) {
+    return (
+       <div className="flex h-full w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (notFound || !inquiry) {
+    return <div>Inquiry not found.</div>;
   }
 
   return (
