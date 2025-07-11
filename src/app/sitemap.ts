@@ -3,7 +3,7 @@ import { getPosts } from '@/lib/services/blog-service';
 import { getPortfolioItems } from '@/lib/services/portfolio-service';
  
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://localhost:3000';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://coretostack.netlify.app/';
 
   // Fetch dynamic content
   const posts = await getPosts();
