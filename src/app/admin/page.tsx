@@ -104,7 +104,7 @@ export default function AdminDashboardPage() {
                     />
                   <div className="flex-grow">
                     <p className="font-semibold">{item.title}</p>
-                    <p className="text-sm text-muted-foreground"><Badge variant="outline" className="text-xs">{item.category}</Badge></p>
+                    <div className="text-sm text-muted-foreground"><Badge variant="outline" className="text-xs">{item.category}</Badge></div>
                   </div>
                    <Button variant="outline" size="sm" asChild>
                     <Link href={`/admin/portfolio`}>Manage</Link>
