@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import AdminSidebarContent from '@/components/layout/AdminSidebarContent';
-import AdminHeader from '@/components/layout/AdminHeader';
 import { Toaster } from '@/components/ui/toaster';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -48,7 +47,6 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <AdminSidebarContent />
         </Sidebar>
         <div className="flex-1 flex flex-col">
-          <AdminHeader />
           <main className="flex-1 p-4 md:p-6">
             {children}
           </main>
