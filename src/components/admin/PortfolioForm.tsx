@@ -1,4 +1,3 @@
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -61,81 +60,84 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   
   const imageUrlRef = form.register("imageUrl");
 
+  // Unsigned upload to Cloudinary (coretostack preset)
   async function uploadImageViaApi(imageFile: File): Promise<{ secure_url: string } | null> {
-      const formData = new FormData();
-      formData.append('image', imageFile);
+    const formData = new FormData();
+    formData.append("image", imageFile);
 
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to upload image.');
-        }
-
-        return await response.json();
-      } catch (error) {
-        console.error("API Upload Error:", error);
-        toast({
-          variant: "destructive",
-          title: "Image Upload Failed",
-          description: "Could not upload image via API.",
-        });
-        return null;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Upload failed");
       }
-  }
 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Image Upload Error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Could not upload image via API.";
+      toast({
+        variant: "destructive",
+        title: "Image Upload Failed",
+        description: errorMessage,
+      });
+      return null;
+    }
+  }
 
   async function onSubmit(data: PortfolioFormValues) {
     let finalImageUrl = project?.imageUrl;
     const imageFile = data.imageUrl?.[0];
 
     try {
-
-        if (imageFile && imageFile.size > 0) {
-          const res = await uploadImageViaApi(imageFile);
-          if (res) {
-            finalImageUrl = res.secure_url;
-          } else {
-             return; // Stop submission if upload fails
-          }
-        }
-
-        if (!project && !finalImageUrl) {
-          toast({
-            variant: "destructive",
-            title: "Image Error",
-            description: "Please upload an image for the project.",
-          });
-          return;
-        }
-
-        const projectData = { ...data, imageUrl: finalImageUrl };
-
-        if (project) {
-            await updatePortfolioItem(project.id, projectData);
-            toast({
-                title: "Project Updated!",
-                description: "Your portfolio project has been updated.",
-            });
+      if (imageFile && imageFile.size > 0) {
+        const uploadResult = await uploadImageViaApi(imageFile);
+        if (uploadResult) {
+          finalImageUrl = uploadResult.secure_url;
         } else {
-            await addPortfolioItem(projectData);
-            toast({
-                title: "Project Submitted!",
-                description: "Your portfolio project has been saved.",
-            });
+          return; // Stop form submission if image upload fails
         }
-        router.push('/admin/portfolio');
-        router.refresh();
-    } catch (error) {
-        console.error("Failed to save project:", error);
+      }
+
+      if (!project && !finalImageUrl) {
         toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to save the project. Please try again.",
+          variant: "destructive",
+          title: "Image Required",
+          description: "Please upload an image before submitting.",
         });
+        return;
+      }
+
+      const projectData = { ...data, imageUrl: finalImageUrl };
+
+      if (project) {
+        await updatePortfolioItem(project.id, projectData);
+        toast({
+          title: "Project Updated",
+          description: "The project has been updated successfully.",
+        });
+      } else {
+        await addPortfolioItem(projectData);
+        toast({
+          title: "Project Added",
+          description: "The project has been added to your portfolio.",
+        });
+      }
+
+      router.push("/admin/portfolio");
+      router.refresh();
+    } catch (error) {
+      console.error("Error saving project:", error);
+      toast({
+        variant: "destructive",
+        title: "Submission Failed",
+        description: "An error occurred while saving the project.",
+      });
     }
   }
 
@@ -170,8 +172,10 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map(category => (
-                        <SelectItem key={category} value={category}>{category}</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -186,34 +190,32 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <Input
-                     type="file"
-                     accept="image/*"
-                     {...imageUrlRef}
-                     />
+                    <Input type="file" accept="image/*" {...imageUrlRef} />
                   </FormControl>
-                   <FormDescription>
-                      Upload an image for the project.
-                    </FormDescription>
+                  <FormDescription>Upload a project image.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="hint"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image AI Hint</FormLabel>
                   <FormControl>
-                    <Input placeholder="corporate office" {...field} />
+                    <Input placeholder="e.g. corporate office" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Saving..." : (project ? 'Update Project' : 'Add Project')}
+              {form.formState.isSubmitting
+                ? "Saving..."
+                : project
+                ? "Update Project"
+                : "Add Project"}
             </Button>
           </form>
         </Form>

@@ -1,43 +1,50 @@
+import { NextResponse } from "next/server";
+import { IncomingForm, type File } from "formidable";
+import { v2 as cloudinary } from "cloudinary";
 
-import { v2 as cloudinary } from 'cloudinary';
-import { NextResponse } from 'next/server';
-
+// Configure Cloudinary
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function POST(request: Request) {
-    const formData = await request.formData();
-    const file = formData.get('image') as File;
+// Disable Next.js body parsing to allow formidable to handle it
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
+export async function POST(req: Request) {
+  try {
+    const data = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
+      const form = new IncomingForm({
+        multiples: false, // Only allow single file uploads
+      });
+      form.parse(req as any, (err, fields, files) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve({ fields, files });
+      });
+    });
+
+    const file = data.files.image?.[0] as File | undefined;
+    
     if (!file) {
-        return NextResponse.json({ error: "No image file provided" }, { status: 400 });
+      return NextResponse.json({ error: "No image uploaded" }, { status: 400 });
     }
 
-    try {
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+    const result = await cloudinary.uploader.upload(file.filepath, {
+      upload_preset: "coretostack", // your unsigned preset
+    });
+    
+    return NextResponse.json({ secure_url: result.secure_url }, { status: 200 });
 
-        const result = await new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream(
-                { tags: ['coretostack-uploads'] },
-                (error, result) => {
-                    if (error) {
-                        console.error("Cloudinary Upload Error:", error);
-                        reject(error);
-                        return;
-                    }
-                    resolve(result);
-                }
-            ).end(buffer);
-        });
-
-        return NextResponse.json(result);
-    } catch (error) {
-        console.error("Image Upload Error:", error);
-        return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
-    }
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Cloudinary upload failed";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
 }
-
