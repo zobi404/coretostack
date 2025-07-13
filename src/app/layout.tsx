@@ -1,5 +1,6 @@
-export const dynamic = "force-dynamic";
+"use client";
 
+// export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
@@ -22,10 +23,10 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: "CoreToStack",
-  description: "Innovation by Design. We build stunning web and mobile experiences.",
-};
+// export const metadata: Metadata = {
+//   title: "CoreToStack",
+//   description: "Innovation by Design. We build stunning web and mobile experiences.",
+// };
 
 export default function RootLayout({
   children,

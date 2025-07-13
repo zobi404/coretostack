@@ -1,4 +1,3 @@
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -47,6 +46,10 @@ interface PortfolioFormProps {
 
 const categories = ["Web Development", "UI/UX Design", "Mobile App", "Branding"];
 
+// Add your Cloudinary configuration here
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'dfda4qsko';
+const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET || 'coretostack';
+
 export function PortfolioForm({ project }: PortfolioFormProps) {
   const { toast } = useToast()
   const router = useRouter()
@@ -68,35 +71,56 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
   const bannerImageRef = form.register("bannerImageUrl");
   const carouselImagesRef = form.register("carouselImageUrls");
 
-  async function uploadImagesViaApi(imageFiles: FileList): Promise<{ urls: string[] } | null> {
+  // Function to upload single image to Cloudinary
+  async function uploadToCloudinary(file: File): Promise<string | null> {
     const formData = new FormData();
-    Array.from(imageFiles).forEach(file => {
-      formData.append("images", file);
-    });
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('folder', 'portfolio'); // Optional: organize uploads in folders
 
     try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
-      const result = await response.json();
-      
       if (!response.ok) {
-        throw new Error(result.error || "Upload failed");
+        throw new Error('Failed to upload image');
       }
 
-      return result;
+      const data = await response.json();
+      return data.secure_url;
     } catch (error) {
-      console.error("Image Upload Error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Could not upload images.";
-      toast({
-        variant: "destructive",
-        title: "Image Upload Failed",
-        description: errorMessage,
-      });
+      console.error('Cloudinary upload error:', error);
       return null;
     }
+  }
+
+  // Function to upload multiple images to Cloudinary
+  async function uploadMultipleImages(files: FileList): Promise<string[]> {
+    const uploadPromises = Array.from(files).map(file => uploadToCloudinary(file));
+    const results = await Promise.allSettled(uploadPromises);
+    
+    const successfulUploads = results
+      .filter((result): result is PromiseFulfilledResult<string> => 
+        result.status === 'fulfilled' && result.value !== null
+      )
+      .map(result => result.value);
+
+    const failedUploads = results.filter(result => result.status === 'rejected').length;
+    
+    if (failedUploads > 0) {
+      toast({
+        variant: "destructive",
+        title: "Some uploads failed",
+        description: `${failedUploads} out of ${files.length} images failed to upload.`,
+      });
+    }
+
+    return successfulUploads;
   }
 
   async function onSubmit(data: PortfolioFormValues) {
@@ -107,25 +131,50 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
     const carouselFiles = data.carouselImageUrls;
 
     try {
+      // Upload banner image if provided
       if (bannerFile && bannerFile.size > 0) {
-        const uploadResult = await uploadImagesViaApi(data.bannerImageUrl);
-        if (uploadResult?.urls?.[0]) {
-          finalBannerUrl = uploadResult.urls[0];
+        toast({
+          title: "Uploading banner image...",
+          description: "Please wait while we upload your banner image.",
+        });
+
+        const uploadedBannerUrl = await uploadToCloudinary(bannerFile);
+        if (uploadedBannerUrl) {
+          finalBannerUrl = uploadedBannerUrl;
         } else {
-          return; // Stop form submission if image upload fails
+          toast({
+            variant: "destructive",
+            title: "Banner Upload Failed",
+            description: "Could not upload banner image. Please try again.",
+          });
+          return;
         }
       }
 
+      // Upload carousel images if provided
       if (carouselFiles && carouselFiles.length > 0) {
-        const uploadResult = await uploadImagesViaApi(carouselFiles);
-        if (uploadResult?.urls) {
-          // If editing, add new images to existing ones.
-          finalCarouselUrls = project ? [...finalCarouselUrls, ...uploadResult.urls] : uploadResult.urls;
+        toast({
+          title: "Uploading carousel images...",
+          description: "Please wait while we upload your carousel images.",
+        });
+
+        const uploadedCarouselUrls = await uploadMultipleImages(carouselFiles);
+        if (uploadedCarouselUrls.length > 0) {
+          // If editing, add new images to existing ones
+          finalCarouselUrls = project 
+            ? [...finalCarouselUrls, ...uploadedCarouselUrls] 
+            : uploadedCarouselUrls;
         } else {
-            return;
+          toast({
+            variant: "destructive",
+            title: "Carousel Upload Failed",
+            description: "Could not upload carousel images. Please try again.",
+          });
+          return;
         }
       }
 
+      // Check if banner image is required for new projects
       if (!project && !finalBannerUrl) {
         toast({
           variant: "destructive",
@@ -135,12 +184,19 @@ export function PortfolioForm({ project }: PortfolioFormProps) {
         return;
       }
 
+      // Prepare project data
       const projectData = { 
           ...data, 
           projectUrl: data.projectUrl || '',
           bannerImageUrl: finalBannerUrl, 
           carouselImageUrls: finalCarouselUrls,
       };
+
+      // Save to Firebase
+      toast({
+        title: "Saving project...",
+        description: "Please wait while we save your project.",
+      });
 
       if (project) {
         await updatePortfolioItem(project.id, projectData);

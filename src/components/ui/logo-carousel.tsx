@@ -33,6 +33,10 @@ const technologies = [
     name: "Machine Learning",
     logo: "/ai.png",
   },
+  {
+    name: "Next Js",
+    logo: "/next.png",
+  },
 ];
 
 export function LogoCarousel() {

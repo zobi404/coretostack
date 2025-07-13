@@ -1,4 +1,3 @@
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -61,104 +60,130 @@ export function BlogForm({ post }: BlogFormProps) {
   const imageUrlRef = form.register("imageUrl");
   const authorImageRef = form.register("authorImage");
 
-  async function uploadImageViaApi(imageFile: File): Promise<{ urls: string[] } | null> {
-      const formData = new FormData();
-      formData.append('images', imageFile);
-
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-           throw new Error(result.error || 'Failed to upload image.');
-        }
-
-        return result;
-      } catch (error) {
-        console.error("API Upload Error:", error);
-        const errorMessage = error instanceof Error ? error.message : "Could not upload image.";
-        toast({
-          variant: "destructive",
-          title: "Image Upload Failed",
-          description: errorMessage,
-        });
-        return null;
+  async function uploadImageToCloudinary(imageFile: File): Promise<string | null> {
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "coretostack"); // change to your unsigned preset
+  
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/dfda4qsko/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+  
+      if (result.secure_url) {
+        return result.secure_url;
+      } else {
+        throw new Error(result.error?.message || "Upload failed");
       }
+    } catch (error) {
+      console.error("Cloudinary Upload Error:", error);
+      toast({
+        variant: "destructive",
+        title: "Image Upload Failed",
+        description: error instanceof Error ? error.message : "Could not upload image.",
+      });
+      return null;
+    }
   }
-
 
   async function onSubmit(data: BlogFormValues) {
     let finalImageUrl = post?.imageUrl;
     let finalAuthorImageUrl = post?.authorImage;
-
+  
     const postImageFile = data.imageUrl?.[0];
     const authorImageFile = data.authorImage?.[0];
-
+  
     try {
-        if (postImageFile && postImageFile.size > 0) {
-          const postImageRes = await uploadImageViaApi(postImageFile);
-          if (postImageRes?.urls?.[0]) {
-            finalImageUrl = postImageRes.urls[0];
-          } else {
-             return; // Stop submission if upload fails
-          }
-        }
-
-        if (authorImageFile && authorImageFile.size > 0) {
-          const authorAvatarRes = await uploadImageViaApi(authorImageFile);
-          if (authorAvatarRes?.urls?.[0]) {
-            finalAuthorImageUrl = authorAvatarRes.urls[0];
-          } else {
-             return; // Stop submission if upload fails
-          }
-        }
-
-        if (!post && (!finalImageUrl || !finalAuthorImageUrl)) {
+      // Upload post image if new file provided
+      if (postImageFile && postImageFile.size > 0) {
+        toast({
+          title: "Uploading Images...",
+          description: "Please wait while we upload your images.",
+        });
+        
+        const uploadedImageUrl = await uploadImageToCloudinary(postImageFile);
+        if (!uploadedImageUrl) {
           toast({
             variant: "destructive",
-            title: "Image Error",
-            description: "A post image and author image are required for new posts.",
+            title: "Image Upload Failed",
+            description: "Failed to upload the post image.",
           });
           return;
         }
-
-        const postData = {
-          ...data,
-          imageUrl: finalImageUrl,
-          authorImage: finalAuthorImageUrl,
-          tags: data.tags.split(',').map(tag => tag.trim()),
-          date: post?.date || new Date().toISOString().split('T')[0], // Keep original date or set new one
-        };
-
-
-        if (post) {
-            await updatePost(post.id, postData);
-            toast({
-                title: "Blog Post Updated!",
-                description: "Your blog post has been successfully updated.",
-            });
-        } else {
-            await addPost(postData);
-            toast({
-                title: "Blog Post Submitted!",
-                description: "Your new blog post has been saved.",
-            });
+        finalImageUrl = uploadedImageUrl;
+      }
+  
+      // Upload author image if new file provided
+      if (authorImageFile && authorImageFile.size > 0) {
+        if (!postImageFile || postImageFile.size === 0) {
+          toast({
+            title: "Uploading Images...",
+            description: "Please wait while we upload your images.",
+          });
         }
-        router.push('/admin/blog');
-        router.refresh(); // re-fetch server-side data
-    } catch (error) {
-        console.error("Failed to save post:", error);
-        toast({
+        
+        const uploadedAuthorImageUrl = await uploadImageToCloudinary(authorImageFile);
+        if (!uploadedAuthorImageUrl) {
+          toast({
             variant: "destructive",
-            title: "Error",
-            description: "Failed to save the blog post. Please try again.",
+            title: "Image Upload Failed",
+            description: "Failed to upload the author image.",
+          });
+          return;
+        }
+        finalAuthorImageUrl = uploadedAuthorImageUrl;
+      }
+  
+      // For new posts, ensure both images are present
+      if (!post && (!finalImageUrl || !finalAuthorImageUrl)) {
+        toast({
+          variant: "destructive",
+          title: "Missing Images",
+          description: "A post image and author image are required for new posts.",
         });
+        return;
+      }
+  
+      // Prepare post data with Cloudinary URLs
+      const postData = {
+        ...data,
+        imageUrl: finalImageUrl,
+        authorImage: finalAuthorImageUrl,
+        tags: data.tags.split(',').map(tag => tag.trim()),
+        date: post?.date || new Date().toISOString().split('T')[0],
+      };
+  
+      // Save to Firebase
+      if (post) {
+        await updatePost(post.id, postData);
+        toast({
+          title: "Blog Post Updated!",
+          description: "Your blog post has been successfully updated.",
+        });
+      } else {
+        await addPost(postData);
+        toast({
+          title: "Blog Post Created!",
+          description: "Your new blog post has been saved with uploaded images.",
+        });
+      }
+  
+      router.push('/admin/blog');
+      router.refresh();
+  
+    } catch (error) {
+      console.error("Failed to save post:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save the blog post. Please try again.",
+      });
     }
   }
+  
 
   return (
     <Card>
@@ -205,6 +230,9 @@ export function BlogForm({ post }: BlogFormProps) {
                         {...authorImageRef}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Upload an image for the author profile
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -240,6 +268,9 @@ export function BlogForm({ post }: BlogFormProps) {
                           {...imageUrlRef}
                         />
                     </FormControl>
+                    <FormDescription>
+                      Upload the main image for this blog post
+                    </FormDescription>
                     <FormMessage />
                     </FormItem>
                 )}
@@ -254,7 +285,7 @@ export function BlogForm({ post }: BlogFormProps) {
                         <Input placeholder="minimalist workspace" {...field} />
                     </FormControl>
                     <FormDescription>
-                       <span>One or two keywords for AI image generation.</span>
+                       <span>One or two keywords for AI image generation (optional).</span>
                     </FormDescription>
                     <FormMessage />
                     </FormItem>
