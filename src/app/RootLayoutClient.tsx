@@ -1,5 +1,5 @@
 
-// "use client";
+"use client";
 export const dynamic = "force-dynamic";
 
 import { usePathname, useSearchParams } from "next/navigation";
