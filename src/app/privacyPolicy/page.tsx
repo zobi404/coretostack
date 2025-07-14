@@ -1,3 +1,5 @@
+`use client`
+
 import React from 'react';
 import { FileText, Mail, Shield, Eye, Clock, Globe } from 'lucide-react';
 

@@ -1,10 +1,10 @@
-"use client";
+// "use client";
 export const dynamic = "force-dynamic";
 
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
+import RootLayoutClient from "./RootLayoutClient";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import RootLayoutClient from "./RootLayoutClient";
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import { cn } from "@/lib/utils";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
