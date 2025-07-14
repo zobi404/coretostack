@@ -68,10 +68,10 @@ export default function Home() {
             Where solid foundations, meet smart execution!
           </p>
           <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-600">
-            <Button asChild size="lg">
+            <Button asChild size="lg" >
               <Link href="/contact">Get Started</Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="border-2 border-primary" >
               <Link href="/portfolio">Our Work</Link>
             </Button>
           </div>

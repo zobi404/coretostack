@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const words = ["Stack", "Glory", "Imagine"];
 
@@ -9,12 +9,34 @@ export default function TypedHeading() {
   const [subIndex, setSubIndex] = useState(0);
   const [reverse, setReverse] = useState(false);
   const [blink, setBlink] = useState(true);
+  
+  const timeoutRef = useRef(null);
+  const blinkTimeoutRef = useRef(null);
 
-  // Typing effect
+  // Cleanup function
+  const cleanup = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (blinkTimeoutRef.current) {
+      clearTimeout(blinkTimeoutRef.current);
+      blinkTimeoutRef.current = null;
+    }
+  }, []);
+
+  // Typing effect with optimized timing
   useEffect(() => {
-    if (subIndex === words[index].length + 1 && !reverse) {
+    cleanup();
+
+    const currentWord = words[index];
+    
+    if (subIndex === currentWord.length + 1 && !reverse) {
       setBlink(false);
-      setTimeout(() => setReverse(true), 2000); // Pause before deleting
+      timeoutRef.current = setTimeout(() => {
+        setReverse(true);
+        setBlink(true);
+      }, 1500); // Reduced pause time
       return;
     }
 
@@ -25,26 +47,52 @@ export default function TypedHeading() {
       return;
     }
 
-    const timeout = setTimeout(() => {
+    // More consistent timing
+    const baseDelay = reverse ? 50 : 100; // Faster and more consistent
+    const randomDelay = Math.random() * 50; // Reduced randomness
+    const delay = baseDelay + randomDelay;
+
+    timeoutRef.current = setTimeout(() => {
       setSubIndex((prev) => prev + (reverse ? -1 : 1));
-    }, Math.max(reverse ? 75 : 150, Math.random() * 350));
+    }, delay);
 
-    return () => clearTimeout(timeout);
-  }, [subIndex, index, reverse]);
+    return cleanup;
+  }, [subIndex, index, reverse, cleanup]);
 
-  // Blinking cursor effect
+  // Optimized blinking cursor effect
   useEffect(() => {
-    const timeout2 = setTimeout(() => {
+    if (blinkTimeoutRef.current) {
+      clearTimeout(blinkTimeoutRef.current);
+    }
+
+    blinkTimeoutRef.current = setTimeout(() => {
       setBlink(prev => !prev);
-    }, 500);
-    return () => clearTimeout(timeout2);
+    }, 530); // Slightly longer for smoother effect
+
+    return () => {
+      if (blinkTimeoutRef.current) {
+        clearTimeout(blinkTimeoutRef.current);
+      }
+    };
   }, [blink]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
+
+  const currentText = words[index].substring(0, subIndex);
 
   return (
     <h1 className="font-headline text-4xl md:text-7xl font-bold tracking-tighter mb-6 animate-fade-in-up">
-      Core to <span className="text-primary">{words[index].substring(0, subIndex)}</span>
-      <span className={blink ? 'animate-ping' : ''}>|</span>
+      Core to <span className="text-primary">{currentText}</span>
+      <span 
+        className={`inline-block transition-opacity duration-100 ${
+          blink ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        |
+      </span>
     </h1>
   );
 }

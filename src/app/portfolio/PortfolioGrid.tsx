@@ -47,7 +47,7 @@ export default function PortfolioGrid() {
               key={category} 
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
-              className="px-6 py-2"
+              className="px-6 py-2 border-2 border-secondary hover:bg-primary hover:text-black"
             >
               {category}
             </Button>

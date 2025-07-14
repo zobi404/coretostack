@@ -135,7 +135,7 @@ export default function PortfolioDetailClient({ id }: { id: string }) {
     <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16 lg:py-24">
         {/* Back Button */}
         <div className="mb-6 sm:mb-8 md:mb-12">
-            <Button variant="outline" asChild size="sm" className="sm:size-default">
+            <Button variant="outline" asChild size="sm" className="sm:size-default border-2 border-primary hover:bg-primary hover:text-black">
                 <Link href="/portfolio" className="inline-flex items-center gap-2">
                     <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="text-sm sm:text-base">Back to Portfolio</span>
