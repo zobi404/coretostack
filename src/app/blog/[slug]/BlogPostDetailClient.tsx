@@ -94,7 +94,7 @@ export default function BlogPostDetailClient({ slug }: { slug: string }) {
       <Button 
         variant="ghost" 
         onClick={handleGoBack}
-        className="mb-8 transition-colors"
+        className="mb-8 transition-colors border-2 border-primary hover:bg-primary hover:text-black"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back to Blog

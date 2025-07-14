@@ -71,7 +71,7 @@ export default function Home() {
             <Button asChild size="lg" >
               <Link href="/contact">Get Started</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-2 border-primary" >
+            <Button asChild size="lg" variant="outline" className="border-2 border-primary hover:bg-primary hover:text-black" >
               <Link href="/portfolio">Our Work</Link>
             </Button>
           </div>
