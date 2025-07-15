@@ -61,7 +61,7 @@ export function BlogList() {
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {posts.map((post) => (
                 <Link key={post.slug || post.id} href={`/blog/${post.slug || post.id}`} className="group">
-                    <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-card border-none">
+                    <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-card border-2 border-primary hover:shadow-primary">
                         <CardHeader className="p-0">
                             <div className="aspect-video relative overflow-hidden rounded-t-lg">
                                 {post.imageUrl ? (

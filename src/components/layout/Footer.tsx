@@ -58,22 +58,22 @@ export default function Footer() {
               Connect with entrepreneurs, build your network, make great business.
             </p>
             <div className="flex mt-4 space-x-2">
-              <Button variant="outline" size="icon" className="rounded-full" asChild>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary hover:text-black" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                   <Instagram className='h-5 w-5' />
                 </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full" asChild>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary hover:text-black" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <Facebook className="h-5 w-5" />
                 </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full" asChild>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary hover:text-black" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                   <Linkedin className="h-5 w-5" />
                 </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full" asChild>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary hover:text-black" asChild>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                   <Github className="h-5 w-5" />
                 </a>
